@@ -3,7 +3,7 @@
 	"name": "Strelloids",
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
-	"homepage_url": "https://github.com/krzmig/streloids",
+	"homepage_url": "https://github.com/krzmig/strelloids",
 	"version": "2019.1.26",
 	"default_locale": "en",
 	"icons": {
@@ -48,7 +48,7 @@
 	],
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "strelloids@krzmig.org",
+			"id": "strelloids@krzmig.github.com",
 			"strict_min_version": "42.0"
 		}
 	}
