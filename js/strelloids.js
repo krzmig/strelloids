@@ -437,19 +437,19 @@
 					list.style.backgroundColor = '#eff5d0';
 				else if( text.match( /helpdesk/i ))
 					list.style.backgroundColor = '#f5d3f3';
-				else if( text.match( /sprint/i ))
+				else if( text.match( /(sprint|stories)/i ))
 					list.style.backgroundColor = '#d0dff6';
 				else if( text.match( /backlog/i ))
 					list.style.backgroundColor = '#c0e8ed';
 				else if( text.match( /test/i ))
 					list.style.backgroundColor = '#f5f5c0';
-				else if( text.match( /in progress/i ))
+				else if( text.match( /(progress|working|doing)/i ))
 					list.style.backgroundColor = '#bfe3c6';
-				else if( text.match( /(ready|upgrade|gotowe)/i ))
+				else if( text.match( /upgrade/i ))
 					list.style.backgroundColor = '#e6ccf5';
-				else if( text.match( /done/i ))
+				else if( text.match( /(done|ready)/i ))
 					list.style.backgroundColor = '#d9f0bf';
-				else if( text.match( /(to fix|popraw)/i ))
+				else if( text.match( /fix/i ))
 					list.style.backgroundColor = '#f9c0d0';
 			}
 		};
@@ -1333,9 +1333,5 @@
 		$trc = console.trace,
 		_ = typeof browser !== 'undefined' ? browser.i18n.getMessage.bind( browser ) : chrome.i18n.getMessage.bind( chrome );
 
-	/**
-	 * @Q But why the fuck strelloids?
-	 * @A Because Trello have official extensions, called "Power Up", I wan't to do something similar. My first thing was "vitamin", but it was hard to use. If not Vitamin, so it's must be Steroids! "tero" is similar to trello, so annother plus! And that's whole story.
-	 */
 	new Strelloids();
 })();
