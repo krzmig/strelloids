@@ -1,0 +1,44 @@
+{
+	"extensionDescription": {
+		"message": "Trello na sterydach."
+	},
+	"settings_title": {
+		"message": "Ustawienia Strelloids"
+	},
+	"settings_sectionTitle_Lists": {
+		"message": "Listy"
+	},
+	"settings_sectionTitle_Cards": {
+		"message": "Karty"
+	},
+	"settings_sectionTitle_Scrum": {
+		"message": "Scrum"
+	},
+	"settings_lists_enableModule_showCardsCounter": {
+		"message": "Pokazuj licznik kart"
+	},
+	"settings_lists_enableModule_displayInMultiRows": {
+		"message": "Wyświetlaj w wielu wierszach"
+	},
+	"settings_lists_enableModule_displayAsTable": {
+		"message": "Wyświetlaj jako tabelę"
+	},
+	"settings_lists_enableModule_showCardShortId": {
+		"message": "Pokazuj krótkie ID kart"
+	},
+	"settings_lists_enableModule_customTags": {
+		"message": "Włącz własne tagi dla kart"
+	},
+	"settings_lists_enableModule_coloredLists": {
+		"message": "Włącz automatyczne kolorowanie list"
+	},
+	"settings_lists_enableModule_scrumTime": {
+		"message": "Włącz czasy dla scrum"
+	},
+	"settings_lists_enableModule_scrumSumTime": {
+		"message": "Pokaż sumy czasów dla list"
+	},
+	"module_toggleLists_showHideList": {
+		"message": "Pokaż/ukryj listę"
+	}
+}

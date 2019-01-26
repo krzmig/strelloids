@@ -1,0 +1,213 @@
+#strelloids-settings-btn {
+	padding-left: 32px;
+	padding-right: 5px;
+}
+
+#strelloids-settings-window {
+	width: auto;
+	height: auto;
+	overflow: initial;
+	top: 44px;
+	right: 4px;
+	max-height: calc(100vh - 48px);
+	left: auto;
+	position: fixed;
+	z-index: 100;
+	overflow-y: auto;
+	background-color: #fff;
+}
+
+#strelloids-settings-window label {
+	margin: 0;
+}
+
+.list-card {
+	.list-card-title {
+		.card-tag {
+			padding: 0 3px;
+			font-family: monospace;
+			display: inline-block;
+			float: none;
+			vertical-align: middle;
+			min-width: initial;
+			opacity: 0.6;
+			color: #000;
+			//border: 1px dashed #555;
+			border-left: 3px solid #555;
+			border-radius: 0 4px 4px 0;
+			line-height: 18px;
+			margin: 0 2px;
+		}
+	}
+	&:hover {
+		.list-card-title .card-tag {
+			opacity: 1;
+		}
+	}
+}
+
+.scrum-label {
+	display: inline-block;
+	margin: 0 2px;
+	padding: 0 3px;
+	border-radius: 4px;
+	color: white;
+	line-height: 16px;
+	font-size: 12px;
+	&.team1 {
+		background-color: dodgerblue;
+	}
+	&.team2 {
+		background-color: mediumseagreen;
+	}
+
+	&.estimation::before {
+		content: "\1F4A1 "
+	}
+
+	&.consumption::before {
+		content: "\1F525 "
+	}
+}
+.list-header {
+	.scrum-sum-container {
+		display: inline-block;
+		margin: 0;
+		.scrum-label {
+			font-size: 14px;
+			line-height: 18px;
+			opacity: 0.75;
+		}
+	}
+}
+
+
+.card-short-id {
+	color: royalblue;
+	&::after {
+		content: " ";
+	}
+}
+
+#board:not(.board-table-view) {
+	.list-hidden {
+		width: 40px;
+		text-orientation: sideways;
+		writing-mode: vertical-lr;
+		-webkit-writing-mode: vertical-lr;
+		textarea.list-header-name {
+			display: none;
+		}
+		.list-header-name-assist {
+			display: block;
+			font-size: 16px;
+		}
+		.list-header {
+			padding-right: 8px;
+			padding-top: 36px;
+			display: flex;
+			align-items: center;
+			.list-header-num-cards {
+				margin: 8px 0;
+			}
+			.scrum-label {
+				margin: 2px 0;
+				padding: 3px 0;
+			}
+		}
+	}
+
+}
+.list-hidden {
+	opacity: 0.8;
+	.list-cards {
+		display: none;
+	}
+	.open-card-composer {
+		display: none;
+	}
+}
+
+#board {
+	&.board-multiple-rows {
+		overflow-y: auto;
+		display: flex;
+		flex-wrap: wrap;
+		.flex-placeholder {
+			flex-grow: 1;
+			height: 1px;
+			width: 272px
+		}
+		.list-wrapper {
+			flex-grow: 1;
+			max-height: 500px;
+			margin-bottom: 8px;
+			&:first-child {
+				margin-left: 4px;
+			}
+		}
+	}
+	&.board-table-view {
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+		.list-wrapper {
+			width: auto;
+			height: auto;
+			margin-bottom: 8px;
+			.list-card {
+				max-width: 100%;
+				.list-card-details {
+					display: flex;
+					.list-card-labels {
+						order: 2;
+						width: 25%;
+						&:empty {
+							display: block;
+						}
+					}
+					.list-card-title {
+						order: 1;
+						width: 50%;
+					}
+					.badges {
+						order: 3;
+						text-align: center;
+						width: 15%;
+						&:empty {
+							display: block;
+						}
+					}
+					.list-card-members {
+						order: 4;
+						text-align: right;
+						width: 10%;
+						&:empty {
+							display: block;
+						}
+					}
+				}
+				.list-card-stickers-area {
+					display: none;
+				}
+				.list-card-cover {
+					display: none;
+				}
+				&.is-stickered .list-card-details {
+					margin-top: 0;
+				}
+			}
+			.list-header {
+				display: flex;
+				.list-header-name {
+					width: 60%;
+				}
+			}
+			&.list-hidden {
+				text-orientation: initial;
+				writing-mode: initial;
+				-webkit-writing-mode: initial;
+			}
+		}
+	}
+}

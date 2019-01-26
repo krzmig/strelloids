@@ -1,0 +1,157 @@
+@charset "UTF-8";
+#strelloids-settings-btn {
+  padding-left: 32px;
+  padding-right: 5px; }
+
+#strelloids-settings-window {
+  width: auto;
+  height: auto;
+  overflow: initial;
+  top: 44px;
+  right: 4px;
+  max-height: calc(100vh - 48px);
+  left: auto;
+  position: fixed;
+  z-index: 100;
+  overflow-y: auto;
+  background-color: #fff; }
+
+#strelloids-settings-window label {
+  margin: 0; }
+
+.list-card .list-card-title .card-tag {
+  padding: 0 3px;
+  font-family: monospace;
+  display: inline-block;
+  float: none;
+  vertical-align: middle;
+  min-width: initial;
+  opacity: 0.6;
+  color: #000;
+  border-left: 3px solid #555;
+  border-radius: 0 4px 4px 0;
+  line-height: 18px;
+  margin: 0 2px; }
+.list-card:hover .list-card-title .card-tag {
+  opacity: 1; }
+
+.scrum-label {
+  display: inline-block;
+  margin: 0 2px;
+  padding: 0 3px;
+  border-radius: 4px;
+  color: white;
+  line-height: 16px;
+  font-size: 12px; }
+  .scrum-label.team1 {
+    background-color: dodgerblue; }
+  .scrum-label.team2 {
+    background-color: mediumseagreen; }
+  .scrum-label.estimation::before {
+    content: "💡"; }
+  .scrum-label.consumption::before {
+    content: "🔥"; }
+
+.list-header .scrum-sum-container {
+  display: inline-block;
+  margin: 0; }
+  .list-header .scrum-sum-container .scrum-label {
+    font-size: 14px;
+    line-height: 18px;
+    opacity: 0.75; }
+
+.card-short-id {
+  color: royalblue; }
+  .card-short-id::after {
+    content: " "; }
+
+#board:not(.board-table-view) .list-hidden {
+  width: 40px;
+  text-orientation: sideways;
+  writing-mode: vertical-lr;
+  -webkit-writing-mode: vertical-lr; }
+  #board:not(.board-table-view) .list-hidden textarea.list-header-name {
+    display: none; }
+  #board:not(.board-table-view) .list-hidden .list-header-name-assist {
+    display: block;
+    font-size: 16px; }
+  #board:not(.board-table-view) .list-hidden .list-header {
+    padding-right: 8px;
+    padding-top: 36px;
+    display: flex;
+    align-items: center; }
+    #board:not(.board-table-view) .list-hidden .list-header .list-header-num-cards {
+      margin: 8px 0; }
+    #board:not(.board-table-view) .list-hidden .list-header .scrum-label {
+      margin: 2px 0;
+      padding: 3px 0; }
+
+.list-hidden {
+  opacity: 0.8; }
+  .list-hidden .list-cards {
+    display: none; }
+  .list-hidden .open-card-composer {
+    display: none; }
+
+#board.board-multiple-rows {
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap; }
+  #board.board-multiple-rows .flex-placeholder {
+    flex-grow: 1;
+    height: 1px;
+    width: 272px; }
+  #board.board-multiple-rows .list-wrapper {
+    flex-grow: 1;
+    max-height: 500px;
+    margin-bottom: 8px; }
+    #board.board-multiple-rows .list-wrapper:first-child {
+      margin-left: 4px; }
+#board.board-table-view {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; }
+  #board.board-table-view .list-wrapper {
+    width: auto;
+    height: auto;
+    margin-bottom: 8px; }
+    #board.board-table-view .list-wrapper .list-card {
+      max-width: 100%; }
+      #board.board-table-view .list-wrapper .list-card .list-card-details {
+        display: flex; }
+        #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-labels {
+          order: 2;
+          width: 25%; }
+          #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-labels:empty {
+            display: block; }
+        #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-title {
+          order: 1;
+          width: 50%; }
+        #board.board-table-view .list-wrapper .list-card .list-card-details .badges {
+          order: 3;
+          text-align: center;
+          width: 15%; }
+          #board.board-table-view .list-wrapper .list-card .list-card-details .badges:empty {
+            display: block; }
+        #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-members {
+          order: 4;
+          text-align: right;
+          width: 10%; }
+          #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-members:empty {
+            display: block; }
+      #board.board-table-view .list-wrapper .list-card .list-card-stickers-area {
+        display: none; }
+      #board.board-table-view .list-wrapper .list-card .list-card-cover {
+        display: none; }
+      #board.board-table-view .list-wrapper .list-card.is-stickered .list-card-details {
+        margin-top: 0; }
+    #board.board-table-view .list-wrapper .list-header {
+      display: flex; }
+      #board.board-table-view .list-wrapper .list-header .list-header-name {
+        width: 60%; }
+    #board.board-table-view .list-wrapper.list-hidden {
+      text-orientation: initial;
+      writing-mode: initial;
+      -webkit-writing-mode: initial; }
+
+/*# sourceMappingURL=strelloids.css.map */

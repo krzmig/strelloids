@@ -1,0 +1,44 @@
+{
+	"extensionDescription": {
+		"message": "Trello on steroids."
+	},
+	"settings_title": {
+		"message": "Strelloids settings"
+	},
+	"settings_sectionTitle_Lists": {
+		"message": "Lists"
+	},
+	"settings_sectionTitle_Cards": {
+		"message": "Cards"
+	},
+	"settings_sectionTitle_Scrum": {
+		"message": "Scrum"
+	},
+	"settings_lists_enableModule_showCardsCounter": {
+		"message": "Show list cards counter"
+	},
+	"settings_lists_enableModule_displayInMultiRows": {
+		"message": "Show list in multiple rows"
+	},
+	"settings_lists_enableModule_displayAsTable": {
+		"message": "Show as table"
+	},
+	"settings_lists_enableModule_showCardShortId": {
+		"message": "Show cards short ID"
+	},
+	"settings_lists_enableModule_customTags": {
+		"message": "Enable custom tags for cards"
+	},
+	"settings_lists_enableModule_coloredLists": {
+		"message": "Enable colored lists"
+	},
+	"settings_lists_enableModule_scrumTime": {
+		"message": "Enable scrum times"
+	},
+	"settings_lists_enableModule_scrumSumTime": {
+		"message": "Show sum times for lists"
+	},
+	"module_toggleLists_showHideList": {
+		"message": "Show/Hide list"
+	}
+}
