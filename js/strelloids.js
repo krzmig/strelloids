@@ -6,8 +6,6 @@
 
 	window.strelloidsInited = true;
 
-	'use strict';
-
 	var DEBUG = false;
 
 	/**
@@ -34,6 +32,7 @@
 			self.modules.toggleLists = new ModuleToggleLists( self );
 			self.modules.scrumTimes = new ModuleScrumTimes( self );
 			self.modules.scrumSumTimes = new ModuleScrumSumTimes( self );
+
 			self.run();
 		}
 
@@ -74,19 +73,6 @@
 			loadListsIds();
 		};
 
-		this.enable = function()
-		{
-		};
-
-		this.disable = function()
-		{
-		};
-
-		this.isEnabled = function()
-		{
-			return true;
-		};
-
 		this.get = function( key, default_value )
 		{
 			var board_id = findBoardId();
@@ -110,9 +96,11 @@
 
 		this.load = function()
 		{
-			$log( 'Trying to load settings' );
+			if( DEBUG )
+				$log( 'Trying to load settings' );
 			getApiObject().get( null, function( result ) {
-				$log( 'Loaded setting: ', result );
+				if( DEBUG )
+					$log( 'Loaded setting: ', result );
 				if( result !== undefined )
 					data = result;
 			});
@@ -122,28 +110,28 @@
 		{
 			var data_to_save = {};
 			data_to_save[board_id] = data[board_id];
-			$log( 'Trying to save settings' );
+			if( DEBUG )
+				$log( 'Trying to save settings' );
 			getApiObject().set(
 				data_to_save,
 				function()
 				{
-					$log( 'Saved data for board', board_id, ':', data[board_id] );
+					if( DEBUG )
+						$log( 'Saved data for board', board_id, ':', data[board_id] );
 				}
 			);
 		};
 
 		function getApiObject()
 		{
-			if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' && typeof browser.storage.sync !== 'undefined' )
-				return browser.storage.sync;
-			else if( typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined' && typeof chrome.storage.sync !== 'undefined' )
-				return chrome.storage.sync;
-			else if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' && typeof browser.storage.local !== 'undefined' )
-				return browser.storage.local;
-			else if( typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined' && typeof chrome.storage.local !== 'undefined' )
-				return chrome.storage.local;
-			else
-				$err( 'No storage container found. Unable to save data!' );
+			var browser = getBrowserObject();
+			if( isset( browser ) && isset( browser.storage ))
+				if( isset( browser.storage.sync ))
+					return browser.storage.sync;
+				else if( isset( browser.storage.local ))
+					return browser.storage.local;
+
+			$err( 'No storage container found. Unable to save data!' );
 		}
 
 		function findBoardId()
@@ -841,19 +829,6 @@
 			}
 		};
 
-		this.isEnabled = function()
-		{
-			return true;
-		};
-
-		this.enable = function()
-		{
-		};
-
-		this.disable = function()
-		{
-		};
-
 		function appendToggleOption( list_id, counter )
 		{
 			var list = $('.pop-over .pop-over-list:last-child');
@@ -1156,8 +1131,8 @@
 	/**
 	 *
 	 * @param {string} type
-	 * @param {object} params
-	 * @param {string} text_node
+	 * @param {object} [params]
+	 * @param {string} [text_node]
 	 * @returns {HTMLElement}
 	 */
 	function createNode( type, params, text_node )
@@ -1320,18 +1295,31 @@
 		http_request.send();
 	}
 
-	var $w = $w || window,
+	function _( message_key )
+	{
+		var browser = getBrowserObject();
+		if( isset( browser.i18n ) && isfunc( browser.i18n.getMessage ))
+			return browser.i18n.getMessage( message_key );
+		else
+			return '';
+	}
+
+	function getBrowserObject()
+	{
+		return browser || chrome || msBrowser;
+	}
+
+	var $w = window,
 		$d = document,
 		$b = $d.body,
-		$_ = $_ || $d.getElementById.bind( $d ),
-		$ = $ || $d.querySelector.bind( $d ),
-		$$ = $$ || $d.querySelectorAll.bind( $d ),
+		$_ = $d.getElementById.bind( $d ),
+		$ = $d.querySelector.bind( $d ),
+		$$ = $d.querySelectorAll.bind( $d ),
 		$log = console.log,
 		$wrn = console.warn,
 		$err = console.error,
 		$dbg = console.debug,
-		$trc = console.trace,
-		_ = typeof browser !== 'undefined' ? browser.i18n.getMessage.bind( browser ) : chrome.i18n.getMessage.bind( chrome );
+		$trc = console.trace;
 
 	new Strelloids();
 })();
