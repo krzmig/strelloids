@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,IAAK;EACJ,WAAW,EAAE,qCAAqC",
-"sources": ["popup.scss"],
-"names": [],
-"file": "popup.css"
-}

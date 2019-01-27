@@ -4,7 +4,7 @@
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/krzmig/strelloids",
-	"version": "2019.1.26",
+	"version": "2019.1.27",
 	"default_locale": "en",
 	"icons": {
 		"16": "img/icon-16.png",
@@ -14,19 +14,6 @@
 		"96": "img/icon-96.png",
 		"128": "img/icon-128.png",
 		"256": "img/icon-256.png"
-	},
-	"browser_action": {
-		"default_popup": "popup.html",
-		"default_title": "Strelloids",
-		"default_icon": {
-			"16": "img/icon-16.png",
-			"32": "img/icon-32.png",
-			"48": "img/icon-48.png",
-			"64": "img/icon-64.png",
-			"96": "img/icon-96.png",
-			"128": "img/icon-128.png",
-			"256": "img/icon-256.png"
-		}
 	},
 	"permissions": [
 		"activeTab",
