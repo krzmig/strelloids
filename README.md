@@ -4,7 +4,7 @@ Browser extension for Trello that adds new features.
 ## Features
 ### Settings
 Your settings are assigned to a specific board, so you can have at the same time couple different configurations depending on board.
-Setting are stored in `storage.sync`, so if you have account signet to browser, you can have shared setting on different devices.
+Setting are stored in `storage.sync`, so if you have account signed to browser, you can have shared setting on different devices.
 
 ### Toggle list display
 You can toggle visibility of list, by clicking in default trello options menu (right top corner of list), and selecting correct option.
@@ -50,7 +50,31 @@ Estimations are inside round brackets and consumption in squares ones. Times you
 `[/3]` - consumption: not set - _team 1_; 3 sp - _team 2_
 
 You can also turn on sum of this times for each list.
-  
+
+## How to install
+For now extension isn't in any add-on store, but I'm working on this.  
+To try it, you can run it in extension local mode, but it's temporary solution:
+
+### Firefox
+1. Download extension to your device.
+2. Open new tab and enter `about:debugging`.
+3. Click "Load Temporary Add-on".
+4. Select `manifest.json` file.
+
+### Chrome / Opera / Vivaldi
+1. Download extension to your device.
+2. Open new tab and enter one of this: `chrome://extensions` / `opera://extensions` / `vivaldi://extensions`.
+3. Enable "Developer mode".
+4. Click "Load unpacked extension".
+5. Select folder with extension.
+
+### Edge / Safari
+- Sorry, I don't have possibility right now to check if is working, only Linux here.
+   
+
+## ToDo
+- Split JS to separate files
+- Possibility to manually set the color for each list  
 
 ## Why Strelloids?
 Because Trello have official extensions, called "PowerUp", I wanted to do something similar. My first association was "vitamin", but it was too hard to use. If not Vitamin, so next thing was Steroids. "Tero" is similar to trello, so little makeup and that's the whole story. 
