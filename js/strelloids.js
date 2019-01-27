@@ -14,22 +14,27 @@
 	 */
 	function Strelloids()
 	{
-
 		var self = this;
 		var runTimeout = null;
 		self.modules = {};
 
 		function init()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: initialized' );
+
 			self.modules.settings = new ModuleSettings( self );
 
-			self.modules.coloredLists = new ModuleColoredLists( self );
+			// lists
+			self.modules.toggleLists = new ModuleToggleLists( self );
 			self.modules.showCardsCounter = new ModuleShowCardsCounter( self );
 			self.modules.displayInMultiRows = new ModuleDisplayInMultipleRows( self );
 			self.modules.displayAsTable = new ModuleDisplayAsTable( self );
+			// cards
 			self.modules.showCardShortId = new ModuleShowCardShortId( self );
 			self.modules.customTags = new ModuleCustomTags( self );
-			self.modules.toggleLists = new ModuleToggleLists( self );
+			// scrum
+			self.modules.coloredLists = new ModuleColoredLists( self );
 			self.modules.scrumTimes = new ModuleScrumTimes( self );
 			self.modules.scrumSumTimes = new ModuleScrumSumTimes( self );
 
@@ -49,12 +54,15 @@
 
 			runTimeout = setTimeout( self.run, 3000 );
 			if( DEBUG )
-				console.debug( "strelloids loop took " + (performance.now() - t0) + " milliseconds.")
+				$dbg( "Strelloids: loop took " + (performance.now() - t0) + " milliseconds.")
 		};
 
 		init();
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Settings                                                                                              //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module to save your settings, for each board separately.
 	 * @param strelloids
@@ -62,9 +70,17 @@
 	 */
 	function ModuleSettings( strelloids )
 	{
+		/** @type {ModuleSettings} */
 		var self = this;
+		/** @type {object} local settings object copy, for each board */
 		var data = {};
+		/** @type {string|null} */
 		var board_id = null;
+
+		function init()
+		{
+			self.load();
+		}
 
 		this.update = function()
 		{
@@ -73,17 +89,26 @@
 			loadListsIds();
 		};
 
+		/**
+		 * @param {string} key
+		 * @param {null|boolean|number|string|array|object} [default_value] this value will be returned if option is not set
+		 * @return {null|boolean|number|string|array|object}
+		 */
 		this.get = function( key, default_value )
 		{
 			var board_id = findBoardId();
-			if( board_id && typeof data[board_id] !== 'undefined' && typeof data[board_id][key] !== 'undefined' )
+			if( board_id && isset( data[board_id] ) && isset( data[board_id][key] ))
 				return data[board_id][key];
-			else if( typeof default_value !== 'undefined' )
+			else if( isset( default_value ))
 				return default_value;
 			else
 				return null;
 		};
 
+		/**
+		 * @param {string} key
+		 * @param {null|boolean|number|string|array|object} value
+		 */
 		this.set = function( key, value )
 		{
 			var board_id = findBoardId();
@@ -94,34 +119,51 @@
 			self.save( board_id );
 		};
 
+		/**
+		 * Load settings for all boards, from browser.
+		 */
 		this.load = function()
 		{
 			if( DEBUG )
-				$log( 'Trying to load settings' );
-			getApiObject().get( null, function( result ) {
-				if( DEBUG )
-					$log( 'Loaded setting: ', result );
-				if( result !== undefined )
-					data = result;
-			});
+				$log( 'Strelloids: trying to load settings' );
+
+			getApiObject().get(
+				null,
+				function( result )
+				{
+					if( DEBUG )
+						$log( 'Strelloids: loaded setting: ', result );
+
+					if( result !== undefined )
+						data = result;
+				}
+			);
 		};
 
+		/**
+		 * @param {string} board_id
+		 */
 		this.save = function( board_id )
 		{
 			var data_to_save = {};
 			data_to_save[board_id] = data[board_id];
 			if( DEBUG )
-				$log( 'Trying to save settings' );
+				$log( 'Strelloids: trying to save settings' );
 			getApiObject().set(
 				data_to_save,
 				function()
 				{
 					if( DEBUG )
-						$log( 'Saved data for board', board_id, ':', data[board_id] );
+						$log( 'Strelloids: saved data for board', board_id, ':', data[board_id] );
 				}
 			);
 		};
 
+		/**
+		 * Getting browser storage object to save/load settings.
+		 * If synchronize object is exists, will be return, if not local will be returned.
+		 * @return {*}
+		 */
 		function getApiObject()
 		{
 			var browser = getBrowserObject();
@@ -134,6 +176,9 @@
 			$err( 'No storage container found. Unable to save data!' );
 		}
 
+		/**
+		 * @return {string|null}
+		 */
 		function findBoardId()
 		{
 			var matches = /trello.com\/b\/([a-z0-9]+)\//i.exec( $w.location.toString() );
@@ -170,6 +215,9 @@
 			}
 		}
 
+		/**
+		 * Append to site button which will open setting window.
+		 */
 		function appendButton()
 		{
 			if( $_( 'strelloids-settings-btn' ) )
@@ -188,32 +236,38 @@
 			);
 			btn.appendChild( createNode( 'span', { 'class': [ 'header-btn-icon', 'icon-lg', 'icon-gear', 'light' ]} ));
 			btn.appendChild( $d.createTextNode( 'Strelloids' ));
-			btn.addEventListener(
-				'click',
-				function()
-				{
-					var setting_window = $_( 'strelloids-settings-window' );
-					if( setting_window.style.display === 'none' )
-						setting_window.style.display = '';
-					else
-						setting_window.style.display = 'none';
-
-					$_( 'strelloids-colored-list-checkbox' ).checked = strelloids.modules.coloredLists.isEnabled();
-					$_( 'strelloids-cards-counter-checkbox' ).checked = strelloids.modules.showCardsCounter.isEnabled();
-					$_( 'strelloids-multiple-rows-checkbox' ).checked = strelloids.modules.displayInMultiRows.isEnabled();
-					$_( 'strelloids-list-table-checkbox' ).checked = strelloids.modules.displayAsTable.isEnabled();
-
-					$_( 'strelloids-custom-tags-checkbox' ).checked = strelloids.modules.customTags.isEnabled();
-					$_( 'strelloids-short-id-checkbox' ).checked = strelloids.modules.showCardShortId.isEnabled();
-
-					$_( 'strelloids-scrum-times-checkbox' ).checked = strelloids.modules.scrumTimes.isEnabled();
-					$_( 'strelloids-scrum-sum-times-checkbox' ).checked = strelloids.modules.scrumSumTimes.isEnabled();
-					$_( 'strelloids-scrum-sum-times-checkbox' ).disabled = !strelloids.modules.scrumTimes.isEnabled();
-				}
-			);
+			btn.addEventListener( 'click', openWindow );
 			header.insertBefore( btn, header.firstChild );
 		}
 
+		/**
+		 * Open or hide settings window.
+		 */
+		function openWindow()
+		{
+			var setting_window = $_( 'strelloids-settings-window' );
+			if( setting_window.style.display === 'none' )
+				setting_window.style.display = '';
+			else
+				setting_window.style.display = 'none';
+
+			// lists
+			$_( 'strelloids-cards-counter-checkbox' ).checked = strelloids.modules.showCardsCounter.isEnabled();
+			$_( 'strelloids-multiple-rows-checkbox' ).checked = strelloids.modules.displayInMultiRows.isEnabled();
+			$_( 'strelloids-list-table-checkbox' ).checked = strelloids.modules.displayAsTable.isEnabled();
+			// cards
+			$_( 'strelloids-custom-tags-checkbox' ).checked = strelloids.modules.customTags.isEnabled();
+			$_( 'strelloids-short-id-checkbox' ).checked = strelloids.modules.showCardShortId.isEnabled();
+			// scrum
+			$_( 'strelloids-colored-list-checkbox' ).checked = strelloids.modules.coloredLists.isEnabled();
+			$_( 'strelloids-scrum-times-checkbox' ).checked = strelloids.modules.scrumTimes.isEnabled();
+			$_( 'strelloids-scrum-sum-times-checkbox' ).checked = strelloids.modules.scrumSumTimes.isEnabled();
+			$_( 'strelloids-scrum-sum-times-checkbox' ).disabled = !strelloids.modules.scrumTimes.isEnabled();
+		}
+
+		/**
+		 * Append settings window to page content.
+		 */
 		function appendWindow()
 		{
 			if( $_( 'strelloids-settings-window' ))
@@ -268,16 +322,7 @@
 				</div>'
 			);
 
-			$_( 'strelloids-colored-list-checkbox' ).addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-						strelloids.modules.coloredLists.enable();
-					else
-						strelloids.modules.coloredLists.disable();
-				}
-			);
+			// lists
 			$_( 'strelloids-cards-counter-checkbox').addEventListener(
 				'change',
 				function()
@@ -322,7 +367,7 @@
 						strelloids.modules.displayAsTable.disable();
 				}
 			);
-
+			// cards
 			$_( 'strelloids-short-id-checkbox').addEventListener(
 				'change',
 				function()
@@ -343,7 +388,17 @@
 						strelloids.modules.customTags.disable();
 				}
 			);
-
+			// scrum
+			$_( 'strelloids-colored-list-checkbox' ).addEventListener(
+				'change',
+				function()
+				{
+					if( this.checked )
+						strelloids.modules.coloredLists.enable();
+					else
+						strelloids.modules.coloredLists.disable();
+				}
+			);
 			$_( 'strelloids-scrum-times-checkbox').addEventListener(
 				'change',
 				function()
@@ -370,6 +425,10 @@
 			);
 		}
 
+		/**
+		 * Loading list ids and signed them to html nodes, because by default trello don't give any possibility
+		 * to recognize single list, other than by the title.
+		 */
 		function loadListsIds()
 		{
 			var board_id = findBoardId();
@@ -381,11 +440,10 @@
 				onDone: function( raw_response )
 				{
 					var response = JSON.parse( raw_response );
-					if( typeof response.lists === 'undefined' )
+					if( !isset( response.lists ))
 						return $err( 'Can\'t receive lists from API' );
 
 					var lists_containers = $$( '#board > .js-list' );
-
 					if( response.lists.length !== lists_containers.length )
 						return $err( 'List on page and from API didn\'t match, response:', response );
 
@@ -397,9 +455,12 @@
 			});
 		}
 
-		this.load();
+		init();
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Colored lists for scrum                                                                               //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module will set list background color depending on their title and containing keywords.
 	 * @param strelloids
@@ -417,29 +478,10 @@
 
 			var lists_titles = $$( 'textarea.list-header-name' );
 			for( var i = lists_titles.length - 1; i >= 0; --i )
-			{
-				var text = lists_titles[i].value;
-				var list = closest( lists_titles[i], '.list' );
-
-				if( text.match( /todo/i ))
-					list.style.backgroundColor = '#eff5d0';
-				else if( text.match( /helpdesk/i ))
-					list.style.backgroundColor = '#f5d3f3';
-				else if( text.match( /(sprint|stories)/i ))
-					list.style.backgroundColor = '#d0dff6';
-				else if( text.match( /backlog/i ))
-					list.style.backgroundColor = '#c0e8ed';
-				else if( text.match( /test/i ))
-					list.style.backgroundColor = '#f5f5c0';
-				else if( text.match( /(progress|working|doing)/i ))
-					list.style.backgroundColor = '#bfe3c6';
-				else if( text.match( /upgrade/i ))
-					list.style.backgroundColor = '#e6ccf5';
-				else if( text.match( /(done|ready)/i ))
-					list.style.backgroundColor = '#d9f0bf';
-				else if( text.match( /fix/i ))
-					list.style.backgroundColor = '#f9c0d0';
-			}
+				setListColor(
+					closest( lists_titles[i], '.list' ),
+					lists_titles[i].value
+				);
 		};
 
 		/**
@@ -447,25 +489,60 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName );
+			return strelloids.modules.settings.get( settingName, false );
 		};
 
 		this.enable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
 			strelloids.modules.settings.set( settingName, true );
 			self.update();
 		};
 
 		this.disable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
 			strelloids.modules.settings.set( settingName, false );
 
 			var lists = $$( '.list' );
 			for( var i = lists.length - 1; i >= 0; --i )
 				lists[i].style.backgroundColor = '';
 		};
+
+		/**
+		 * @param {HTMLElement} list
+		 * @param {string} title
+		 */
+		function setListColor( list, title )
+		{
+			if( title.match( /todo/i ))
+				list.style.backgroundColor = '#eff5d0';
+			else if( title.match( /helpdesk/i ))
+				list.style.backgroundColor = '#f5d3f3';
+			else if( title.match( /(sprint|stories)/i ))
+				list.style.backgroundColor = '#d0dff6';
+			else if( title.match( /backlog/i ))
+				list.style.backgroundColor = '#c0e8ed';
+			else if( title.match( /test/i ))
+				list.style.backgroundColor = '#f5f5c0';
+			else if( title.match( /(progress|working|doing)/i ))
+				list.style.backgroundColor = '#bfe3c6';
+			else if( title.match( /upgrade/i ))
+				list.style.backgroundColor = '#e6ccf5';
+			else if( title.match( /(done|ready)/i ))
+				list.style.backgroundColor = '#d9f0bf';
+			else if( title.match( /fix/i ))
+				list.style.backgroundColor = '#f9c0d0';
+		}
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Show cards counter                                                                                    //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module shows counter of cards below list title.
 	 * @param {Strelloids} strelloids
@@ -478,12 +555,12 @@
 
 		this.update = function()
 		{
-			if(	self.isEnabled() )
-			{
-				var elems = $$('.list-header-num-cards.hide');
-				for( var i = elems.length - 1; i >= 0; --i )
-					elems[i].classList.remove( 'hide' );
-			}
+			if(	!self.isEnabled() )
+				return;
+
+			var counters = $$('.list-header-num-cards.hide');
+			for( var i = counters.length - 1; i >= 0; --i )
+				counters[i].classList.remove( 'hide' );
 		};
 
 		/**
@@ -491,24 +568,33 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName );
+			return strelloids.modules.settings.get( settingName, false );
 		};
 
 		this.enable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
 			strelloids.modules.settings.set( settingName, true );
 			self.update();
 		};
 
 		this.disable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
 			strelloids.modules.settings.set( settingName, false );
-			var elems = $$('.list-header-num-cards');
-			for( var i = elems.length - 1; i >= 0; --i )
-				elems[i].classList.add( 'hide' );
+			var counters = $$('.list-header-num-cards');
+			for( var i = counters.length - 1; i >= 0; --i )
+				counters[i].classList.add( 'hide' );
 		};
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Show card short ID                                                                                    //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module shows on lists short card ID, which you can normally find inside card, after click Share button.
 	 * @param {Strelloids} strelloids
@@ -521,12 +607,12 @@
 
 		this.update = function()
 		{
-			if(	self.isEnabled() )
-			{
-				var elems = $$('.card-short-id.hide');
-				for( var i = elems.length - 1; i >= 0; --i )
-					elems[i].classList.remove( 'hide' );
-			}
+			if(	!self.isEnabled() )
+				return;
+
+			var ids = $$('.card-short-id.hide');
+			for( var i = ids.length - 1; i >= 0; --i )
+				ids[i].classList.remove( 'hide' );
 		};
 
 		/**
@@ -534,24 +620,34 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName );
+			return strelloids.modules.settings.get( settingName, false );
 		};
 
 		this.enable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
 			strelloids.modules.settings.set( settingName, true );
 			self.update();
 		};
 
 		this.disable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
 			strelloids.modules.settings.set( settingName, false );
-			var elems = $$('.card-short-id');
-			for( var i = elems.length - 1; i >= 0; --i )
-				elems[i].classList.add( 'hide' );
+
+			var ids = $$('.card-short-id');
+			for( var i = ids.length - 1; i >= 0; --i )
+				ids[i].classList.add( 'hide' );
 		};
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Custom tags                                                                                           //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module will replace tags inside cards titles with colored labels.
 	 * Tags must be inside square brackets and must contains at least one letter, space, underscore or dash.
@@ -563,6 +659,7 @@
 	{
 		var self = this;
 		var settingName = 'customTags';
+		var tag_regex = /\[([^\]]*[a-z_ -][^\]]*)\]/ig;
 
 		this.update = function()
 		{
@@ -571,7 +668,6 @@
 
 			var cards_titles = $$('.list-card-title');
 			var text_node = null;
-			var tag_regex = /\[([^\]]*[a-z_ -][^\]]*)\]/ig;
 
 			for( var i = cards_titles.length - 1; i >= 0; --i )
 			{
@@ -587,20 +683,7 @@
 					continue;
 
 				removeOldTags( cards_titles[i] );
-
-				tag_regex.lastIndex = 0;
-
-				var matches;
-				while(( matches = tag_regex.exec( text_node.nodeValue ) ) !== null )
-				{
-					var tag = createNode(
-						'span',
-						{ 'class': [ 'card-tag' ] },
-						matches[1]
-					);
-					tag.style.backgroundColor = determinateTagColor( matches[1] );
-					cards_titles[i].insertBefore( tag, text_node );
-				}
+				appendNewTags( cards_titles[i], text_node );
 
 				text_node.nodeValue = text_node.nodeValue.replace( tag_regex, '' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
 			}
@@ -611,17 +694,23 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName );
+			return strelloids.modules.settings.get( settingName, false );
 		};
 
 		this.enable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
 			strelloids.modules.settings.set( settingName, true );
 			self.update();
 		};
 
 		this.disable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
 			strelloids.modules.settings.set( settingName, false );
 
 			var cards_titles = $$('.list-card-title');
@@ -642,6 +731,10 @@
 			}
 		};
 
+		/**
+		 * @param {HTMLElement} element
+		 * @return {null|HTMLElement}
+		 */
 		function findTextNode( element )
 		{
 			for( var i = 0; i < element.childNodes.length; ++i )
@@ -651,6 +744,9 @@
 			return null;
 		}
 
+		/**
+		 * @param {HTMLElement} element
+		 */
 		function removeOldTags( element )
 		{
 			var old_tags = element.querySelectorAll( '.card-tag' );
@@ -658,6 +754,31 @@
 				element.removeChild( old_tags[i] );
 		}
 
+		/**
+		 * @param {HTMLElement} card_title
+		 * @param {HTMLElement} title
+		 */
+		function appendNewTags( card_title, title )
+		{
+			tag_regex.lastIndex = 0;
+
+			var matches;
+			while(( matches = tag_regex.exec( title.nodeValue ) ) !== null )
+			{
+				var tag = createNode(
+					'span',
+					{ 'class': [ 'card-tag' ] },
+					matches[1]
+				);
+				tag.style.backgroundColor = determinateTagColor( matches[1] );
+				card_title.insertBefore( tag, title );
+			}
+		}
+
+		/**
+		 * @param {string} tag
+		 * @return {string}
+		 */
 		function determinateTagColor( tag )
 		{
 			var chars = tag.split('').map( function( a ){ return a.charCodeAt( 0 ) });
@@ -689,6 +810,9 @@
 		}
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Display list in multiple rows                                                                         //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module shows lists in multiple rows, so you scroll page vertically instead of horizontally.
 	 * @param {Strelloids} strelloids
@@ -718,19 +842,28 @@
 			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' }));
 		};
 
+		/**
+		 * @return {boolean}
+		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName );
+			return strelloids.modules.settings.get( settingName, false );
 		};
 
 		this.enable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
 			strelloids.modules.settings.set( settingName, true );
 			self.update();
 		};
 
 		this.disable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
 			strelloids.modules.settings.set( settingName, false );
 
 			var board = $_( 'board' );
@@ -744,6 +877,9 @@
 		};
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Display list as table                                                                                 //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module shows lists as table, in whole page width.
 	 * @param {Strelloids} strelloids
@@ -764,19 +900,28 @@
 				board.classList.add( 'board-table-view' );
 		};
 
+		/**
+ 		 * @return {boolean}
+		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName );
+			return strelloids.modules.settings.get( settingName, false );
 		};
 
 		this.enable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
 			strelloids.modules.settings.set( settingName, true );
 			self.update();
 		};
 
 		this.disable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
 			strelloids.modules.settings.set( settingName, false );
 
 			var board = $_( 'board' );
@@ -787,15 +932,21 @@
 		};
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Toggle lists visibility                                                                               //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module allow you to hide selected lists from list menu (right top corner).
-	 * @param strelloids
+	 * @param {Strelloids} strelloids
 	 * @constructor
 	 */
 	function ModuleToggleLists( strelloids )
 	{
 		function init()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module toggleLists initialized' );
+
 			$d.addEventListener(
 				'click',
 				function( e )
@@ -829,6 +980,11 @@
 			}
 		};
 
+		/**
+		 * @param {string} list_id
+		 * @param {int} counter
+		 * @return {boolean|number}
+		 */
 		function appendToggleOption( list_id, counter )
 		{
 			var list = $('.pop-over .pop-over-list:last-child');
@@ -851,39 +1007,58 @@
 			li.appendChild( createNode( 'a', { href: '#' }, _( 'module_toggleLists_showHideList' )));
 			li.addEventListener( 'click', function(){ toggleVisibility( list_id ); } );
 			list.appendChild( li );
+			return true;
 		}
 
+		/**
+		 * @param {string} list_id
+		 */
 		function toggleVisibility( list_id )
 		{
 			var config = strelloids.modules.settings.get( 'hiddenLists', [] );
 			var index = config.indexOf( list_id );
 			if( index > -1 )
 			{
+				if( DEBUG )
+					$log( 'Strelloids: module toggleList - list', list_id, 'shown in' );
+
 				config.splice( index, 1 );
-				strelloids.modules.settings.set( 'hiddenLists', config );
 				$_( 'list-' + list_id ).classList.remove( 'list-hidden' );
 			}
 			else
 			{
+				if( DEBUG )
+					$log( 'Strelloids: module toggleList - list', list_id, 'hidden' );
+
 				config.push( list_id );
-				strelloids.modules.settings.set( 'hiddenLists', config );
 				$_( 'list-' + list_id ).classList.add( 'list-hidden' );
 			}
+			strelloids.modules.settings.set( 'hiddenLists', config );
 			$( '.pop-over' ).classList.remove('is-shown');
 		}
 
 		init();
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Scrum times                                                                                           //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 *
-	 * @param strelloids
+	 * Module to show estimation and consumption points for cards.
+	 * Estimation points should be inside round brackets, consumption in square ones.
+	 * It's possible to use fractions, with dot as separator.
+	 * Question mark can be used eg. for big tasks which should be split.
+	 * It's possible to enter times for two teams, to do that values should be separated by `/`.
+	 * Teams will get different colors for the times.
+	 * @param {Strelloids} strelloids
 	 * @constructor
 	 */
 	function ModuleScrumTimes( strelloids )
 	{
 		var self = this;
 		var settingName = 'scrumTimes';
+		var estimation_regex = /\(([0-9\.]*|\?)\/?([0-9\.]*?|\?)\)/i;
+		var consumption_regex = /\[([0-9\.]*|\?)\/?([0-9\.]*?|\?)\]/i;
 
 		this.update = function()
 		{
@@ -892,70 +1067,62 @@
 
 			var cards_titles = $$('.list-card-title');
 			var text_node = null;
-			var estimation_regex = /\(([0-9\.]*|\?)\/?([0-9\.]*?|\?)\)/i;
-			var consumption_regex = /\[([0-9\.]*|\?)\/?([0-9\.]*?|\?)\]/i;
+			var matches, matches2;
 
 			for( var i = cards_titles.length - 1; i >= 0; --i )
 			{
 				text_node = findTextNode( cards_titles[i] );
-
 				if( !text_node )
 					continue;
 
 				if( !cards_titles[i].getAttribute( 'data-original-title' ))
 					cards_titles[i].setAttribute( 'data-original-title', text_node.nodeValue );
 
-				var matches = estimation_regex.exec( text_node.nodeValue );
-				var matches2 = consumption_regex.exec( text_node.nodeValue );
+				matches = estimation_regex.exec( text_node.nodeValue );
+				matches2 = consumption_regex.exec( text_node.nodeValue );
 				if( !matches && !matches2 )
 					continue;
 
 				removeOldTags( cards_titles[i] );
 				strelloids.modules.scrumSumTimes.needUpdate = true;
 
-				if( matches )
-				{
-					if( matches[1] )
-						cards_titles[i].insertBefore(
-							createNode(
-								'span',
-								{ 'class': [ 'scrum-label', 'estimation', 'team1' ] },
-								matches[1]
-							),
-							text_node
-						);
+				if( matches && matches[1] )
+					cards_titles[i].insertBefore(
+						createNode(
+							'span',
+							{ 'class': [ 'scrum-label', 'estimation', 'team1' ] },
+							matches[1]
+						),
+						text_node
+					);
 
-					if( matches[2] )
-						cards_titles[i].insertBefore(
-							createNode(
-								'span',
-								{ 'class': [ 'scrum-label', 'estimation', 'team2' ] },
-								matches[2]
-							),
-							text_node
-						);
-				}
+				if( matches && matches[2] )
+					cards_titles[i].insertBefore(
+						createNode(
+							'span',
+							{ 'class': [ 'scrum-label', 'estimation', 'team2' ] },
+							matches[2]
+						),
+						text_node
+					);
 
-				if( matches2 )
-				{
-					if( matches2[1] )
-						cards_titles[i].appendChild(
-							createNode(
-								'span',
-								{ 'class': [ 'scrum-label', 'consumption', 'team1' ] },
-								matches2[1]
-							)
-						);
+				if( matches2 && matches2[1] )
+					cards_titles[i].appendChild(
+						createNode(
+							'span',
+							{ 'class': [ 'scrum-label', 'consumption', 'team1' ] },
+							matches2[1]
+						)
+					);
 
-					if( matches2[2] )
-						cards_titles[i].appendChild(
-							createNode(
-								'span',
-								{ 'class': [ 'scrum-label', 'consumption', 'team2' ] },
-								matches2[2]
-							)
-						);
-				}
+				if( matches2 && matches2[2] )
+					cards_titles[i].appendChild(
+						createNode(
+							'span',
+							{ 'class': [ 'scrum-label', 'consumption', 'team2' ] },
+							matches2[2]
+						)
+					);
 
 				text_node.nodeValue = text_node.nodeValue.replace( estimation_regex, '' ).replace( consumption_regex, '' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
 			}
@@ -966,18 +1133,24 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName );
+			return strelloids.modules.settings.get( settingName, false );
 		};
 
 		this.enable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
 			strelloids.modules.settings.set( settingName, true );
 			self.update();
 		};
 
 		this.disable = function()
 		{
-			strelloids.modules.settings.get( settingName, false );
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
+			strelloids.modules.settings.set( settingName, false );
 
 			var cards_titles = $$('.list-card-title');
 			var text_node = null;
@@ -985,7 +1158,6 @@
 			for( var i = cards_titles.length - 1; i >= 0; --i )
 			{
 				text_node = findTextNode( cards_titles[i] );
-
 				if( !text_node )
 					continue;
 
@@ -997,6 +1169,9 @@
 			}
 		};
 
+		/**
+		 * @param {HTMLElement} element
+		 */
 		function removeOldTags( element )
 		{
 			var old_tags = element.querySelectorAll( '.scrum-label' );
@@ -1004,6 +1179,10 @@
 				element.removeChild( old_tags[i] );
 		}
 
+		/**
+		 * @param {HTMLElement} element
+		 * @return {null|HTMLElement}
+		 */
 		function findTextNode( element )
 		{
 			for( var i = 0; i < element.childNodes.length; ++i )
@@ -1014,15 +1193,20 @@
 		}
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Scrum sum times                                                                                       //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 *
-	 * @param strelloids
+	 * Module that will sum times from ModuleScrumTimes and show them for each list.
+	 * ModuleScrumTimes is required to be enabled.
+	 * @param {Strelloids} strelloids
 	 * @constructor
 	 */
 	function ModuleScrumSumTimes( strelloids )
 	{
 		var self = this;
 		var settingName = 'scrumSumTimes';
+		/** @type {boolean} value determine if times should be recalculated, it's for optimization/ */
 		this.needUpdate = true;
 
 		this.update = function()
@@ -1031,53 +1215,16 @@
 				return;
 
 			var lists = $$('#board > .js-list');
-			var labels, i, j, container, estimation_team1, estimation_team2, consumption_team1, consumption_team2;
+			var container;
 
-			for( i = lists.length - 1; i >= 0; --i )
+			for( var i = lists.length - 1; i >= 0; --i )
 			{
-				estimation_team1 = estimation_team2 = consumption_team1 = consumption_team2 = 0;
 				container = createContainer( lists[i] );
 
-				labels = lists[i].querySelectorAll( '.scrum-label.estimation.team1' );
-				for( j = labels.length - 1; j >= 0; --j )
-					estimation_team1 += isNaN( labels[j].innerText ) ? 0 : parseFloat( labels[j].innerText );
-
-				labels = lists[i].querySelectorAll( '.scrum-label.estimation.team2' );
-				for( j = labels.length - 1; j >= 0; --j )
-					estimation_team2 += isNaN( labels[j].innerText ) ? 0 : parseFloat( labels[j].innerText );
-
-				labels = lists[i].querySelectorAll( '.scrum-label.consumption.team1' );
-				for( j = labels.length - 1; j >= 0; --j )
-					consumption_team1 += isNaN( labels[j].innerText ) ? 0 : parseFloat( labels[j].innerText );
-
-				labels = lists[i].querySelectorAll( '.scrum-label.consumption.team2' );
-				for( j = labels.length - 1; j >= 0; --j )
-					consumption_team2 += isNaN( labels[j].innerText ) ? 0 : parseFloat( labels[j].innerText );
-
-				if( estimation_team1 )
-					container.appendChild( createNode(
-						'span',
-						{ 'class': [ 'scrum-label', 'estimation', 'team1' ]},
-						estimation_team1.toString()
-					));
-				if( estimation_team2 )
-					container.appendChild( createNode(
-						'span',
-						{ 'class': [ 'scrum-label', 'estimation', 'team2' ]},
-						estimation_team2.toString()
-					));
-				if( consumption_team1 )
-					container.appendChild( createNode(
-						'span',
-						{ 'class': [ 'scrum-label', 'consumption', 'team1' ]},
-						consumption_team1.toString()
-					));
-				if( consumption_team2 )
-					container.appendChild( createNode(
-						'span',
-						{ 'class': [ 'scrum-label', 'consumption', 'team2' ]},
-						consumption_team2.toString()
-					));
+				sumTimes( lists[i], container, 'estimation', 'team1' );
+				sumTimes( lists[i], container, 'estimation', 'team2' );
+				sumTimes( lists[i], container, 'consumption', 'team1' );
+				sumTimes( lists[i], container, 'consumption', 'team2' );
 			}
 			self.needUpdate = false;
 		};
@@ -1087,11 +1234,14 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName );
+			return strelloids.modules.settings.get( settingName, false );
 		};
 
 		this.enable = function()
 		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
 			strelloids.modules.settings.set( settingName, true );
 			self.needUpdate = true;
 			self.update();
@@ -1099,7 +1249,10 @@
 
 		this.disable = function()
 		{
-			strelloids.modules.settings.get( settingName, false );
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
+			strelloids.modules.settings.set( settingName, false );
 
 			var containers = $$('.list-header .scrum-sum-container');
 
@@ -1107,9 +1260,13 @@
 				containers[i].parentNode.removeChild( containers[i] );
 		};
 
-		function createContainer( node_list )
+		/**
+		 * @param {HTMLElement} list
+		 * @return {HTMLElement}
+		 */
+		function createContainer( list )
 		{
-			var container = node_list.querySelector( '.scrum-sum-container' );
+			var container = list.querySelector( '.scrum-sum-container' );
 			if( container )
 			{
 				while( container.lastChild )
@@ -1118,18 +1275,41 @@
 			else
 			{
 				container = createNode( 'div', { 'class': 'scrum-sum-container' });
-				node_list.querySelector( '.list-header' ).appendChild( container );
+				list.querySelector( '.list-header' ).appendChild( container );
 			}
 			return container;
 		}
+
+		/**
+		 * @param {HTMLElement} list
+		 * @param {HTMLElement} labels_container
+		 * @param {string} mode - estimation or consumption
+		 * @param {string} team - team1 or team2
+		 */
+		function sumTimes( list, labels_container, mode, team )
+		{
+			var sum = 0;
+			var labels = list.querySelectorAll( '.scrum-label.' + mode + '.' + team );
+			for( var i = labels.length - 1; i >= 0; --i )
+				sum += isNaN( labels[i].innerText ) ? 0 : parseFloat( labels[i].innerText );
+
+			if( sum > 0 )
+				labels_container.appendChild(
+					createNode(
+						'span',
+						{ 'class': [ 'scrum-label', mode, team ]},
+						sum.toString()
+					)
+				);
+		}
 	}
 
-		////////////////////////////////////////////////////////
-	// Helper functions
-	////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Helper functions                                                                                               //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 *
+	 * Create HTML node
 	 * @param {string} type
 	 * @param {object} [params]
 	 * @param {string} [text_node]
@@ -1199,6 +1379,7 @@
 	}
 
 	/**
+	 * Finding closest parent, matching to given selector
 	 * @param {HTMLElement} node
 	 * @param {string} selector
 	 * @return {null|HTMLElement}
@@ -1295,6 +1476,12 @@
 		http_request.send();
 	}
 
+	/**
+	 * Translations
+	 * @param {string} message_key
+	 * @return {string}
+	 * @private
+	 */
 	function _( message_key )
 	{
 		var browser = getBrowserObject();
@@ -1304,6 +1491,10 @@
 			return '';
 	}
 
+	/**
+	 * Return `browser` object, depending on current browser
+	 * @return {object}
+	 */
 	function getBrowserObject()
 	{
 		return browser || chrome || msBrowser;
