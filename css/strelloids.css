@@ -69,7 +69,8 @@
   width: 40px;
   text-orientation: sideways;
   writing-mode: vertical-lr;
-  -webkit-writing-mode: vertical-lr; }
+  -webkit-writing-mode: vertical-lr;
+  min-height: max-content; }
   #board:not(.board-table-view) .list-hidden textarea.list-header-name {
     display: none; }
   #board:not(.board-table-view) .list-hidden .list-header-name-assist {
@@ -80,8 +81,11 @@
     padding-top: 36px;
     display: flex;
     align-items: center; }
+    #board:not(.board-table-view) .list-hidden .list-header .list-header-name-assist {
+      white-space: nowrap; }
     #board:not(.board-table-view) .list-hidden .list-header .list-header-num-cards {
-      margin: 8px 0; }
+      margin: 8px 0;
+      white-space: nowrap; }
     #board:not(.board-table-view) .list-hidden .list-header .scrum-label {
       margin: 2px 0;
       padding: 3px 0; }

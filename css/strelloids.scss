@@ -95,6 +95,7 @@
 		text-orientation: sideways;
 		writing-mode: vertical-lr;
 		-webkit-writing-mode: vertical-lr;
+		min-height: max-content;
 		textarea.list-header-name {
 			display: none;
 		}
@@ -107,8 +108,12 @@
 			padding-top: 36px;
 			display: flex;
 			align-items: center;
+			.list-header-name-assist {
+				white-space: nowrap;
+			}
 			.list-header-num-cards {
 				margin: 8px 0;
+				white-space: nowrap;
 			}
 			.scrum-label {
 				margin: 2px 0;
