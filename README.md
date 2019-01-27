@@ -52,23 +52,27 @@ Estimations are inside round brackets and consumption in squares ones. Times you
 You can also turn on sum of this times for each list.
 
 ## How to install
-For now extension isn't in any add-on store, but I'm working on this.  
+### Normal way
+- [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/strelloids/) for Firefox
+- [chrome.google.com](https://chrome.google.com/webstore/detail/strelloids/modiglgpojgocbnehgegipohkfejddfo) for Chrome
+
+### Temporary way
 To try it, you can run it in extension local mode, but it's temporary solution:
 
-### Firefox
+#### Firefox
 1. Download extension to your device.
 2. Open new tab and enter `about:debugging`.
 3. Click "Load Temporary Add-on".
 4. Select `manifest.json` file.
 
-### Chrome / Opera / Vivaldi
+#### Chrome / Opera / Vivaldi
 1. Download extension to your device.
 2. Open new tab and enter one of this: `chrome://extensions` / `opera://extensions` / `vivaldi://extensions`.
 3. Enable "Developer mode".
 4. Click "Load unpacked extension".
 5. Select folder with extension.
 
-### Edge / Safari
+#### Edge / Safari
 - Sorry, I don't have possibility right now to check if is working, only Linux here.
    
 

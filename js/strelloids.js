@@ -97,9 +97,9 @@
 		this.get = function( key, default_value )
 		{
 			var board_id = findBoardId();
-			if( board_id && isset( data[board_id] ) && isset( data[board_id][key] ))
+			if( board_id && typeof data[board_id] !== 'undefined' && typeof data[board_id][key] !== 'undefined' )
 				return data[board_id][key];
-			else if( isset( default_value ))
+			else if( typeof default_value !== 'undefined' )
 				return default_value;
 			else
 				return null;
@@ -167,10 +167,10 @@
 		function getApiObject()
 		{
 			var browser = getBrowserObject();
-			if( isset( browser ) && isset( browser.storage ))
-				if( isset( browser.storage.sync ))
+			if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' )
+				if( typeof browser.storage.sync !== 'undefined' )
 					return browser.storage.sync;
-				else if( isset( browser.storage.local ))
+				else if( typeof browser.storage.local !== 'undefined' )
 					return browser.storage.local;
 
 			$err( 'No storage container found. Unable to save data!' );
@@ -189,7 +189,7 @@
 				board_id = matches[1];
 				if( node_board_name )
 				{
-					if( !isset( data[board_id] ))
+					if( typeof data[board_id] === 'undefined' )
 						data[board_id] = {};
 
 					data[board_id].board_name = node_board_name.innerText;
@@ -280,7 +280,7 @@
 						<span>\
 							<span>' + _( 'settings_title' ) + '</span>\
 						</span>\
-						<button type="button" class="hide-dialog-trigger dialog-close-button unstyled-button" onclick="$(\'#strelloids-settings-window\').hide();">\
+						<button type="button" class="hide-dialog-trigger dialog-close-button unstyled-button" onclick="document.getElementById(\'strelloids-settings-window\').style.display=\'none\'">\
 							<span class="icon-sm icon-close"></span>\
 						</button>\
 					</div>\
@@ -440,7 +440,7 @@
 				onDone: function( raw_response )
 				{
 					var response = JSON.parse( raw_response );
-					if( !isset( response.lists ))
+					if( typeof response.lists === 'undefined' )
 						return $err( 'Can\'t receive lists from API' );
 
 					var lists_containers = $$( '#board > .js-list' );
@@ -1336,19 +1336,10 @@
 			else
 				node.setAttribute( i, params[i] );
 		}
-		if( isset( text_node ))
+		if( typeof text_node !== 'undefined' )
 			node.appendChild( $d.createTextNode( text_node ));
 
 		return node;
-	}
-
-	/**
-	 * @param variable
-	 * @return {boolean}
-	 */
-	function isset( variable )
-	{
-		return typeof variable !== 'undefined';
 	}
 
 	/**
@@ -1419,10 +1410,10 @@
 		};
 
 		for( var i in default_params )
-			if( !isset( obj_params[i] ))
+			if( typeof obj_params[i] === 'undefined' )
 				obj_params[i] = default_params[i];
 
-		if( !isset( obj_params.url ))
+		if( typeof obj_params.url === 'undefined' )
 			return $err('No url given');
 
 		var http_request = new XMLHttpRequest();
@@ -1485,7 +1476,7 @@
 	function _( message_key )
 	{
 		var browser = getBrowserObject();
-		if( isset( browser.i18n ) && isfunc( browser.i18n.getMessage ))
+		if( typeof browser.i18n !== 'undefined' && typeof browser.i18n.getMessage === 'function' )
 			return browser.i18n.getMessage( message_key );
 		else
 			return '';
@@ -1497,7 +1488,12 @@
 	 */
 	function getBrowserObject()
 	{
-		return browser || chrome || msBrowser;
+		if( typeof browser !== 'undefined' )
+			return browser;
+		else if( typeof chrome !== 'undefined' )
+			return chrome;
+		else if( typeof msBrowser !== 'undefined' )
+			return msBrowser;
 	}
 
 	var $w = window,
