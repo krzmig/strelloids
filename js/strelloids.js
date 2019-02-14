@@ -6,7 +6,7 @@
 
 	window.strelloidsInited = true;
 
-	var DEBUG = false;
+	var DEBUG = true;
 
 	/**
 	 * Main plugin class.
@@ -73,7 +73,10 @@
 		/** @type {ModuleSettings} */
 		var self = this;
 		/** @type {object} local settings object copy, for each board */
-		var data = {};
+		var data = {
+			list: {},
+			board: {}
+		};
 		/** @type {string|null} */
 		var board_id = null;
 
@@ -90,15 +93,15 @@
 		};
 
 		/**
+		 * @param {string} board_id
 		 * @param {string} key
 		 * @param {null|boolean|number|string|array|object} [default_value] this value will be returned if option is not set
 		 * @return {null|boolean|number|string|array|object}
 		 */
-		this.get = function( key, default_value )
+		this.getForBoard = function( board_id, key, default_value )
 		{
-			var board_id = findBoardId();
-			if( board_id && typeof data[board_id] !== 'undefined' && typeof data[board_id][key] !== 'undefined' )
-				return data[board_id][key];
+			if( board_id && typeof data.board[board_id] !== 'undefined' && typeof data.board[board_id][key] !== 'undefined' )
+				return data.board[board_id][key];
 			else if( typeof default_value !== 'undefined' )
 				return default_value;
 			else
@@ -106,17 +109,67 @@
 		};
 
 		/**
+		 * @param {string} board_id
 		 * @param {string} key
 		 * @param {null|boolean|number|string|array|object} value
 		 */
-		this.set = function( key, value )
+		this.setForBoard = function( board_id, key, value )
 		{
-			var board_id = findBoardId();
-			if( typeof data[board_id] === 'undefined' )
-				data[board_id] = {};
+			if( typeof data.board[board_id] === 'undefined' )
+				data.board[board_id] = {};
 
-			data[board_id][key] = value;
-			self.save( board_id );
+			data.board[board_id][key] = value;
+			self.save( 'board' );
+		};
+
+		/**
+		 * @param {string} list_id
+		 * @param {string} key
+		 * @param {null|boolean|number|string|array|object} [default_value] this value will be returned if option is not set
+		 * @return {null|boolean|number|string|array|object}
+		 */
+		this.getForList = function( list_id, key, default_value )
+		{
+			if( typeof data.list[list_id] !== 'undefined' && typeof data.list[list_id][key] !== 'undefined' )
+				return data.list[list_id][key];
+			else if( typeof default_value !== 'undefined' )
+				return default_value;
+			else
+				return null;
+		};
+
+		/**
+		 * @param {string} list_id
+		 * @param {string} key
+		 * @param {null|boolean|number|string|array|object} value
+		 */
+		this.setForList = function( list_id, key, value )
+		{
+			if( typeof data.list[list_id] === 'undefined' )
+				data.list[list_id] = {};
+
+			data.list[list_id][key] = value;
+			self.save( 'list' );
+		};
+
+		/**
+		 * @param {string} key
+		 * @param {null|boolean|number|string|array|object} [default_value] this value will be returned if option is not set
+		 * @return {null|boolean|number|string|array|object}
+		 */
+		this.getForCurrentBoard = function( key, default_value )
+		{
+			return self.getForBoard( findBoardId(), key, default_value );
+
+		};
+
+		/**
+		 * @param {string} key
+		 * @param {null|boolean|number|string|array|object} value
+		 */
+		this.setForCurrentBoard = function( key, value )
+		{
+			self.setForBoard( findBoardId(), key, value );
 		};
 
 		/**
@@ -134,19 +187,38 @@
 					if( DEBUG )
 						$log( 'Strelloids: loaded setting: ', result );
 
-					if( result !== undefined )
-						data = result;
+					if( result === undefined )
+						return;
+
+					var need_save = false;
+					for( var i in result )
+					{
+						if( !result.hasOwnProperty( i ))
+							continue;
+
+						if( i !== 'list' && i !== 'board' )
+						{
+							data.board[i] = result[i];
+							getApiObject().remove( i );
+							need_save = true;
+						}
+						else
+							data[i] = result[i];
+					}
+
+					if( need_save )
+						self.save( 'board' );
 				}
 			);
 		};
 
 		/**
-		 * @param {string} board_id
+		 * @param {string} key
 		 */
-		this.save = function( board_id )
+		this.save = function( key )
 		{
 			var data_to_save = {};
-			data_to_save[board_id] = data[board_id];
+			data_to_save[key] = data[key];
 			if( DEBUG )
 				$log( 'Strelloids: trying to save settings' );
 			getApiObject().set(
@@ -154,7 +226,7 @@
 				function()
 				{
 					if( DEBUG )
-						$log( 'Strelloids: saved data for board', board_id, ':', data[board_id] );
+						$log( 'Strelloids: saved data for key', key, ':', data[key] );
 				}
 			);
 		};
@@ -189,10 +261,10 @@
 				board_id = matches[1];
 				if( node_board_name )
 				{
-					if( typeof data[board_id] === 'undefined' )
-						data[board_id] = {};
+					if( typeof data.board[board_id] === 'undefined' )
+						data.board[board_id] = {};
 
-					data[board_id].board_name = node_board_name.innerText;
+					data.board[board_id].board_name = node_board_name.innerText;
 				}
 				return matches[1];
 			}
@@ -206,9 +278,9 @@
 					return null;
 
 				var board_name = node_board_name.innerText;
-				for( var i in data )
-					if( data.hasOwnProperty( i ))
-						if( data[i].board_name === board_name )
+				for( var i in data.board )
+					if( data.board.hasOwnProperty( i ))
+						if( data.board[i].board_name === board_name )
 							return i;
 
 				return null;
@@ -489,7 +561,7 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
 		};
 
 		this.enable = function()
@@ -497,7 +569,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.set( settingName, true );
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.update();
 		};
 
@@ -506,7 +578,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.set( settingName, false );
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var lists = $$( '.list' );
 			for( var i = lists.length - 1; i >= 0; --i )
@@ -568,7 +640,7 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
 		};
 
 		this.enable = function()
@@ -576,7 +648,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.set( settingName, true );
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.update();
 		};
 
@@ -585,7 +657,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.set( settingName, false );
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 			var counters = $$('.list-header-num-cards');
 			for( var i = counters.length - 1; i >= 0; --i )
 				counters[i].classList.add( 'hide' );
@@ -620,7 +692,7 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
 		};
 
 		this.enable = function()
@@ -628,7 +700,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.set( settingName, true );
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.update();
 		};
 
@@ -637,7 +709,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.set( settingName, false );
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var ids = $$('.card-short-id');
 			for( var i = ids.length - 1; i >= 0; --i )
@@ -694,7 +766,7 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
 		};
 
 		this.enable = function()
@@ -702,7 +774,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.set( settingName, true );
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.update();
 		};
 
@@ -711,7 +783,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.set( settingName, false );
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var cards_titles = $$('.list-card-title');
 			var text_node = null;
@@ -847,7 +919,7 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
 		};
 
 		this.enable = function()
@@ -855,7 +927,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.set( settingName, true );
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.update();
 		};
 
@@ -864,7 +936,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.set( settingName, false );
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var board = $_( 'board' );
 			if( !board || !board.classList.contains( 'board-multiple-rows' ))
@@ -905,7 +977,7 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
 		};
 
 		this.enable = function()
@@ -913,7 +985,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.set( settingName, true );
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.update();
 		};
 
@@ -922,7 +994,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.set( settingName, false );
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var board = $_( 'board' );
 			if( !board || !board.classList.contains( 'board-table-view' ))
@@ -971,7 +1043,7 @@
 
 		this.update = function()
 		{
-			var config = strelloids.modules.settings.get( 'hiddenLists', [] );
+			var config = strelloids.modules.settings.getForCurrentBoard( 'hiddenLists', [] );
 			var lists = $$( '#board > .js-list' );
 			for( var i = lists.length - 1; i >= 0; --i )
 			{
@@ -1015,7 +1087,7 @@
 		 */
 		function toggleVisibility( list_id )
 		{
-			var config = strelloids.modules.settings.get( 'hiddenLists', [] );
+			var config = strelloids.modules.settings.getForCurrentBoard( 'hiddenLists', [] );
 			var index = config.indexOf( list_id );
 			if( index > -1 )
 			{
@@ -1033,7 +1105,7 @@
 				config.push( list_id );
 				$_( 'list-' + list_id ).classList.add( 'list-hidden' );
 			}
-			strelloids.modules.settings.set( 'hiddenLists', config );
+			strelloids.modules.settings.setForCurrentBoard( 'hiddenLists', config );
 			$( '.pop-over' ).classList.remove('is-shown');
 		}
 
@@ -1133,7 +1205,7 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
 		};
 
 		this.enable = function()
@@ -1141,7 +1213,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.set( settingName, true );
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.update();
 		};
 
@@ -1150,7 +1222,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.set( settingName, false );
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var cards_titles = $$('.list-card-title');
 			var text_node = null;
@@ -1234,7 +1306,7 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.get( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
 		};
 
 		this.enable = function()
@@ -1242,7 +1314,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.set( settingName, true );
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.needUpdate = true;
 			self.update();
 		};
@@ -1252,7 +1324,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.set( settingName, false );
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var containers = $$('.list-header .scrum-sum-container');
 
