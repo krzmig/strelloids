@@ -1298,7 +1298,7 @@
 					createNode(
 						'span',
 						{ 'class': [ 'scrum-label', mode, team ]},
-						sum.toString()
+						( Math.round( sum * 100 ) / 100 ).toString()
 					)
 				);
 		}
