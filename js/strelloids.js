@@ -1131,6 +1131,7 @@
 		var settingName = 'scrumTimes';
 		var estimation_regex = /\(([0-9\.]*|\?)\/?([0-9\.]*?|\?)\)/i;
 		var consumption_regex = /\[([0-9\.]*|\?)\/?([0-9\.]*?|\?)\]/i;
+		var last_cards_amount = 0;
 
 		this.update = function()
 		{
@@ -1138,10 +1139,15 @@
 				return;
 
 			var cards_titles = $$('.list-card-title');
+
+			if( last_cards_amount !== cards_titles.length )
+				strelloids.modules.scrumSumTimes.needUpdate = true;
+
+			last_cards_amount = cards_titles.length;
 			var text_node = null;
 			var matches, matches2;
 
-			for( var i = cards_titles.length - 1; i >= 0; --i )
+			for( var i = last_cards_amount - 1; i >= 0; --i )
 			{
 				text_node = findTextNode( cards_titles[i] );
 				if( !text_node )
