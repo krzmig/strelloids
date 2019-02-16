@@ -17,11 +17,17 @@
 	"settings_lists_enableModule_showCardsCounter": {
 		"message": "Pokazuj licznik kart"
 	},
-	"settings_lists_enableModule_displayInMultiRows": {
-		"message": "Wyświetlaj w wielu wierszach"
+	"settings_lists_displayMode": {
+		"message": "Tryb widoku"
 	},
-	"settings_lists_enableModule_displayAsTable": {
-		"message": "Wyświetlaj jako tabelę"
+	"settings_lists_displayMode_standard" : {
+		"message": "Domyślny"
+	},
+	"settings_lists_displayMode_multiRows" : {
+		"message": "Wiele wierszy"
+	},
+	"settings_lists_displayMode_table" : {
+		"message": "Tabela"
 	},
 	"settings_lists_enableModule_showCardShortId": {
 		"message": "Pokazuj krótkie ID kart"

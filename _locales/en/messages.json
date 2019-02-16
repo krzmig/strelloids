@@ -17,11 +17,17 @@
 	"settings_lists_enableModule_showCardsCounter": {
 		"message": "Show list cards counter"
 	},
-	"settings_lists_enableModule_displayInMultiRows": {
-		"message": "Show list in multiple rows"
+	"settings_lists_displayMode": {
+		"message": "View mode"
 	},
-	"settings_lists_enableModule_displayAsTable": {
-		"message": "Show as table"
+	"settings_lists_displayMode_standard" : {
+		"message": "Default"
+	},
+	"settings_lists_displayMode_multiRows" : {
+		"message": "Multiple rows"
+	},
+	"settings_lists_displayMode_table" : {
+		"message": "Table"
 	},
 	"settings_lists_enableModule_showCardShortId": {
 		"message": "Show cards short ID"

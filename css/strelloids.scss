@@ -15,11 +15,25 @@
 	z-index: 100;
 	overflow-y: auto;
 	background-color: #fff;
+	label {
+		margin-top: 0;
+		display: flex;
+		align-items: center;
+		font-weight: 400;
+		input {
+			margin-bottom: 0;
+		}
+		select {
+			display: inline-block;
+			width: auto;
+			margin: 0;
+			background-color: rgba(0,0,0,0.05);
+			border: 1px solid rgba(0,0,0,0.2);
+			padding: 3px;
+		}
+	}
 }
 
-#strelloids-settings-window label {
-	margin: 0;
-}
 
 .scrum-label {
 	display: inline-block;

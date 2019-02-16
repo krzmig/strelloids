@@ -6,7 +6,7 @@
 
 	window.strelloidsInited = true;
 
-	var DEBUG = true;
+	var DEBUG = false;
 
 	/**
 	 * Main plugin class.
@@ -28,8 +28,7 @@
 			// lists
 			self.modules.toggleLists = new ModuleToggleLists( self );
 			self.modules.showCardsCounter = new ModuleShowCardsCounter( self );
-			self.modules.displayInMultiRows = new ModuleDisplayInMultipleRows( self );
-			self.modules.displayAsTable = new ModuleDisplayAsTable( self );
+			self.modules.displayMode = new ModuleDisplayMode( self );
 			// cards
 			self.modules.showCardShortId = new ModuleShowCardShortId( self );
 			self.modules.customTags = new ModuleCustomTags( self );
@@ -325,8 +324,7 @@
 
 			// lists
 			$_( 'strelloids-cards-counter-checkbox' ).checked = strelloids.modules.showCardsCounter.isEnabled();
-			$_( 'strelloids-multiple-rows-checkbox' ).checked = strelloids.modules.displayInMultiRows.isEnabled();
-			$_( 'strelloids-list-table-checkbox' ).checked = strelloids.modules.displayAsTable.isEnabled();
+			$_( 'strelloids-display-mode-select' ).value = strelloids.modules.displayMode.getMode();
 			// cards
 			$_( 'strelloids-custom-tags-checkbox' ).checked = strelloids.modules.customTags.isEnabled();
 			$_( 'strelloids-short-id-checkbox' ).checked = strelloids.modules.showCardShortId.isEnabled();
@@ -361,14 +359,18 @@
 							' + _( 'settings_sectionTitle_Lists' ) + '\
 						</h4>\
 						<label>\
+							' + _( 'settings_lists_displayMode' ) + '\
+							<span style="flex-grow: 1"></span>\
+							<select id="strelloids-display-mode-select">\
+								<option value="default">' + _( 'settings_lists_displayMode_standard' ) + '</option>\
+								<option value="multi-rows">' + _( 'settings_lists_displayMode_multiRows' ) + '</option>\
+								<option value="table">' + _( 'settings_lists_displayMode_table' ) + '</option>\
+							</select>\
+						</label>\
+						<label>\
 							<input type="checkbox" id="strelloids-cards-counter-checkbox"> ' + _( 'settings_lists_enableModule_showCardsCounter' ) + '\
 						</label>\
-						<label>\
-							<input type="checkbox" id="strelloids-multiple-rows-checkbox"> ' + _( 'settings_lists_enableModule_displayInMultiRows' ) + '\
-						</label>\
-						<label>\
-							<input type="checkbox" id="strelloids-list-table-checkbox"> ' + _( 'settings_lists_enableModule_displayAsTable' ) + '\
-						</label>\
+						<hr>\
 						<h4>\
 							' + _( 'settings_sectionTitle_Cards' ) + '\
 						</h4>\
@@ -378,6 +380,7 @@
 						<label>\
 							<input type="checkbox" id="strelloids-custom-tags-checkbox"> ' + _( 'settings_lists_enableModule_customTags' ) + '\
 						</label>\
+						<hr>\
 						<h4>\
 							' + _( 'settings_sectionTitle_Scrum' ) + '\
 						</h4>\
@@ -405,38 +408,11 @@
 						strelloids.modules.showCardsCounter.disable();
 				}
 			);
-			$_( 'strelloids-multiple-rows-checkbox').addEventListener(
+			$_( 'strelloids-display-mode-select').addEventListener(
 				'change',
 				function()
 				{
-					if( this.checked )
-					{
-						if( strelloids.modules.displayAsTable.isEnabled() )
-						{
-							strelloids.modules.displayAsTable.disable();
-							$_( 'strelloids-list-table-checkbox').checked = false;
-						}
-						strelloids.modules.displayInMultiRows.enable();
-					}
-					else
-						strelloids.modules.displayInMultiRows.disable();
-				}
-			);
-			$_( 'strelloids-list-table-checkbox').addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-					{
-						if( strelloids.modules.displayInMultiRows.isEnabled() )
-						{
-							strelloids.modules.displayInMultiRows.disable();
-							$_( 'strelloids-multiple-rows-checkbox').checked = false;
-						}
-						strelloids.modules.displayAsTable.enable();
-					}
-					else
-						strelloids.modules.displayAsTable.disable();
+					strelloids.modules.displayMode.setMode( this.value );
 				}
 			);
 			// cards
@@ -883,61 +859,75 @@
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Module - Display list in multiple rows                                                                         //
+	// Module - Display mode                                                                                          //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Module shows lists in multiple rows, so you scroll page vertically instead of horizontally.
+	 * Module toggles view mode, between:
+	 * 		default - default trello view
+	 * 		multiple rows - you scroll page vertically instead of horizontally
+	 * 		table
 	 * @param {Strelloids} strelloids
 	 * @constructor
 	 */
-	function ModuleDisplayInMultipleRows( strelloids )
+	function ModuleDisplayMode( strelloids )
 	{
 		var self = this;
-		var settingName = 'displayInMultiRows';
+		var settingName = 'displayMode';
 
 		this.update = function()
 		{
-			if( !self.isEnabled() )
-				return;
+			var mode = self.getMode();
+			if( mode === 'multi-rows' )
+			{
+				var board = $_( 'board' );
+				if( !board || board.classList.contains( 'board-multiple-rows' ) )
+					return;
 
-			var board = $_( 'board' );
-			if( !board || board.classList.contains( 'board-multiple-rows' ))
-				return;
-
-			board.classList.add( 'board-multiple-rows' );
-			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' }));
-			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' }));
-			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' }));
-			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' }));
-			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' }));
-			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' }));
-			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' }));
+				board.classList.add( 'board-multiple-rows' );
+				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+			}
+			else if( mode === 'table' )
+			{
+				var board = $_( 'board' );
+				if( board && !board.classList.contains( 'board-table-view' ))
+					board.classList.add( 'board-table-view' );
+			}
 		};
 
 		/**
 		 * @return {boolean}
 		 */
-		this.isEnabled = function()
+		this.getMode = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
+			return strelloids.modules.settings.getForCurrentBoard( settingName, 'default' );
 		};
 
-		this.enable = function()
+		/**
+		 * @param {string} mode
+		 */
+		this.setMode = function( mode )
 		{
+			var old_mode = self.getMode();
 			if( DEBUG )
-				$log( 'Strelloids: module ' + settingName + ' enabled' );
+				$log( 'Strelloids: view mode changed from: ' + old_mode + '; to: ' + mode );
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
+			if( old_mode === 'multi-rows' )
+				disableMultiRows();
+			else if( old_mode === 'table' )
+				disableTable();
+
+			strelloids.modules.settings.setForCurrentBoard( settingName, mode );
 			self.update();
 		};
 
-		this.disable = function()
+		function disableMultiRows()
 		{
-			if( DEBUG )
-				$log( 'Strelloids: module ' + settingName + ' disabled' );
-
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
-
 			var board = $_( 'board' );
 			if( !board || !board.classList.contains( 'board-multiple-rows' ))
 				return;
@@ -946,62 +936,16 @@
 			for( var i = board.children.length - 1; i >= 0; --i )
 				if( board.children[i].classList.contains( 'flex-placeholder' ))
 					board.removeChild( board.children[i] );
-		};
-	}
+		}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Module - Display list as table                                                                                 //
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * Module shows lists as table, in whole page width.
-	 * @param {Strelloids} strelloids
-	 * @constructor
-	 */
-	function ModuleDisplayAsTable( strelloids )
-	{
-		var self = this;
-		var settingName = 'displayAsTable';
-
-		this.update = function()
+		function disableTable()
 		{
-			if( !self.isEnabled() )
-				return;
-
-			var board = $_( 'board' );
-			if( board && !board.classList.contains( 'board-table-view' ))
-				board.classList.add( 'board-table-view' );
-		};
-
-		/**
- 		 * @return {boolean}
-		 */
-		this.isEnabled = function()
-		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
-		};
-
-		this.enable = function()
-		{
-			if( DEBUG )
-				$log( 'Strelloids: module ' + settingName + ' enabled' );
-
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
-			self.update();
-		};
-
-		this.disable = function()
-		{
-			if( DEBUG )
-				$log( 'Strelloids: module ' + settingName + ' disabled' );
-
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
-
 			var board = $_( 'board' );
 			if( !board || !board.classList.contains( 'board-table-view' ))
 				return;
 
 			board.classList.remove( 'board-table-view' );
-		};
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
