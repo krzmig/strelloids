@@ -1023,19 +1023,13 @@
 				'click',
 				function( e )
 				{
-					if( !e.target.classList.contains( 'list-header-extras-menu' ))
+					if( !e.target.classList.contains( 'list-visibility-switcher' ))
 						return true;
 
 					var list = closest( e.target, '.js-list' );
 					var list_id = list.id.replace( 'list-', '' );
 
-					setTimeout(
-						function()
-						{
-							appendToggleOption( list_id, 0 );
-						},
-						100
-					);
+					toggleVisibility( list_id );
 				},
 				true
 			);
@@ -1043,43 +1037,27 @@
 
 		this.update = function()
 		{
-			var config = strelloids.modules.settings.getForCurrentBoard( 'hiddenLists', [] );
 			var lists = $$( '#board > .js-list' );
 			for( var i = lists.length - 1; i >= 0; --i )
 			{
 				var id = lists[i].id.replace( 'list-', '' );
-				lists[i].classList.toggle( 'list-hidden', config.indexOf( id ) > -1 );
+				lists[i].classList.toggle(
+					'list-hidden',
+					strelloids.modules.settings.getForList( id, 'hidden', false )
+				);
 			}
+			appendToggleOption();
 		};
 
-		/**
-		 * @param {string} list_id
-		 * @param {int} counter
-		 * @return {boolean|number}
-		 */
-		function appendToggleOption( list_id, counter )
+		function appendToggleOption()
 		{
-			var list = $('.pop-over .pop-over-list:last-child');
-			if( !list && counter >= 10 )
-				return false;
-			else if( !list )
-				return setTimeout(
-					function()
-					{
-						appendToggleOption( ++counter );
-					},
-					100
-				);
-
-			var li = list.querySelector( '.toggle-list' );
-			if( li )
-				li.parentNode.removeChild( li );
-
-			li = createNode( 'li', { 'class': 'toggle-list' });
-			li.appendChild( createNode( 'a', { href: '#' }, _( 'module_toggleLists_showHideList' )));
-			li.addEventListener( 'click', function(){ toggleVisibility( list_id ); } );
-			list.appendChild( li );
-			return true;
+			var headers = $$('.list-header');
+			for( var i = headers.length - 1; i >= 0; --i )
+				if( !headers[i].querySelector( '.list-visibility-switcher' ))
+					headers[i].insertBefore(
+						createNode( 'span', { 'class': 'list-visibility-switcher' }),
+						headers[i].firstChild
+					);
 		}
 
 		/**
@@ -1087,14 +1065,12 @@
 		 */
 		function toggleVisibility( list_id )
 		{
-			var config = strelloids.modules.settings.getForCurrentBoard( 'hiddenLists', [] );
-			var index = config.indexOf( list_id );
-			if( index > -1 )
+			if( strelloids.modules.settings.getForList( list_id, 'hidden', false ))
 			{
 				if( DEBUG )
 					$log( 'Strelloids: module toggleList - list', list_id, 'shown in' );
 
-				config.splice( index, 1 );
+				strelloids.modules.settings.setForList( list_id, 'hidden', false );
 				$_( 'list-' + list_id ).classList.remove( 'list-hidden' );
 			}
 			else
@@ -1102,10 +1078,9 @@
 				if( DEBUG )
 					$log( 'Strelloids: module toggleList - list', list_id, 'hidden' );
 
-				config.push( list_id );
+				strelloids.modules.settings.setForList( list_id, 'hidden', true );
 				$_( 'list-' + list_id ).classList.add( 'list-hidden' );
 			}
-			strelloids.modules.settings.setForCurrentBoard( 'hiddenLists', config );
 			$( '.pop-over' ).classList.remove('is-shown');
 		}
 

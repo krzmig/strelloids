@@ -55,13 +55,46 @@
 .list-card:hover .scrum-label {
   opacity: 1; }
 
-.list-header .scrum-sum-container {
-  display: inline-block;
-  margin: 0; }
-  .list-header .scrum-sum-container .scrum-label {
-    font-size: 14px;
-    line-height: 18px;
-    opacity: 0.75; }
+.list-header {
+  display: flex;
+  flex-wrap: wrap; }
+  .list-header .list-visibility-switcher {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    z-index: 1;
+    cursor: pointer; }
+    .list-header .list-visibility-switcher::before {
+      content: "";
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 7px 0 7px 7px;
+      border-color: transparent transparent transparent #798d99;
+      transition: transform 0.3s ease-in-out; }
+    .list-header .list-visibility-switcher:hover {
+      background-color: rgba(9, 45, 66, 0.13);
+      border-left-color: #516b7a; }
+  .list-header .list-header-target {
+    cursor: text; }
+  .list-header .list-header-name {
+    flex-grow: 1;
+    width: auto;
+    margin-left: 24px; }
+  .list-header .scrum-sum-container {
+    display: inline-block;
+    margin: 0; }
+    .list-header .scrum-sum-container .scrum-label {
+      font-size: 14px;
+      line-height: 18px;
+      opacity: 0.75; }
 
 .card-short-id {
   color: gray;
@@ -71,6 +104,7 @@
 
 #board:not(.board-table-view) .list-hidden {
   width: 40px;
+  max-width: 40px;
   text-orientation: sideways;
   writing-mode: vertical-lr;
   -webkit-writing-mode: vertical-lr;
@@ -82,7 +116,7 @@
     font-size: 16px; }
   #board:not(.board-table-view) .list-hidden .list-header {
     padding-right: 8px;
-    padding-top: 36px;
+    padding-top: 70px;
     display: flex;
     align-items: center; }
     #board:not(.board-table-view) .list-hidden .list-header .list-header-name-assist {
@@ -93,12 +127,18 @@
     #board:not(.board-table-view) .list-hidden .list-header .scrum-label {
       margin: 2px 0;
       padding: 3px 0; }
+    #board:not(.board-table-view) .list-hidden .list-header .list-header-extras {
+      top: 36px; }
 
 .list-hidden {
   opacity: 0.8; }
   .list-hidden .list-cards {
     display: none; }
   .list-hidden .open-card-composer {
+    display: none; }
+  .list-hidden .list-header .list-visibility-switcher::before {
+    transform: rotate(90deg); }
+  .list-hidden .list-header .list-header-target {
     display: none; }
 
 #board.board-multiple-rows {
@@ -163,5 +203,7 @@
       text-orientation: initial;
       writing-mode: initial;
       -webkit-writing-mode: initial; }
+    #board.board-table-view .list-wrapper:first-child {
+      margin-left: 4px; }
 
 /*# sourceMappingURL=strelloids.css.map */

@@ -74,6 +74,43 @@
 }
 
 .list-header {
+	display: flex;
+	flex-wrap: wrap;
+	.list-visibility-switcher {
+		position: absolute;
+		top: 4px;
+		left: 4px;
+		height: 32px;
+		width: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 3px;
+		z-index: 1;
+		cursor: pointer;
+		&::before {
+			content: "";
+			display: inline-block;
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 7px 0 7px 7px;
+			border-color: transparent transparent transparent #798d99;
+			transition: transform 0.3s ease-in-out;
+		}
+		&:hover {
+			background-color: rgba(9,45,66,.13);
+			border-left-color: #516b7a;
+		}
+	}
+	.list-header-target {
+		cursor: text;
+	}
+	.list-header-name {
+		flex-grow: 1;
+		width: auto;
+		margin-left: 24px;
+	}
 	.scrum-sum-container {
 		display: inline-block;
 		margin: 0;
@@ -95,6 +132,7 @@
 #board:not(.board-table-view) {
 	.list-hidden {
 		width: 40px;
+		max-width: 40px;
 		text-orientation: sideways;
 		writing-mode: vertical-lr;
 		-webkit-writing-mode: vertical-lr;
@@ -108,7 +146,7 @@
 		}
 		.list-header {
 			padding-right: 8px;
-			padding-top: 36px;
+			padding-top: 70px;
 			display: flex;
 			align-items: center;
 			.list-header-name-assist {
@@ -122,6 +160,9 @@
 				margin: 2px 0;
 				padding: 3px 0;
 			}
+			.list-header-extras {
+				top: 36px;
+			}
 		}
 	}
 
@@ -133,6 +174,16 @@
 	}
 	.open-card-composer {
 		display: none;
+	}
+	.list-header {
+		.list-visibility-switcher {
+			&::before {
+				transform: rotate(90deg);
+			}
+		}
+		.list-header-target {
+			display: none;
+		}
 	}
 }
 
@@ -218,6 +269,9 @@
 				text-orientation: initial;
 				writing-mode: initial;
 				-webkit-writing-mode: initial;
+			}
+			&:first-child {
+				margin-left: 4px;
 			}
 		}
 	}
