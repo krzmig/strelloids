@@ -70,6 +70,23 @@
   border-radius: 0 4px 4px 0;
   line-height: 18px;
   margin: 0 2px; }
+.list-card.card-separator {
+  background-color: transparent;
+  box-shadow: none; }
+  .list-card.card-separator .list-card-title {
+    display: flex;
+    align-items: center;
+    color: #6b808c; }
+    .list-card.card-separator .list-card-title::before, .list-card.card-separator .list-card-title::after {
+      content: "";
+      flex-grow: 1;
+      display: block;
+      height: 0;
+      border-bottom: 1px dashed #6b808c;
+      margin-left: 5px;
+      margin-right: 5px; }
+  .list-card.card-separator .card-short-id {
+    display: none; }
 .list-card:hover .list-card-title .card-tag {
   opacity: 1; }
 .list-card:hover .scrum-label {

@@ -35,6 +35,9 @@
 	"settings_lists_enableModule_customTags": {
 		"message": "Enable custom tags for cards"
 	},
+	"settings_lists_enableModule_cardsSeparator": {
+		"message": "Enable cards separator"
+	},
 	"settings_lists_enableModule_coloredLists": {
 		"message": "Enable colored lists"
 	},
@@ -44,7 +47,13 @@
 	"settings_lists_enableModule_scrumSumTime": {
 		"message": "Show sum times for lists"
 	},
-	"module_toggleLists_showHideList": {
-		"message": "Show/Hide list"
+	"module_cardsSeparator_description": {
+		"message": "To make separator, start card title with three or more characters: - or = (eg. &quot;--- My separator&quot;"
+	},
+	"module_customTags_description" : {
+		"message": "To make tag, put their name inside square brackets into card title (eg. &quot;[tag name]&quot;)"
+	},
+	"module_scrumTime_description" : {
+		"message": "To add estimation points for card, put it into round brackets (eg. &quot;(3)&quot;, &quot;(0.5)&quot;, &quot;(?)&quot;). To set consumption points, put it into square brackets (eg. &quot;[5]&quot;, &quot;[2.5]&quot;)."
 	}
 }

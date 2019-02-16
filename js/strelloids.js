@@ -32,6 +32,7 @@
 			// cards
 			self.modules.showCardShortId = new ModuleShowCardShortId( self );
 			self.modules.customTags = new ModuleCustomTags( self );
+			self.modules.cardsSeparator = new ModuleCardsSeparator( self );
 			// scrum
 			self.modules.coloredLists = new ModuleColoredLists( self );
 			self.modules.scrumTimes = new ModuleScrumTimes( self );
@@ -328,6 +329,7 @@
 			// cards
 			$_( 'strelloids-custom-tags-checkbox' ).checked = strelloids.modules.customTags.isEnabled();
 			$_( 'strelloids-short-id-checkbox' ).checked = strelloids.modules.showCardShortId.isEnabled();
+			$_( 'strelloids-cards-separator' ).checked = strelloids.modules.cardsSeparator.isEnabled();
 			// scrum
 			$_( 'strelloids-colored-list-checkbox' ).checked = strelloids.modules.coloredLists.isEnabled();
 			$_( 'strelloids-scrum-times-checkbox' ).checked = strelloids.modules.scrumTimes.isEnabled();
@@ -377,8 +379,11 @@
 						<label>\
 							<input type="checkbox" id="strelloids-short-id-checkbox"> ' + _( 'settings_lists_enableModule_showCardShortId' ) + '\
 						</label>\
-						<label>\
-							<input type="checkbox" id="strelloids-custom-tags-checkbox"> ' + _( 'settings_lists_enableModule_customTags' ) + '\
+						<label title="' + _( 'module_customTags_description' ) + '">\
+							<input type="checkbox" id="strelloids-custom-tags-checkbox"> ' + _( 'settings_lists_enableModule_customTags' ) + ' [?]\
+						</label>\
+						<label title="' + _( 'module_cardsSeparator_description' ) + '">\
+							<input type="checkbox" id="strelloids-cards-separator"> ' + _( 'settings_lists_enableModule_cardsSeparator' ) + ' [?]\
 						</label>\
 						<hr>\
 						<h4>\
@@ -387,8 +392,8 @@
 						<label>\
 							<input type="checkbox" id="strelloids-colored-list-checkbox"> ' + _( 'settings_lists_enableModule_coloredLists' ) + '\
 						</label>\
-						<label>\
-							<input type="checkbox" id="strelloids-scrum-times-checkbox"> ' + _( 'settings_lists_enableModule_scrumTime' ) + '\
+						<label title="' + _( 'module_scrumTime_description' ) + '">\
+							<input type="checkbox" id="strelloids-scrum-times-checkbox"> ' + _( 'settings_lists_enableModule_scrumTime' ) + ' [?]\
 						</label>\
 						<label style="margin-left: 24px">\
 							<input type="checkbox" id="strelloids-scrum-sum-times-checkbox"> ' + _( 'settings_lists_enableModule_scrumSumTime' ) + '\
@@ -434,6 +439,16 @@
 						strelloids.modules.customTags.enable();
 					else
 						strelloids.modules.customTags.disable();
+				}
+			);
+			$_( 'strelloids-cards-separator' ).addEventListener(
+				'change',
+				function()
+				{
+					if( this.checked )
+						strelloids.modules.cardsSeparator.enable();
+					else
+						strelloids.modules.cardsSeparator.disable();
 				}
 			);
 			// scrum
@@ -1298,6 +1313,102 @@
 						( Math.round( sum * 100 ) / 100 ).toString()
 					)
 				);
+		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Cards Separator                                                                                       //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Module will change cards, which titles are started by `---` or `===` into styled separator.
+	 * @param {Strelloids} strelloids
+	 * @constructor
+	 */
+	function ModuleCardsSeparator( strelloids )
+	{
+		var self = this;
+		var settingName = 'cardsSeparator';
+		var separator_regex = /^[=-]{3,}/;
+		var separator_regex_end = /[=-]{3,}$/;
+
+		this.update = function()
+		{
+			if(	!self.isEnabled() )
+				return;
+
+			var cards_titles = $$('.list-card-title');
+			var text_node = null;
+
+			for( var i = cards_titles.length - 1; i >= 0; --i )
+			{
+				text_node = findTextNode( cards_titles[i] );
+
+				if( !text_node )
+					continue;
+
+				if( !cards_titles[i].getAttribute( 'data-original-title' ))
+					cards_titles[i].setAttribute( 'data-original-title', text_node.nodeValue );
+
+				if( !separator_regex.test( text_node.nodeValue ))
+					continue;
+
+				var card = closest( cards_titles[i], '.list-card' );
+				card.classList.add( 'card-separator' );
+
+				text_node.nodeValue = text_node.nodeValue.replace( separator_regex, '' ).replace( separator_regex_end, '' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
+			}
+		};
+
+		/**
+		 * @returns {boolean}
+		 */
+		this.isEnabled = function()
+		{
+			return strelloids.modules.settings.getForCurrentBoard( settingName, true );
+		};
+
+		this.enable = function()
+		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+
+			strelloids.modules.settings.setForCurrentBoard( settingName, true );
+			self.update();
+		};
+
+		this.disable = function()
+		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
+			strelloids.modules.settings.setForCurrentBoard( settingName, false );
+
+			var cards = $$('.card-separator');
+			var text_node = null;
+
+			for( var i = cards_titles.length - 1; i >= 0; --i )
+			{
+				var card_title = cards[i].querySelector('.list-card-title');
+				text_node = findTextNode( card_title );
+
+				cards[i].classList.remove( 'card-separator' );
+
+				if( text_node && cards_titles[i].getAttribute( 'data-original-title' ))
+					text_node.nodeValue = card_title.getAttribute( 'data-original-title' );
+			}
+		};
+
+		/**
+		 * @param {HTMLElement} element
+		 * @return {null|HTMLElement}
+		 */
+		function findTextNode( element )
+		{
+			for( var i = 0; i < element.childNodes.length; ++i )
+				if( element.childNodes[i].nodeType === Node.TEXT_NODE )
+					return element.childNodes[i];
+
+			return null;
 		}
 	}
 

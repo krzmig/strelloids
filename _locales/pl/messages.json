@@ -35,6 +35,9 @@
 	"settings_lists_enableModule_customTags": {
 		"message": "Włącz własne tagi dla kart"
 	},
+	"settings_lists_enableModule_cardsSeparator": {
+		"message": "Włącz separatory z kart"
+	},
 	"settings_lists_enableModule_coloredLists": {
 		"message": "Włącz automatyczne kolorowanie list"
 	},
@@ -44,7 +47,13 @@
 	"settings_lists_enableModule_scrumSumTime": {
 		"message": "Pokaż sumy czasów dla list"
 	},
-	"module_toggleLists_showHideList": {
-		"message": "Pokaż/ukryj listę"
+	"module_cardsSeparator_description": {
+		"message": "Aby stworzyć separator, zacznij tytuł karty od trzech lub więcej znaków: - lub = (np. &quot;--- Mój separator&quot;)"
+	},
+	"module_customTags_description" : {
+		"message": "Aby zrobić tag, umieść jego nazwę wewnątrz nawiasów kwadratowych w tytule karty (np. &quot;[nazwa taga]&quot;)"
+	},
+	"module_scrumTime_description" : {
+		"message": "Aby dodać estymację punktową dla karty, umieść ją w nawiasie okrągłym (np. &quot;(3)&quot;, &quot;(0.5)&quot;, &quot;(?)&quot;). Aby dodać skonsumowane punkty, umieść je w nawiasie kwadratowym (np. &quot;[5]&quot;, &quot;[2.5]&quot;)."
 	}
 }

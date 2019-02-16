@@ -23,6 +23,9 @@ Showing short card ID, normally you can see it in expanded card view, after clic
 ### Custom cards tags
 If you enable this setting, you can use tags in cards titles eg. `[tag]`. Strelloids will replace this tag with colored label. Their color is depending on content inside, so if you use the same tag for different cards, their color will be the same. Tags are case sensitive. Tag to be parsed must contains at least one letter, space, dash or underscore.
 
+### Cards separator
+To split list into section, you can use separators. To makes them, you can start card title with three or more characters: - or = eg. `--- My separator` `===== Separator` `--== This works too ==--`. As in last example, you can add the same characters at the end of title, they will not display in list view.
+
 ### Scrum colored lists
 Strelloids can set background color for lists depending on their titles. You can use one of this keywords inside title to trigger color:
 
