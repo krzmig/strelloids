@@ -7,7 +7,7 @@ Your settings are assigned to a specific board, so you can have at the same time
 Setting are stored in `storage.sync`, so if you have account signed to browser, you can have shared setting on different devices.
 
 ### Toggle list display
-You can toggle visibility of list, by clicking in default trello options menu (right top corner of list), and selecting correct option.
+You can toggle visibility of list, by clicking in the triangle on the left top corner of the list.
 
 ### Display counter of cards
 After enabling, counter of cards inside each list, will be display below list title.
