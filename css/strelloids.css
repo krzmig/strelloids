@@ -70,16 +70,27 @@
   border-radius: 0 4px 4px 0;
   line-height: 18px;
   margin: 0 2px; }
+.list-card .list-card-details {
+  display: flex;
+  flex-wrap: wrap; }
 .list-card .card-label {
   opacity: 0.7;
-  min-width: initial; }
+  min-width: initial;
+  flex-grow: 1; }
+.list-card .list-card-members {
+  flex-grow: 1;
+  text-align: right; }
+.list-card .scrum-points-container {
+  flex-grow: 1;
+  text-align: right; }
 .list-card.card-separator {
   background-color: transparent;
   box-shadow: none; }
   .list-card.card-separator .list-card-title {
     display: flex;
     align-items: center;
-    color: #6b808c; }
+    color: #6b808c;
+    width: 100%; }
     .list-card.card-separator .list-card-title::before, .list-card.card-separator .list-card-title::after {
       content: "";
       flex-grow: 1;
@@ -96,6 +107,9 @@
   opacity: 1; }
 .list-card:hover .card-label {
   opacity: 1; }
+
+.list .list-header.is-menu-shown, .list .list-header.is-subscribe-shown {
+  padding-right: 8px; }
 
 .list-header {
   display: flex;
@@ -129,10 +143,13 @@
   .list-header .list-header-name {
     flex-grow: 1;
     width: auto;
-    margin-left: 24px; }
+    margin-left: 24px;
+    margin-right: 24px; }
   .list-header .scrum-sum-container {
     display: inline-block;
-    margin: 0; }
+    margin: 0;
+    flex-grow: 1;
+    text-align: right; }
     .list-header .scrum-sum-container .scrum-label {
       font-size: 14px;
       line-height: 18px;
@@ -208,27 +225,32 @@
     #board.board-table-view .list-wrapper .list-card {
       max-width: 100%; }
       #board.board-table-view .list-wrapper .list-card .list-card-details {
-        display: flex; }
+        display: grid;
+        align-items: center;
+        margin-right: 22px;
+        grid-template-columns: 45% 20% 10% 10% 15%; }
         #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-labels {
-          order: 2;
-          width: 25%; }
-          #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-labels:empty {
-            display: block; }
+          grid-column: 2 / span 1;
+          grid-row: 1 / span 1;
+          text-align: center; }
+          #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-labels .card-label.mod-card-front {
+            display: inline-block;
+            float: none; }
         #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-title {
-          order: 1;
-          width: 50%; }
+          grid-column: 1 / span 1;
+          grid-row: 1 / span 1; }
         #board.board-table-view .list-wrapper .list-card .list-card-details .badges {
-          order: 3;
-          text-align: center;
-          width: 15%; }
-          #board.board-table-view .list-wrapper .list-card .list-card-details .badges:empty {
-            display: block; }
+          grid-column: 5 / span 1;
+          grid-row: 1 / span 1;
+          text-align: right; }
         #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-members {
-          order: 4;
-          text-align: right;
-          width: 10%; }
-          #board.board-table-view .list-wrapper .list-card .list-card-details .list-card-members:empty {
-            display: block; }
+          grid-column: 4 / span 1;
+          grid-row: 1 / span 1;
+          text-align: center; }
+        #board.board-table-view .list-wrapper .list-card .list-card-details .scrum-points-container {
+          grid-column: 3 / span 1;
+          grid-row: 1 / span 1;
+          text-align: left; }
         #board.board-table-view .list-wrapper .list-card .list-card-details .card-short-id {
           margin-right: 8px; }
       #board.board-table-view .list-wrapper .list-card .list-card-stickers-area {
@@ -237,10 +259,23 @@
         display: none; }
       #board.board-table-view .list-wrapper .list-card.is-stickered .list-card-details {
         margin-top: 0; }
+      #board.board-table-view .list-wrapper .list-card.card-separator .list-card-details .list-card-title {
+        grid-column: 1 / span 5; }
     #board.board-table-view .list-wrapper .list-header {
-      display: flex; }
+      display: grid;
+      align-items: center;
+      grid-template-columns: 45% 20% 10% 10% 15%; }
       #board.board-table-view .list-wrapper .list-header .list-header-name {
-        width: 60%; }
+        grid-column: 1 / span 1;
+        grid-row: 1 / span 1; }
+      #board.board-table-view .list-wrapper .list-header .scrum-sum-container {
+        grid-column: 3 / span 1;
+        grid-row: 1 / span 1;
+        text-align: left; }
+      #board.board-table-view .list-wrapper .list-header .list-header-num-cards {
+        grid-column: 5 / span 1;
+        grid-row: 1 / span 1;
+        text-align: center; }
     #board.board-table-view .list-wrapper.list-hidden {
       text-orientation: initial;
       writing-mode: initial;

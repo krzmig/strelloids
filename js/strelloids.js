@@ -1078,7 +1078,7 @@
 				strelloids.modules.scrumSumTimes.needUpdate = true;
 
 			last_cards_amount = cards_titles.length;
-			var text_node = null;
+			var text_node = null, container = null;
 			var matches, matches2;
 
 			for( var i = last_cards_amount - 1; i >= 0; --i )
@@ -1095,31 +1095,29 @@
 				if( !matches && !matches2 )
 					continue;
 
-				removeOldTags( cards_titles[i] );
+				container = createContainer( cards_titles[i] );
 				strelloids.modules.scrumSumTimes.needUpdate = true;
 
 				if( matches && matches[1] )
-					cards_titles[i].insertBefore(
+					container.appendChild(
 						createNode(
 							'span',
 							{ 'class': [ 'scrum-label', 'estimation', 'team1' ] },
 							matches[1]
-						),
-						text_node
+						)
 					);
 
 				if( matches && matches[2] )
-					cards_titles[i].insertBefore(
+					container.appendChild(
 						createNode(
 							'span',
 							{ 'class': [ 'scrum-label', 'estimation', 'team2' ] },
 							matches[2]
-						),
-						text_node
+						)
 					);
 
 				if( matches2 && matches2[1] )
-					cards_titles[i].appendChild(
+					container.appendChild(
 						createNode(
 							'span',
 							{ 'class': [ 'scrum-label', 'consumption', 'team1' ] },
@@ -1128,7 +1126,7 @@
 					);
 
 				if( matches2 && matches2[2] )
-					cards_titles[i].appendChild(
+					container.appendChild(
 						createNode(
 							'span',
 							{ 'class': [ 'scrum-label', 'consumption', 'team2' ] },
@@ -1182,26 +1180,45 @@
 		};
 
 		/**
-		 * @param {HTMLElement} element
+		 * @param {HTMLElement} card_title
 		 */
-		function removeOldTags( element )
+		function removeOldTags( card_title )
 		{
-			var old_tags = element.querySelectorAll( '.scrum-label' );
+			var old_tags = card_title.parentNode.querySelectorAll( '.scrum-label' );
 			for( var i = old_tags.length - 1; i >= 0; --i )
-				element.removeChild( old_tags[i] );
+				old_tags[i].parentNode.removeChild( old_tags[i] );
 		}
 
 		/**
-		 * @param {HTMLElement} element
+		 * @param {HTMLElement} card_title
 		 * @return {null|HTMLElement}
 		 */
-		function findTextNode( element )
+		function findTextNode( card_title )
 		{
-			for( var i = 0; i < element.childNodes.length; ++i )
-				if( element.childNodes[i].nodeType === Node.TEXT_NODE )
-					return element.childNodes[i];
+			for( var i = 0; i < card_title.childNodes.length; ++i )
+				if( card_title.childNodes[i].nodeType === Node.TEXT_NODE )
+					return card_title.childNodes[i];
 
 			return null;
+		}
+
+		/**
+		 * @param {HTMLElement} card_title
+		 * @return {HTMLElement}
+		 */
+		function createContainer( card_title )
+		{
+			var container = card_title.parentNode.querySelector( '.scrum-points-container' );
+			if( container )
+			{
+				removeOldTags( card_title );
+			}
+			else
+			{
+				container = createNode( 'div', { 'class': 'scrum-points-container' });
+				card_title.parentNode.appendChild( container );
+			}
+			return container;
 		}
 	}
 

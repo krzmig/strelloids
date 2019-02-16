@@ -87,9 +87,22 @@
 			margin: 0 2px;
 		}
 	}
+	.list-card-details {
+		display: flex;
+		flex-wrap: wrap;
+	}
 	.card-label {
 		opacity: 0.7;
 		min-width: initial;
+		flex-grow: 1;
+	}
+	.list-card-members {
+		flex-grow: 1;
+		text-align: right;
+	}
+	.scrum-points-container {
+		flex-grow: 1;
+		text-align: right;
 	}
 	&.card-separator {
 		background-color: transparent;
@@ -98,6 +111,7 @@
 			display: flex;
 			align-items: center;
 			color: #6b808c;
+			width: 100%;
 			&::before,
 			&::after {
 				content: "";
@@ -126,6 +140,14 @@
 	}
 }
 
+.list {
+	.list-header {
+		&.is-menu-shown,
+		&.is-subscribe-shown {
+			padding-right: 8px;
+		}
+	}
+}
 .list-header {
 	display: flex;
 	flex-wrap: wrap;
@@ -163,10 +185,13 @@
 		flex-grow: 1;
 		width: auto;
 		margin-left: 24px;
+		margin-right: 24px;
 	}
 	.scrum-sum-container {
 		display: inline-block;
 		margin: 0;
+		flex-grow: 1;
+		text-align: right;
 		.scrum-label {
 			font-size: 14px;
 			line-height: 18px;
@@ -270,33 +295,37 @@
 			.list-card {
 				max-width: 100%;
 				.list-card-details {
-					display: flex;
+					display: grid;
+					align-items: center;
+					margin-right: 22px;
+					grid-template-columns: 45% 20% 10% 10% 15%;
 					.list-card-labels {
-						order: 2;
-						width: 25%;
-						&:empty {
-							display: block;
+						grid-column: 2 / span 1;
+						grid-row: 1 / span 1;
+						text-align: center;
+						.card-label.mod-card-front {
+							display: inline-block;
+							float: none;
 						}
 					}
 					.list-card-title {
-						order: 1;
-						width: 50%;
+						grid-column: 1 / span 1;
+						grid-row: 1 / span 1;
 					}
 					.badges {
-						order: 3;
-						text-align: center;
-						width: 15%;
-						&:empty {
-							display: block;
-						}
+						grid-column: 5 / span 1;
+						grid-row: 1 / span 1;
+						text-align: right;
 					}
 					.list-card-members {
-						order: 4;
-						text-align: right;
-						width: 10%;
-						&:empty {
-							display: block;
-						}
+						grid-column: 4 / span 1;
+						grid-row: 1 / span 1;
+						text-align: center;
+					}
+					.scrum-points-container {
+						grid-column: 3 / span 1;
+						grid-row: 1 / span 1;
+						text-align: left;
 					}
 					.card-short-id {
 						margin-right: 8px;
@@ -311,11 +340,31 @@
 				&.is-stickered .list-card-details {
 					margin-top: 0;
 				}
+				&.card-separator {
+					.list-card-details {
+						.list-card-title {
+							grid-column: 1 / span 5;
+						}
+					}
+				}
 			}
 			.list-header {
-				display: flex;
+				display: grid;
+				align-items: center;
+				grid-template-columns: 45% 20% 10% 10% 15%;
 				.list-header-name {
-					width: 60%;
+					grid-column: 1 / span 1;
+					grid-row: 1 / span 1;
+				}
+				.scrum-sum-container {
+					grid-column: 3 / span 1;
+					grid-row: 1 / span 1;
+					text-align: left;
+				}
+				.list-header-num-cards {
+					grid-column: 5 / span 1;
+					grid-row: 1 / span 1;
+					text-align: center;
 				}
 			}
 			&.list-hidden {
