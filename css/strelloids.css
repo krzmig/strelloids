@@ -1,4 +1,3 @@
-@charset "UTF-8";
 #strelloids-settings-btn {
   padding-left: 32px;
   padding-right: 5px; }
@@ -32,10 +31,20 @@
     background-color: dodgerblue; }
   .scrum-label.team2 {
     background-color: mediumseagreen; }
+  .scrum-label::before {
+    content: "";
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 2px;
+    background-position: center;
+    background-size: contain; }
   .scrum-label.estimation::before {
-    content: "💡"; }
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='256' height='256' version='1.1' viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='bevel' stroke-width='20'%3E%3Cpath d='m200 88c0 19.882-8.0589 37.882-21.088 50.912-6.5147 6.5147-14.819 13.088-14.85 21.234-0.0614 15.855 7.9386 27.926-36.061 27.89-44-0.0357-36-12.036-36.012-27.954-0.0062-8.0817-8.3848-14.655-14.9-21.17-13.029-13.029-21.088-31.029-21.088-50.912 0-39.764 32.235-72 72-72 39.764 0 72 32.236 72 72z'/%3E%3Cpath d='m96 208c20 8 44 8 64 0'/%3E%3Cpath d='m96 236c20 8 44 8 64 0'/%3E%3C/g%3E%3C/svg%3E"); }
   .scrum-label.consumption::before {
-    content: "🔥"; }
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='256' height='256' version='1.1' viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m88 248c-112-60-20-140-28-168 12 16 12 28 12 40 20-28 52-64 44-112 52 32 64 64 68 88 8-8 12-24 4-44 72 72 68 152-16 196 16-24 28-92-36-140 4 20 0 44-20 68 8-16-1.0625-34.531-4-36-8 44-48 48-24 108z' fill='%23fff'/%3E%3C/svg%3E"); }
 
 .list-card .list-card-title .card-tag {
   padding: 0 3px;
