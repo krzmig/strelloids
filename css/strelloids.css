@@ -186,6 +186,9 @@
     #board:not(.board-table-view) .list-hidden .list-header .scrum-label {
       margin: 2px 0;
       padding: 3px 0; }
+      #board:not(.board-table-view) .list-hidden .list-header .scrum-label::before {
+        transform: rotate(90deg);
+        top: 0; }
     #board:not(.board-table-view) .list-hidden .list-header .list-header-extras {
       top: 36px; }
 

@@ -237,6 +237,10 @@
 			.scrum-label {
 				margin: 2px 0;
 				padding: 3px 0;
+				&::before {
+					transform: rotate(90deg);
+					top: 0;
+				}
 			}
 			.list-header-extras {
 				top: 36px;
