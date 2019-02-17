@@ -75,7 +75,8 @@
 		/** @type {object} local settings object copy, for each board */
 		var data = {
 			list: {},
-			board: {}
+			board: {},
+			global: {}
 		};
 		/** @type {string|null} */
 		var board_id = null;
@@ -173,6 +174,31 @@
 		};
 
 		/**
+		 * @param {string} key
+		 * @param {null|boolean|number|string|array|object} default_value
+		 * @return {null|boolean|number|string|array|object}
+		 */
+		this.getGlobal = function( key, default_value )
+		{
+			if( typeof data.global[key] !== 'undefined' )
+				return data.global[key];
+			else if( typeof default_value !== 'undefined' )
+				return default_value;
+			else
+				return null;
+		};
+
+		/**
+		 * @param {string} key
+		 * @param {null|boolean|number|string|array|object} value
+		 */
+		this.setGlobal = function( key, value )
+		{
+			data.global[key] = value;
+			self.save( 'global' );
+		};
+
+		/**
 		 * Load settings for all boards, from browser.
 		 */
 		this.load = function()
@@ -196,7 +222,7 @@
 						if( !result.hasOwnProperty( i ))
 							continue;
 
-						if( i !== 'list' && i !== 'board' )
+						if( i !== 'list' && i !== 'board' && i !== 'global' )
 						{
 							data.board[i] = result[i];
 							getApiObject().remove( i );
