@@ -1,0 +1,130 @@
+* {
+	box-sizing: border-box;
+}
+
+.tab-container {
+	display: flex;
+	align-items: stretch;
+	width: 100%;
+	.tab-nav {
+		position: relative;
+		right: -1px;
+		display: flex;
+		flex-direction: column;
+		justify-content: stretch;
+		padding: 10px 0;
+		z-index: 1;
+		button {
+			border-width: 1px;
+			border-style: solid;
+			border-color: rgba(0,0,0,0.125) rgba(0,0,0,0.2) rgba(0,0,0,0.125) rgba(0,0,0,0.2);
+			border-radius: 0;
+			background: #fff;
+			padding: 4px 8px;
+			margin-top: -1px;
+			cursor: pointer;
+			text-shadow: none;
+			box-shadow: none;
+			&:hover {
+				background: lightskyblue;
+			}
+			&:hover,
+			&:focus {
+				border-color: rgba(0,0,0,0.125) rgba(0,0,0,0.2) rgba(0,0,0,0.125) rgba(0,0,0,0.2);
+				text-shadow: none;
+				box-shadow: none;
+				outline: none;
+			}
+			&.active {
+				border-right-color: #fff;
+				font-weight: bold;
+			}
+			&:first-child {
+				margin-top: 0;
+				border-top-left-radius: 5px;
+				border-top-color: rgba(0,0,0,0.2);
+			}
+			&:last-child {
+				border-bottom-left-radius: 5px;
+				border-bottom-color: rgba(0,0,0,0.2);
+			}
+		}
+	}
+	.tab-content{
+		display: none;
+		border: 1px solid rgba(0,0,0,0.2);
+		border-radius: 5px;
+		padding: 10px;
+		flex-grow: 1;
+		&.active {
+			display: block;
+		}
+	}
+}
+h5 {
+	margin-top: 4px;
+	margin-bottom: 8px;
+}
+label,
+.flex {
+	display: flex;
+	align-items: center;
+}
+.subsection {
+	padding-left: 10px;
+	padding-right: 10px;
+	border-left: 4px solid rgba(0,0,0,0.2);
+}
+code {
+	display: inline-block;
+	background-color: #ffe0fc;
+	border: 1px dashed rgba(0,0,0,0.1);
+	padding: 2px 4px;
+	margin: 2px;
+	color: #555;
+	font-size: 0.85em;
+}
+.input-group {
+	display: flex;
+	justify-content: stretch;
+	& > * {
+		border-style: solid;
+		border-color: rgba(0,0,0,0.2);
+		border-width: 1px 0 1px 1px;
+		border-radius: 0;
+		&:first-child {
+			border-top-left-radius: 4px;
+			border-bottom-left-radius: 4px;
+		}
+		&:last-child {
+			border-right-width: 1px;
+			border-top-right-radius: 4px;
+			border-bottom-right-radius: 4px;
+		}
+	}
+	.description {
+		background-color: #f6f4f2;
+		padding: 2px 6px;
+	}
+
+
+}
+.reset {
+	border: 1px solid rgba(0,0,0,0.2);
+	background: #fdfbf9;
+	min-width: auto;
+	min-height: auto;
+	padding: 2px 5px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+.option-description {
+	font-size: 0.85em;
+	border-left: 4px solid rgba(0,0,0,0.2);
+	padding-left: 10px;
+	color: #555;
+}
+
+input[type=color] {
+	cursor: pointer;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title data-localize="__MSG_popup_settings_title__"></title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<h3 data-localize="__MSG_settings_sectionTitle_Lists__"></h3>
+	<label>
+		<span data-localize="__MSG_settings_lists_displayMode__"></span>
+		<span style="flex-grow: 1"></span>
+		<select data-toggle="set" data-target="displayMode">
+			<option value="default" data-localize="__MSG_settings_lists_displayMode_standard__"></option>
+			<option value="multi-rows" data-localize="__MSG_settings_lists_displayMode_multiRows__"></option>
+			<option value="table" data-localize="__MSG_settings_lists_displayMode_table__"></option>
+		</select>
+	</label>
+	<label>
+		<input type="checkbox" data-toggle="toggle" data-target="showCardsCounter">
+		<span></span>
+		<span data-localize="__MSG_settings_lists_enableModule_showCardsCounter__"></span>
+	</label>
+	<hr>
+	<h3 data-localize="__MSG_settings_sectionTitle_Cards__"></h3>
+	<label>
+		<input type="checkbox" data-toggle="toggle" data-target="showCardShortId">
+		<span></span>
+		<span data-localize="__MSG_settings_lists_enableModule_showCardShortId__"></span>
+	</label>
+	<label title="__MSG_module_customTags_description__">
+		<input type="checkbox" data-toggle="toggle" data-target="customTags">
+		<span></span>
+		<span data-localize="__MSG_settings_lists_enableModule_customTags__"></span>
+		<span> [?]</span>
+	</label>
+	<label title="__MSG_module_cardsSeparator_description__">
+		<input type="checkbox" data-toggle="toggle" data-target="cardsSeparator">
+		<span></span>
+		<span data-localize="__MSG_settings_lists_enableModule_cardsSeparator__"></span>
+		<span> [?]</span>
+	</label>
+	<hr>
+	<h3 data-localize="__MSG_settings_sectionTitle_Scrum__"></h3>
+	<label>
+		<input type="checkbox" data-toggle="toggle" data-target="coloredLists">
+		<span></span>
+		<span data-localize="__MSG_settings_lists_enableModule_coloredLists__"></span>
+	</label>
+	<label title="__MSG_module_scrumTime_description__">
+		<input type="checkbox" data-toggle="toggle" data-target="scrumTimes">
+		<span></span>
+		<span data-localize="__MSG_settings_lists_enableModule_scrumTime__"></span>
+		<span> [?]</span>
+	</label>
+	<div class="subsection">
+		<label>
+			<input type="checkbox" data-toggle="toggle" data-target="scrumSumTimes" data-required="scrumTimes">
+			<span></span>
+			<span data-localize="__MSG_settings_lists_enableModule_scrumSumTime__"></span>
+		</label>
+	</div>
+	<script src="../js/i18n.js"></script>
+	<script src="../js/utils.js"></script>
+	<script src="../js/settings.js"></script>
+	<script src="js/popup.js"></script>
+</body>
+</html>

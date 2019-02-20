@@ -16,6 +16,7 @@
 	{
 		var self = this;
 		var runTimeout = null;
+		var delayTimeout = null;
 		self.modules = {};
 
 		function init()
@@ -37,25 +38,31 @@
 			self.modules.coloredLists = new ModuleColoredLists( self );
 			self.modules.scrumTimes = new ModuleScrumTimes( self );
 			self.modules.scrumSumTimes = new ModuleScrumSumTimes( self );
-
-			self.run();
 		}
 
 		this.run = function()
 		{
+			clearTimeout( delayTimeout );
+			clearTimeout( runTimeout );
+			delayTimeout = setTimeout( doLoop, 100 );
+			runTimeout = setTimeout(
+				self.run,
+				Math.max( 300, parseFloat( self.modules.settings.getGlobal( 'global.loopInterval' )) * 1000 )
+			);
+		};
+
+		function doLoop(  )
+		{
 			if( DEBUG )
 				var t0 = performance.now();
-
-			clearTimeout( runTimeout );
 
 			for( var i in self.modules )
 				if( self.modules.hasOwnProperty( i ))
 					self.modules[i].update();
 
-			runTimeout = setTimeout( self.run, 3000 );
 			if( DEBUG )
 				$dbg( "Strelloids: loop took " + (performance.now() - t0) + " milliseconds.")
-		};
+		}
 
 		init();
 	}
@@ -72,69 +79,53 @@
 	{
 		/** @type {ModuleSettings} */
 		var self = this;
-		/** @type {object} local settings object copy, for each board */
-		var data = {
-			list: {},
-			board: {},
-			global: {}
-		};
+		/** @type {object} local settings object copy */
+		var settings = {};
+		/** @type {object} default setting, will be loaded by ajax from default_settings.json file */
+		var default_settings = {};
 		/** @type {string|null} */
 		var board_id = null;
 
 		function init()
 		{
+			initApiEvents();
 			self.load();
 		}
 
 		this.update = function()
 		{
-			appendButton();
-			appendWindow();
 			loadListsIds();
 		};
 
 		/**
 		 * @param {string} board_id
 		 * @param {string} key
-		 * @param {null|boolean|number|string|array|object} [default_value] this value will be returned if option is not set
 		 * @return {null|boolean|number|string|array|object}
 		 */
-		this.getForBoard = function( board_id, key, default_value )
+		this.getForBoard = function( board_id, key )
 		{
-			if( board_id && typeof data.board[board_id] !== 'undefined' && typeof data.board[board_id][key] !== 'undefined' )
-				return data.board[board_id][key];
-			else if( typeof default_value !== 'undefined' )
-				return default_value;
+			var option_key = 'board.'+board_id;
+
+			if( board_id && typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
+				return settings[option_key][key];
+			else if( typeof default_settings['board.*'][key] !== 'undefined' )
+				return default_settings['board.*'][key];
 			else
 				return null;
 		};
 
 		/**
-		 * @param {string} board_id
-		 * @param {string} key
-		 * @param {null|boolean|number|string|array|object} value
-		 */
-		this.setForBoard = function( board_id, key, value )
-		{
-			if( typeof data.board[board_id] === 'undefined' )
-				data.board[board_id] = {};
-
-			data.board[board_id][key] = value;
-			self.save( 'board' );
-		};
-
-		/**
 		 * @param {string} list_id
 		 * @param {string} key
-		 * @param {null|boolean|number|string|array|object} [default_value] this value will be returned if option is not set
 		 * @return {null|boolean|number|string|array|object}
 		 */
-		this.getForList = function( list_id, key, default_value )
+		this.getForList = function( list_id, key )
 		{
-			if( typeof data.list[list_id] !== 'undefined' && typeof data.list[list_id][key] !== 'undefined' )
-				return data.list[list_id][key];
-			else if( typeof default_value !== 'undefined' )
-				return default_value;
+			var option_key = 'list.'+list_id;
+			if( typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
+				return settings[option_key][key];
+			else if( typeof default_settings['list.*'][key] !== 'undefined' )
+				return default_settings['list.*'][key];
 			else
 				return null;
 		};
@@ -146,56 +137,36 @@
 		 */
 		this.setForList = function( list_id, key, value )
 		{
-			if( typeof data.list[list_id] === 'undefined' )
-				data.list[list_id] = {};
+			var option_key = 'list.'+list_id;
+			if( typeof settings[option_key] === 'undefined' )
+				settings[option_key] = {};
 
-			data.list[list_id][key] = value;
-			self.save( 'list' );
+			settings[option_key][key] = value;
+			self.save( option_key );
 		};
 
 		/**
 		 * @param {string} key
-		 * @param {null|boolean|number|string|array|object} [default_value] this value will be returned if option is not set
 		 * @return {null|boolean|number|string|array|object}
 		 */
-		this.getForCurrentBoard = function( key, default_value )
+		this.getForCurrentBoard = function( key )
 		{
-			return self.getForBoard( findBoardId(), key, default_value );
+			return self.getForBoard( findBoardId(), key );
 
 		};
 
 		/**
 		 * @param {string} key
-		 * @param {null|boolean|number|string|array|object} value
-		 */
-		this.setForCurrentBoard = function( key, value )
-		{
-			self.setForBoard( findBoardId(), key, value );
-		};
-
-		/**
-		 * @param {string} key
-		 * @param {null|boolean|number|string|array|object} default_value
 		 * @return {null|boolean|number|string|array|object}
 		 */
-		this.getGlobal = function( key, default_value )
+		this.getGlobal = function( key )
 		{
-			if( typeof data.global[key] !== 'undefined' )
-				return data.global[key];
-			else if( typeof default_value !== 'undefined' )
-				return default_value;
+			if( typeof settings[key] !== 'undefined' )
+				return settings[key];
+			else if( typeof default_settings[key] !== 'undefined' )
+				return default_settings[key];
 			else
 				return null;
-		};
-
-		/**
-		 * @param {string} key
-		 * @param {null|boolean|number|string|array|object} value
-		 */
-		this.setGlobal = function( key, value )
-		{
-			data.global[key] = value;
-			self.save( 'global' );
 		};
 
 		/**
@@ -206,36 +177,27 @@
 			if( DEBUG )
 				$log( 'Strelloids: trying to load settings' );
 
-			getApiObject().get(
-				null,
-				function( result )
-				{
-					if( DEBUG )
-						$log( 'Strelloids: loaded setting: ', result );
-
-					if( result === undefined )
-						return;
-
-					var need_save = false;
-					for( var i in result )
-					{
-						if( !result.hasOwnProperty( i ))
-							continue;
-
-						if( i !== 'list' && i !== 'board' && i !== 'global' )
+			new Ajax({
+				url: getBrowserObject().extension.getURL('default_settings.json'),
+				onDone: function( response ) {
+					default_settings = JSON.parse( response );
+					getApiObject().get(
+						null,
+						function( result )
 						{
-							data.board[i] = result[i];
-							getApiObject().remove( i );
-							need_save = true;
-						}
-						else
-							data[i] = result[i];
-					}
+							if( DEBUG )
+								$log( 'Strelloids: loaded setting: ', result );
 
-					if( need_save )
-						self.save( 'board' );
+							if( result !== undefined )
+								for( var i in result )
+									if( result.hasOwnProperty( i ))
+										settings[i] = result[i];
+
+							strelloids.run();
+						}
+					);
 				}
-			);
+			});
 		};
 
 		/**
@@ -244,7 +206,7 @@
 		this.save = function( key )
 		{
 			var data_to_save = {};
-			data_to_save[key] = data[key];
+			data_to_save[key] = settings[key];
 			if( DEBUG )
 				$log( 'Strelloids: trying to save settings' );
 			getApiObject().set(
@@ -252,10 +214,25 @@
 				function()
 				{
 					if( DEBUG )
-						$log( 'Strelloids: saved data for key', key, ':', data[key] );
+						$log( 'Strelloids: saved data for key', key, ':', settings[key] );
 				}
 			);
 		};
+
+		function initApiEvents()
+		{
+			getBrowserObject().storage.onChanged.addListener(function( changes )
+			{
+				if( DEBUG )
+					$log( 'Strelloids: storage changed event:', changes );
+
+				for( var i in changes )
+					if( changes.hasOwnProperty( i ))
+						settings[i] = changes[i].newValue;
+
+				strelloids.run();
+			});
+		}
 
 		/**
 		 * Getting browser storage object to save/load settings.
@@ -287,10 +264,11 @@
 				board_id = matches[1];
 				if( node_board_name )
 				{
-					if( typeof data.board[board_id] === 'undefined' )
-						data.board[board_id] = {};
+					var option_key = 'board.'+board_id;
+					if( typeof settings[option_key] === 'undefined' )
+						settings[option_key] = {};
 
-					data.board[board_id].board_name = node_board_name.innerText;
+					settings[option_key].board_name = node_board_name.innerText;
 				}
 				return matches[1];
 			}
@@ -304,214 +282,18 @@
 					return null;
 
 				var board_name = node_board_name.innerText;
-				for( var i in data.board )
-					if( data.board.hasOwnProperty( i ))
-						if( data.board[i].board_name === board_name )
-							return i;
+				for( var i in settings )
+				{
+					if( !settings.hasOwnProperty( i ))
+						continue;
+					if( i.substr( 0, 6 ) !== 'board.' )
+						continue;
+					if( settings[i].board_name === board_name )
+						return i.substr( 6 );
+				}
 
 				return null;
 			}
-		}
-
-		/**
-		 * Append to site button which will open setting window.
-		 */
-		function appendButton()
-		{
-			if( $_( 'strelloids-settings-btn' ) )
-				return;
-
-			var header = $( '.header-user' );
-			if( !header )
-				return;
-
-			var btn = createNode(
-				'a',
-				{
-					'class': 'header-btn',
-					id: 'strelloids-settings-btn'
-				}
-			);
-			btn.appendChild( createNode( 'span', { 'class': [ 'header-btn-icon', 'icon-lg', 'icon-gear', 'light' ]} ));
-			btn.appendChild( $d.createTextNode( 'Strelloids' ));
-			btn.addEventListener( 'click', openWindow );
-			header.insertBefore( btn, header.firstChild );
-		}
-
-		/**
-		 * Open or hide settings window.
-		 */
-		function openWindow()
-		{
-			var setting_window = $_( 'strelloids-settings-window' );
-			if( setting_window.style.display === 'none' )
-				setting_window.style.display = '';
-			else
-				setting_window.style.display = 'none';
-
-			// lists
-			$_( 'strelloids-cards-counter-checkbox' ).checked = strelloids.modules.showCardsCounter.isEnabled();
-			$_( 'strelloids-display-mode-select' ).value = strelloids.modules.displayMode.getMode();
-			// cards
-			$_( 'strelloids-custom-tags-checkbox' ).checked = strelloids.modules.customTags.isEnabled();
-			$_( 'strelloids-short-id-checkbox' ).checked = strelloids.modules.showCardShortId.isEnabled();
-			$_( 'strelloids-cards-separator' ).checked = strelloids.modules.cardsSeparator.isEnabled();
-			// scrum
-			$_( 'strelloids-colored-list-checkbox' ).checked = strelloids.modules.coloredLists.isEnabled();
-			$_( 'strelloids-scrum-times-checkbox' ).checked = strelloids.modules.scrumTimes.isEnabled();
-			$_( 'strelloids-scrum-sum-times-checkbox' ).checked = strelloids.modules.scrumSumTimes.isEnabled();
-			$_( 'strelloids-scrum-sum-times-checkbox' ).disabled = !strelloids.modules.scrumTimes.isEnabled();
-		}
-
-		/**
-		 * Append settings window to page content.
-		 */
-		function appendWindow()
-		{
-			if( $_( 'strelloids-settings-window' ))
-				return;
-
-			$b.insertAdjacentHTML(
-				'beforeend',
-				'<div id="strelloids-settings-window" style="display: none">\
-					<div class="notifications-title">\
-						<span>\
-							<span>' + _( 'settings_title' ) + '</span>\
-						</span>\
-						<button type="button" class="hide-dialog-trigger dialog-close-button unstyled-button" onclick="document.getElementById(\'strelloids-settings-window\').style.display=\'none\'">\
-							<span class="icon-sm icon-close"></span>\
-						</button>\
-					</div>\
-					<div class="notification-list-holder">\
-						<h4>\
-							' + _( 'settings_sectionTitle_Lists' ) + '\
-						</h4>\
-						<label>\
-							' + _( 'settings_lists_displayMode' ) + '\
-							<span style="flex-grow: 1"></span>\
-							<select id="strelloids-display-mode-select">\
-								<option value="default">' + _( 'settings_lists_displayMode_standard' ) + '</option>\
-								<option value="multi-rows">' + _( 'settings_lists_displayMode_multiRows' ) + '</option>\
-								<option value="table">' + _( 'settings_lists_displayMode_table' ) + '</option>\
-							</select>\
-						</label>\
-						<label>\
-							<input type="checkbox" id="strelloids-cards-counter-checkbox"> ' + _( 'settings_lists_enableModule_showCardsCounter' ) + '\
-						</label>\
-						<hr>\
-						<h4>\
-							' + _( 'settings_sectionTitle_Cards' ) + '\
-						</h4>\
-						<label>\
-							<input type="checkbox" id="strelloids-short-id-checkbox"> ' + _( 'settings_lists_enableModule_showCardShortId' ) + '\
-						</label>\
-						<label title="' + _( 'module_customTags_description' ) + '">\
-							<input type="checkbox" id="strelloids-custom-tags-checkbox"> ' + _( 'settings_lists_enableModule_customTags' ) + ' [?]\
-						</label>\
-						<label title="' + _( 'module_cardsSeparator_description' ) + '">\
-							<input type="checkbox" id="strelloids-cards-separator"> ' + _( 'settings_lists_enableModule_cardsSeparator' ) + ' [?]\
-						</label>\
-						<hr>\
-						<h4>\
-							' + _( 'settings_sectionTitle_Scrum' ) + '\
-						</h4>\
-						<label>\
-							<input type="checkbox" id="strelloids-colored-list-checkbox"> ' + _( 'settings_lists_enableModule_coloredLists' ) + '\
-						</label>\
-						<label title="' + _( 'module_scrumTime_description' ) + '">\
-							<input type="checkbox" id="strelloids-scrum-times-checkbox"> ' + _( 'settings_lists_enableModule_scrumTime' ) + ' [?]\
-						</label>\
-						<label style="margin-left: 24px">\
-							<input type="checkbox" id="strelloids-scrum-sum-times-checkbox"> ' + _( 'settings_lists_enableModule_scrumSumTime' ) + '\
-						</label>\
-					</div>\
-				</div>'
-			);
-
-			// lists
-			$_( 'strelloids-cards-counter-checkbox').addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-						strelloids.modules.showCardsCounter.enable();
-					else
-						strelloids.modules.showCardsCounter.disable();
-				}
-			);
-			$_( 'strelloids-display-mode-select').addEventListener(
-				'change',
-				function()
-				{
-					strelloids.modules.displayMode.setMode( this.value );
-				}
-			);
-			// cards
-			$_( 'strelloids-short-id-checkbox').addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-						strelloids.modules.showCardShortId.enable();
-					else
-						strelloids.modules.showCardShortId.disable();
-				}
-			);
-			$_( 'strelloids-custom-tags-checkbox' ).addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-						strelloids.modules.customTags.enable();
-					else
-						strelloids.modules.customTags.disable();
-				}
-			);
-			$_( 'strelloids-cards-separator' ).addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-						strelloids.modules.cardsSeparator.enable();
-					else
-						strelloids.modules.cardsSeparator.disable();
-				}
-			);
-			// scrum
-			$_( 'strelloids-colored-list-checkbox' ).addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-						strelloids.modules.coloredLists.enable();
-					else
-						strelloids.modules.coloredLists.disable();
-				}
-			);
-			$_( 'strelloids-scrum-times-checkbox').addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-						strelloids.modules.scrumTimes.enable();
-					else
-					{
-						strelloids.modules.scrumTimes.disable();
-						strelloids.modules.scrumSumTimes.disable();
-					}
-					$_( 'strelloids-scrum-sum-times-checkbox').disabled = !this.checked;
-				}
-			);
-			$_( 'strelloids-scrum-sum-times-checkbox').addEventListener(
-				'change',
-				function()
-				{
-					if( this.checked )
-						strelloids.modules.scrumSumTimes.enable();
-					else
-						strelloids.modules.scrumSumTimes.disable();
-				}
-			);
 		}
 
 		/**
@@ -524,10 +306,16 @@
 			if( !$( '#board > .js-list:not([id])' ) || !board_id )
 				return;
 
+			if( DEBUG )
+				$log( 'Strelloids: trying to load boards ids from api' );
+
 			new Ajax({
 				url: 'https://trello.com/1/Boards/' + board_id + '?lists=open&list_fields=name,closed,idBoard,pos',
 				onDone: function( raw_response )
 				{
+					if( DEBUG )
+						$log( 'Strelloids: loaded boards ids from api' );
+
 					var response = JSON.parse( raw_response );
 					if( typeof response.lists === 'undefined' )
 						return $err( 'Can\'t receive lists from API' );
@@ -559,6 +347,7 @@
 	{
 		var self = this;
 		var settingName = 'coloredLists';
+		var wasEnabled = null;
 
 		this.update = function()
 		{
@@ -578,29 +367,32 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
+			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			if( !isEnabled && wasEnabled )
+				disable();
+			else if( isEnabled && !wasEnabled )
+				enable();
+
+			wasEnabled = isEnabled;
+
+			return isEnabled;
 		};
 
-		this.enable = function()
+		function enable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
+		}
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
-			self.update();
-		};
-
-		this.disable = function()
+		function disable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
-
 			var lists = $$( '.list' );
 			for( var i = lists.length - 1; i >= 0; --i )
 				lists[i].style.backgroundColor = '';
-		};
+		}
 
 		/**
 		 * @param {HTMLElement} list
@@ -609,23 +401,23 @@
 		function setListColor( list, title )
 		{
 			if( title.match( /todo/i ))
-				list.style.backgroundColor = '#eff5d0';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.toDo' );
 			else if( title.match( /helpdesk/i ))
-				list.style.backgroundColor = '#f5d3f3';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.helpdesk' );
 			else if( title.match( /(sprint|stories)/i ))
-				list.style.backgroundColor = '#d0dff6';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.sprint' );
 			else if( title.match( /backlog/i ))
-				list.style.backgroundColor = '#c0e8ed';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.backlog' );
 			else if( title.match( /test/i ))
-				list.style.backgroundColor = '#f5f5c0';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.test' );
 			else if( title.match( /(progress|working|doing)/i ))
-				list.style.backgroundColor = '#bfe3c6';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.doing' );
 			else if( title.match( /upgrade/i ))
-				list.style.backgroundColor = '#e6ccf5';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.upgrade' );
 			else if( title.match( /(done|ready)/i ))
-				list.style.backgroundColor = '#d9f0bf';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.done' );
 			else if( title.match( /fix/i ))
-				list.style.backgroundColor = '#f9c0d0';
+				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.fix' );
 		}
 	}
 
@@ -640,7 +432,8 @@
 	function ModuleShowCardsCounter( strelloids )
 	{
 		var self = this;
-		var settingName = 'cardsCounter';
+		var settingName = 'showCardsCounter';
+		var wasEnabled = null;
 
 		this.update = function()
 		{
@@ -657,28 +450,32 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
+			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			if( !isEnabled && wasEnabled )
+				disable();
+			else if( isEnabled && !wasEnabled )
+				enable();
+
+			wasEnabled = isEnabled;
+
+			return isEnabled;
 		};
 
-		this.enable = function()
+		function enable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
+		}
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
-			self.update();
-		};
-
-		this.disable = function()
+		function disable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 			var counters = $$('.list-header-num-cards');
 			for( var i = counters.length - 1; i >= 0; --i )
 				counters[i].classList.add( 'hide' );
-		};
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -692,7 +489,8 @@
 	function ModuleShowCardShortId( strelloids )
 	{
 		var self = this;
-		var settingName = 'shortId';
+		var settingName = 'showCardShortId';
+		var wasEnabled = null;
 
 		this.update = function()
 		{
@@ -709,29 +507,32 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
+			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			if( !isEnabled && wasEnabled )
+				disable();
+			else if( isEnabled && !wasEnabled )
+				enable();
+
+			wasEnabled = isEnabled;
+
+			return isEnabled;
 		};
 
-		this.enable = function()
+		function enable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
+		}
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
-			self.update();
-		};
-
-		this.disable = function()
+		function disable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
-
 			var ids = $$('.card-short-id');
 			for( var i = ids.length - 1; i >= 0; --i )
 				ids[i].classList.add( 'hide' );
-		};
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -748,6 +549,7 @@
 	{
 		var self = this;
 		var settingName = 'customTags';
+		var wasEnabled = null;
 		var tag_regex = /\[([^\]]*[a-z_ -][^\]]*)\]/ig;
 
 		this.update = function()
@@ -783,24 +585,27 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
+			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			if( !isEnabled && wasEnabled )
+				disable();
+			else if( isEnabled && !wasEnabled )
+				enable();
+
+			wasEnabled = isEnabled;
+
+			return isEnabled;
 		};
 
-		this.enable = function()
+		function enable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
+		}
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
-			self.update();
-		};
-
-		this.disable = function()
+		function disable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
-
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var cards_titles = $$('.list-card-title');
 			var text_node = null;
@@ -818,7 +623,7 @@
 					text_node.nodeValue = cards_titles[i].getAttribute( 'data-original-title' );
 
 			}
-		};
+		}
 
 		/**
 		 * @param {HTMLElement} element
@@ -914,58 +719,53 @@
 	{
 		var self = this;
 		var settingName = 'displayMode';
+		var lastMode = null;
 
 		this.update = function()
 		{
 			var mode = self.getMode();
 			if( mode === 'multi-rows' )
-			{
-				var board = $_( 'board' );
-				if( !board || board.classList.contains( 'board-multiple-rows' ) )
-					return;
-
-				board.classList.add( 'board-multiple-rows' );
-				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
-				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
-				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
-				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
-				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
-				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
-				board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
-			}
+				enableMultiRows();
 			else if( mode === 'table' )
-			{
-				var board = $_( 'board' );
-				if( board && !board.classList.contains( 'board-table-view' ))
-					board.classList.add( 'board-table-view' );
-			}
+				enableTable();
 		};
 
 		/**
-		 * @return {boolean}
+		 * @return {string}
 		 */
 		this.getMode = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, 'default' );
+			var mode = strelloids.modules.settings.getForCurrentBoard( settingName );
+
+			if( mode !== lastMode )
+			{
+				if( DEBUG )
+					$log( 'Strelloids: view mode changed from: ' + lastMode + '; to: ' + mode );
+
+				if( lastMode === 'table' )
+					disableTable();
+				else if( lastMode === 'multi-rows' )
+					disableMultiRows();
+			}
+			lastMode = mode;
+			return mode;
 		};
 
-		/**
-		 * @param {string} mode
-		 */
-		this.setMode = function( mode )
+		function enableMultiRows()
 		{
-			var old_mode = self.getMode();
-			if( DEBUG )
-				$log( 'Strelloids: view mode changed from: ' + old_mode + '; to: ' + mode );
+			var board = $_( 'board' );
+			if( !board || board.classList.contains( 'board-multiple-rows' ) )
+				return;
 
-			if( old_mode === 'multi-rows' )
-				disableMultiRows();
-			else if( old_mode === 'table' )
-				disableTable();
-
-			strelloids.modules.settings.setForCurrentBoard( settingName, mode );
-			self.update();
-		};
+			board.classList.add( 'board-multiple-rows' );
+			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+			board.appendChild( createNode( 'div', { 'class': 'flex-placeholder' } ) );
+		}
 
 		function disableMultiRows()
 		{
@@ -977,6 +777,13 @@
 			for( var i = board.children.length - 1; i >= 0; --i )
 				if( board.children[i].classList.contains( 'flex-placeholder' ))
 					board.removeChild( board.children[i] );
+		}
+
+		function enableTable()
+		{
+			var board = $_( 'board' );
+			if( board && !board.classList.contains( 'board-table-view' ))
+				board.classList.add( 'board-table-view' );
 		}
 
 		function disableTable()
@@ -1028,7 +835,7 @@
 				var id = lists[i].id.replace( 'list-', '' );
 				lists[i].classList.toggle(
 					'list-hidden',
-					strelloids.modules.settings.getForList( id, 'hidden', false )
+					strelloids.modules.settings.getForList( id, 'hidden' )
 				);
 			}
 			appendToggleOption();
@@ -1050,7 +857,7 @@
 		 */
 		function toggleVisibility( list_id )
 		{
-			if( strelloids.modules.settings.getForList( list_id, 'hidden', false ))
+			if( strelloids.modules.settings.getForList( list_id, 'hidden' ))
 			{
 				if( DEBUG )
 					$log( 'Strelloids: module toggleList - list', list_id, 'shown in' );
@@ -1089,6 +896,7 @@
 	{
 		var self = this;
 		var settingName = 'scrumTimes';
+		var wasEnabled = null;
 		var estimation_regex = /\(([0-9\.]*|\?)\/?([0-9\.]*?|\?)\)/i;
 		var consumption_regex = /\[([0-9\.]*|\?)\/?([0-9\.]*?|\?)\]/i;
 		var last_cards_amount = 0;
@@ -1169,24 +977,27 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
+			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			if( !isEnabled && wasEnabled )
+				disable();
+			else if( isEnabled && !wasEnabled )
+				enable();
+
+			wasEnabled = isEnabled;
+
+			return isEnabled;
 		};
 
-		this.enable = function()
+		function enable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
+		}
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
-			self.update();
-		};
-
-		this.disable = function()
+		function disable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
-
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var cards_titles = $$('.list-card-title');
 			var text_node = null;
@@ -1203,7 +1014,7 @@
 					text_node.nodeValue = cards_titles[i].getAttribute( 'data-original-title' );
 
 			}
-		};
+		}
 
 		/**
 		 * @param {HTMLElement} card_title
@@ -1261,6 +1072,7 @@
 	{
 		var self = this;
 		var settingName = 'scrumSumTimes';
+		var wasEnabled = null;
 		/** @type {boolean} value determine if times should be recalculated, it's for optimization/ */
 		this.needUpdate = true;
 
@@ -1289,31 +1101,35 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, false );
+			var isEnabled = strelloids.modules.scrumTimes.isEnabled() && strelloids.modules.settings.getForCurrentBoard( settingName );
+			if( !isEnabled && wasEnabled )
+				disable();
+			else if( isEnabled && !wasEnabled )
+				enable();
+
+			wasEnabled = isEnabled;
+
+			return isEnabled;
 		};
 
-		this.enable = function()
+		function enable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
 			self.needUpdate = true;
-			self.update();
-		};
+		}
 
-		this.disable = function()
+		function disable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
-
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
 
 			var containers = $$('.list-header .scrum-sum-container');
 
 			for( var i = containers.length - 1; i >= 0; --i )
 				containers[i].parentNode.removeChild( containers[i] );
-		};
+		}
 
 		/**
 		 * @param {HTMLElement} list
@@ -1371,6 +1187,7 @@
 	{
 		var self = this;
 		var settingName = 'cardsSeparator';
+		var wasEnabled = null;
 		var separator_regex = /^[=-]{3,}/;
 		var separator_regex_end = /[=-]{3,}$/;
 
@@ -1407,39 +1224,42 @@
 		 */
 		this.isEnabled = function()
 		{
-			return strelloids.modules.settings.getForCurrentBoard( settingName, true );
+			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			if( !isEnabled && wasEnabled )
+				disable();
+			else if( isEnabled && !wasEnabled )
+				enable();
+
+			wasEnabled = isEnabled;
+
+			return isEnabled;
 		};
 
-		this.enable = function()
+		function enable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' enabled' );
+		}
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, true );
-			self.update();
-		};
-
-		this.disable = function()
+		function disable()
 		{
 			if( DEBUG )
 				$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-			strelloids.modules.settings.setForCurrentBoard( settingName, false );
-
 			var cards = $$('.card-separator');
 			var text_node = null;
 
-			for( var i = cards_titles.length - 1; i >= 0; --i )
+			for( var i = cards.length - 1; i >= 0; --i )
 			{
 				var card_title = cards[i].querySelector('.list-card-title');
 				text_node = findTextNode( card_title );
 
 				cards[i].classList.remove( 'card-separator' );
 
-				if( text_node && cards_titles[i].getAttribute( 'data-original-title' ))
+				if( text_node && card_title.getAttribute( 'data-original-title' ))
 					text_node.nodeValue = card_title.getAttribute( 'data-original-title' );
 			}
-		};
+		}
 
 		/**
 		 * @param {HTMLElement} element

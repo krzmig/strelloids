@@ -82,7 +82,6 @@ To try it, you can run it in extension local mode, but it's temporary solution:
 ## ToDo
 - Split JS to separate files.
 - Possibility to manually set the color for each list.
-- Close settings window on click outside it.
 
 ## Why Strelloids?
 Because Trello have official extensions, called "PowerUp", I wanted to do something similar. My first association was "vitamin", but it was too hard to use. If not Vitamin, so next thing was Steroids. "Tero" is similar to trello, so little makeup and that's the whole story. 

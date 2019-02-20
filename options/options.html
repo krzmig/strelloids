@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Strelloids options</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div class="tab-container">
+		<div class="tab-nav">
+			<button type="button" data-localize="__MSG_options_global__" class="active" data-toggle="tab" data-target="#global-tab">
+			</button>
+			<button type="button" data-localize="__MSG_module_name_coloredLists__" data-toggle="tab" data-target="#colored-lists-tab">
+			</button>
+		</div>
+		<div class="tab-content active" id="global-tab">
+			<div class="flex">
+				<span data-localize="__MSG_options_interval__"></span>
+				<span style="flex-grow: 1"></span>
+				<span class="input-group">
+					<input type="number" min="0.3" step="0.1" data-toggle="set" data-target="global.loopInterval">
+					<span class="description">s</span>
+				</span>
+				<button type="button" class="reset" data-toggle="reset" data-target="global.loopInterval" title="__MSG_options_reset__">&times;</button>
+			</div>
+			<div class="option-description" data-localize="__MSG_options_interval_description__"></div>
+		</div>
+		<div class="tab-content" id="colored-lists-tab">
+			<h5 data-localize="__MSG_options_default_colors__"></h5>
+			<div class="subsection">
+				<div class="flex">
+					<code>/todo/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.toDo">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.toDo" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<code>/(sprint|stories)/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.sprint">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.sprint" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<code>/backlog/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.backlog">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.backlog" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<code>/(progress|working|doing)/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.doing">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.doing" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<code>/(done|ready)/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.done">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.done" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<code>/test/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.test">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.test" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<code>/fix/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.fix">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.fix" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<code>/upgrade/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.upgrade">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.upgrade" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<code>/helpdesk/i</code>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.coloredLists.color.helpdesk">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.helpdesk" title="__MSG_options_reset__">&times;</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../js/i18n.js"></script>
+	<script src="../js/utils.js"></script>
+	<script src="../js/settings.js"></script>
+	<script src="js/options.js"></script>
+</body>
+</html>

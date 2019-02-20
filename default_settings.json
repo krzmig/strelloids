@@ -1,0 +1,25 @@
+{
+	"global.loopInterval": 3,
+	"module.coloredLists.color.toDo": "#eff5d0",
+	"module.coloredLists.color.sprint": "#d0dff6",
+	"module.coloredLists.color.backlog": "#c0e8ed",
+	"module.coloredLists.color.doing": "#bfe3c6",
+	"module.coloredLists.color.done": "#d9f0bf",
+	"module.coloredLists.color.test": "#f5f5c0",
+	"module.coloredLists.color.fix": "#f9c0d0",
+	"module.coloredLists.color.upgrade": "#e6ccf5",
+	"module.coloredLists.color.helpdesk": "#f5d3f3",
+	"board.*": {
+		"coloredLists": false,
+		"showCardsCounter": false,
+		"showCardShortId": false,
+		"customTags": false,
+		"displayMode": "default",
+		"scrumTimes": false,
+		"scrumSumTimes": false,
+		"cardsSeparator": true
+	},
+	"list.*": {
+		"hidden": false
+	}
+}

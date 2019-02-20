@@ -2,8 +2,8 @@
 	"extensionDescription": {
 		"message": "Strelloids - rozwiń możliwości Trello. Własne tagi, kolorowe listy, ukrywanie list, punkty scrum dla kart, nowe widoki i więcej."
 	},
-	"settings_title": {
-		"message": "Ustawienia Strelloids"
+	"popup_settings_title": {
+		"message": "Strelloids ustawienia tablicy"
 	},
 	"settings_sectionTitle_Lists": {
 		"message": "Listy"
@@ -48,12 +48,30 @@
 		"message": "Pokaż sumy czasów dla list"
 	},
 	"module_cardsSeparator_description": {
-		"message": "Aby stworzyć separator, zacznij tytuł karty od trzech lub więcej znaków: - lub = (np. &quot;--- Mój separator&quot;)"
+		"message": "Aby stworzyć separator, zacznij tytuł karty od trzech lub więcej znaków: - lub = (np. \"--- Mój separator\")"
 	},
 	"module_customTags_description" : {
-		"message": "Aby zrobić tag, umieść jego nazwę wewnątrz nawiasów kwadratowych w tytule karty (np. &quot;[nazwa taga]&quot;)"
+		"message": "Aby zrobić tag, umieść jego nazwę wewnątrz nawiasów kwadratowych w tytule karty (np. \"[nazwa taga]\")"
 	},
 	"module_scrumTime_description" : {
-		"message": "Aby dodać estymację punktową dla karty, umieść ją w nawiasie okrągłym (np. &quot;(3)&quot;, &quot;(0.5)&quot;, &quot;(?)&quot;). Aby dodać skonsumowane punkty, umieść je w nawiasie kwadratowym (np. &quot;[5]&quot;, &quot;[2.5]&quot;)."
+		"message": "Aby dodać estymację punktową dla karty, umieść ją w nawiasie okrągłym (np. \"(3)\", \"(0.5)\", \"(?)\"). Aby dodać skonsumowane punkty, umieść je w nawiasie kwadratowym (np. \"[5]\", \"[2.5]\")."
+	},
+	"module_name_coloredLists": {
+		"message": "Kolorowanie list"
+	},
+	"options_global": {
+		"message": "Globalne"
+	},
+	"options_interval": {
+		"message": "Opóźnienie pętli"
+	},
+	"options_interval_description": {
+		"message": "Opóźnienie pomiędzy kolejnymi przejściami pętli. Jeśli zmienisz tytuł karty i np. tagi będą się pojawiać ze zbyt dużym opóźnieniem, możesz zmniejszyć tą wartość. Zbyt mała wartość może \"rozgrzać\" Twój procesor."
+	},
+	"options_default_colors": {
+		"message": "Domyślne kolory"
+	},
+	"options_reset": {
+		"message": "Przywróć domyślne"
 	}
 }
