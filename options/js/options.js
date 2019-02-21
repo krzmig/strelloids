@@ -7,6 +7,13 @@ function switchTab( btn )
 	$( btn.getAttribute( 'data-target' )).classList.add( 'active' );
 }
 
+function loadOptionsToUI()
+{
+	var inputs = $$( '[data-toggle=set]' );
+	for( var i = inputs.length - 1; i >= 0; --i )
+		inputs[i].value = settings.getGlobal( inputs[i].getAttribute( 'data-target' ));
+}
+
 // tab switcher
 $b.addEventListener(
 	'click',
@@ -32,9 +39,4 @@ $b.addEventListener(
 	}
 );
 
-var settings = new Settings( function()
-{
-	var inputs = $$( '[data-toggle=set]' );
-	for( var i = inputs.length - 1; i >= 0; --i )
-		inputs[i].value = settings.getGlobal( inputs[i].getAttribute( 'data-target' ));
-});
+var settings = new Settings( loadOptionsToUI );
