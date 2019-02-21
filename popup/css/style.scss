@@ -5,8 +5,12 @@ html {
 	line-height: 20px;
 	font-weight: 400;
 	background-color: #ebeef0;
-	padding: 8px;
 	border-radius: 2px;
+}
+body {
+	padding: 8px;
+	box-sizing: border-box;
+	width: 280px;
 }
 hr {
 	border-width: 1px 0 0 0;
@@ -21,6 +25,7 @@ label,
 	padding: 6px;
 	border-radius: 3px;
 	transition: background-color 0.14s ease-in;
+	width: content-box;
 	&:hover {
 		background-color: rgba(9,45,66,.08);
 	}
@@ -36,6 +41,10 @@ h3 {
 
 label {
 	cursor: pointer;
+	span {
+		display: inline-block;
+		width: content-box;
+	}
 	input[type=checkbox] {
 		position: absolute;
 		opacity: 0;

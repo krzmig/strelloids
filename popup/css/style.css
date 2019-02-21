@@ -5,8 +5,12 @@ html {
   line-height: 20px;
   font-weight: 400;
   background-color: #ebeef0;
-  padding: 8px;
   border-radius: 2px; }
+
+body {
+  padding: 8px;
+  box-sizing: border-box;
+  width: 280px; }
 
 hr {
   border-width: 1px 0 0 0;
@@ -20,7 +24,8 @@ label,
   margin: 0;
   padding: 6px;
   border-radius: 3px;
-  transition: background-color 0.14s ease-in; }
+  transition: background-color 0.14s ease-in;
+  width: content-box; }
   label:hover,
   .flex:hover {
     background-color: rgba(9, 45, 66, 0.08); }
@@ -34,6 +39,9 @@ h3 {
 
 label {
   cursor: pointer; }
+  label span {
+    display: inline-block;
+    width: content-box; }
   label input[type=checkbox] {
     position: absolute;
     opacity: 0;
