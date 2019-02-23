@@ -34,6 +34,7 @@
 			self.modules.showCardShortId = new ModuleShowCardShortId( self );
 			self.modules.customTags = new ModuleCustomTags( self );
 			self.modules.cardsSeparator = new ModuleCardsSeparator( self );
+			self.modules.cardsPrioritization = new ModuleCardsPrioritization( self );
 			// scrum
 			self.modules.coloredLists = new ModuleColoredLists( self );
 			self.modules.scrumTimes = new ModuleScrumTimes( self );
@@ -337,6 +338,7 @@
 		init();
 	}
 
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Module - Colored lists for scrum                                                                               //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -625,19 +627,6 @@
 					text_node.nodeValue = cards_titles[i].getAttribute( 'data-original-title' );
 
 			}
-		}
-
-		/**
-		 * @param {HTMLElement} element
-		 * @return {null|HTMLElement}
-		 */
-		function findTextNode( element )
-		{
-			for( var i = 0; i < element.childNodes.length; ++i )
-				if( element.childNodes[i].nodeType === Node.TEXT_NODE )
-					return element.childNodes[i];
-
-			return null;
 		}
 
 		/**
@@ -1030,19 +1019,6 @@
 
 		/**
 		 * @param {HTMLElement} card_title
-		 * @return {null|HTMLElement}
-		 */
-		function findTextNode( card_title )
-		{
-			for( var i = 0; i < card_title.childNodes.length; ++i )
-				if( card_title.childNodes[i].nodeType === Node.TEXT_NODE )
-					return card_title.childNodes[i];
-
-			return null;
-		}
-
-		/**
-		 * @param {HTMLElement} card_title
 		 * @return {HTMLElement}
 		 */
 		function createContainer( card_title )
@@ -1262,19 +1238,6 @@
 					text_node.nodeValue = card_title.getAttribute( 'data-original-title' );
 			}
 		}
-
-		/**
-		 * @param {HTMLElement} element
-		 * @return {null|HTMLElement}
-		 */
-		function findTextNode( element )
-		{
-			for( var i = 0; i < element.childNodes.length; ++i )
-				if( element.childNodes[i].nodeType === Node.TEXT_NODE )
-					return element.childNodes[i];
-
-			return null;
-		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1335,6 +1298,130 @@
 		}
 
 		init();
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Prioritization of cards                                                                               //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Module display colored border of cards, based on keywords in card title like: !1 !2 !3 !4 or !5, where !1 is the
+	 * highest.
+	 * @param {Strelloids} strelloids
+	 * @constructor
+	 */
+	function ModuleCardsPrioritization( strelloids )
+	{
+		var self = this;
+		var settingName = 'cardsPrioritization';
+		var wasEnabled = null;
+		var tag_regex = /(^|\s)!([1-5])($|\s)/i;
+
+		this.update = function()
+		{
+			if(	!self.isEnabled() )
+				return;
+
+			var cards_titles = $$('.list-card-title');
+			var text_node = null;
+
+			for( var i = cards_titles.length - 1; i >= 0; --i )
+			{
+				text_node = findTextNode( cards_titles[i] );
+
+				if( !text_node )
+					continue;
+
+				if( !cards_titles[i].getAttribute( 'data-original-title' ))
+					cards_titles[i].setAttribute( 'data-original-title', text_node.nodeValue );
+
+				var matches;
+				if(( matches = tag_regex.exec( text_node.nodeValue )) === null )
+					continue;
+
+				setPriority( cards_titles[i], parseInt( matches[2] ));
+
+				text_node.nodeValue = text_node.nodeValue.replace( tag_regex, ' ' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
+			}
+		};
+
+		/**
+		 * @returns {boolean}
+		 */
+		this.isEnabled = function()
+		{
+			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			if( !isEnabled && wasEnabled )
+				disable();
+			else if( isEnabled && !wasEnabled )
+				enable();
+
+			wasEnabled = isEnabled;
+
+			return isEnabled;
+		};
+
+		function enable()
+		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' enabled' );
+		}
+
+		function disable()
+		{
+			if( DEBUG )
+				$log( 'Strelloids: module ' + settingName + ' disabled' );
+
+			var cards = $$('.list-card.priority-set');
+			var text_node = null;
+
+			for( var i = cards.length - 1; i >= 0; --i )
+			{
+				var card_title = cards[i].querySelector( '.list-card-title' );
+				text_node = findTextNode( card_title );
+
+				if( !text_node )
+					continue;
+
+				clearPriority( cards[i] );
+
+				if( card_title.getAttribute( 'data-original-title' ))
+					text_node.nodeValue = card_title.getAttribute( 'data-original-title' );
+
+			}
+		}
+
+		/**
+		 * @param {HTMLElement} card
+		 */
+		function clearPriority( card )
+		{
+			card.classList.remove( 'priority-set' );
+			card.style.borderLeftColor = null;
+		}
+
+		/**
+		 * @param {HTMLElement} card_title
+		 * @param {int} priority
+		 */
+		function setPriority( card_title, priority )
+		{
+			var card = closest( card_title, '.list-card' );
+			card.classList.add( 'priority-set' );
+			var option_key;
+
+			if( priority === 1 )
+				option_key = 'module.cardsPrioritization.color.critical';
+			else if( priority === 2 )
+				option_key = 'module.cardsPrioritization.color.high';
+			else if( priority === 3 )
+				option_key = 'module.cardsPrioritization.color.medium';
+			else if( priority === 4 )
+				option_key = 'module.cardsPrioritization.color.low';
+			else if( priority === 5 )
+				option_key = 'module.cardsPrioritization.color.lowest';
+
+			card.style.borderLeftColor = strelloids.modules.settings.getGlobal( option_key );
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1416,6 +1503,19 @@
 			parent = parent.parentNode;
 
 		return parent;
+	}
+
+	/**
+	 * @param {HTMLElement} element
+	 * @return {null|HTMLElement}
+	 */
+	function findTextNode( element )
+	{
+		for( var i = 0; i < element.childNodes.length; ++i )
+			if( element.childNodes[i].nodeType === Node.TEXT_NODE )
+				return element.childNodes[i];
+
+		return null;
 	}
 
 	/**

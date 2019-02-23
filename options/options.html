@@ -12,7 +12,10 @@
 			</button>
 			<button type="button" data-localize="__MSG_module_name_coloredLists__" data-toggle="tab" data-target="#colored-lists-tab">
 			</button>
+			<button type="button" data-localize="__MSG_module_name_cardsPrioritization__" data-toggle="tab" data-target="#cards-prioritization-tab">
+			</button>
 		</div>
+
 		<div class="tab-content active" id="global-tab">
 			<div class="flex">
 				<span data-localize="__MSG_options_interval__"></span>
@@ -25,6 +28,7 @@
 			</div>
 			<div class="option-description" data-localize="__MSG_options_interval_description__"></div>
 		</div>
+
 		<div class="tab-content" id="colored-lists-tab">
 			<h5 data-localize="__MSG_options_default_colors__"></h5>
 			<div class="subsection">
@@ -82,6 +86,43 @@
 					<input type="color" data-toggle="set" data-target="module.coloredLists.color.helpdesk">
 					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.helpdesk" title="__MSG_options_reset__">&times;</button>
 				</div>
+			</div>
+		</div>
+
+		<div class="tab-content" id="cards-prioritization-tab">
+			<h5 data-localize="__MSG_options_default_colors__"></h5>
+			<div class="subsection">
+				<div class="flex">
+					<span data-localize="__MSG_module_cardsPrioritization_critical__"></span>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.critical">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.critical" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<span data-localize="__MSG_module_cardsPrioritization_high__"></span>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.high">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.high" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<span data-localize="__MSG_module_cardsPrioritization_medium__"></span>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.medium">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.medium" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<span data-localize="__MSG_module_cardsPrioritization_low__"></span>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.low">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.low" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<div class="flex">
+					<span data-localize="__MSG_module_cardsPrioritization_lowest__"></span>
+					<span style="flex-grow: 1"></span>
+					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.lowest">
+					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.lowest" title="__MSG_options_reset__">&times;</button>
+				</div>
+				<span class="option-description" data-localize="__MSG_module_cardsPrioritization_color_description__"></span>
 			</div>
 		</div>
 	</div>

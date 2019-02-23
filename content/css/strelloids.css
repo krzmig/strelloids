@@ -101,6 +101,9 @@
       margin-right: 5px; }
   .list-card.card-separator .card-short-id {
     display: none; }
+.list-card.priority-set {
+  border-left-style: solid;
+  border-left-width: 5px; }
 .list-card:hover .list-card-title .card-tag {
   opacity: 1; }
 .list-card:hover .scrum-label {

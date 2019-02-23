@@ -9,6 +9,11 @@
 	"module.coloredLists.color.fix": "#f9c0d0",
 	"module.coloredLists.color.upgrade": "#e6ccf5",
 	"module.coloredLists.color.helpdesk": "#f5d3f3",
+	"module.cardsPrioritization.color.critical": "#d91d1d",
+	"module.cardsPrioritization.color.high": "#fe9900",
+	"module.cardsPrioritization.color.medium": "#f3ee07",
+	"module.cardsPrioritization.color.low": "#42ef38",
+	"module.cardsPrioritization.color.lowest": "#50bafb",
 	"board.*": {
 		"coloredLists": false,
 		"showCardsCounter": false,

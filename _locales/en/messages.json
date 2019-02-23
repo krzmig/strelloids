@@ -49,6 +49,10 @@
 		"message": "Enable cards separator",
 		"description": "Option label in the popup"
 	},
+	"settings_lists_enableModule_cardsPrioritization": {
+		"message": "Enable cards prioritization",
+		"description": "Option label in the popup"
+	},
 	"settings_lists_enableModule_coloredLists": {
 		"message": "Enable colored lists",
 		"description": "Option label in the popup"
@@ -73,8 +77,16 @@
 		"message": "To add estimation points for card, put it into round brackets (eg. \"(3)\", \"(0.5)\", \"(?)\"). To set consumption points, put it into square brackets (eg. \"[5]\", \"[2.5]\").",
 		"description": "Popup - Option tooltip inside the title attribute"
 	},
+	"module_cardsPrioritization_description": {
+		"message": "To set priority for the card, insert into their title one of this keywords: \"!1\", \"!2\", \"!3\", \"!4\" or \"!5\", where 1 is the highest priority.",
+		"description": "Popup - Option tooltip inside the title attribute"
+	},
 	"module_name_coloredLists": {
 		"message": "Colored lists",
+		"description": "Options - Tab name"
+	},
+	"module_name_cardsPrioritization": {
+		"message": "Cards prioritization",
 		"description": "Options - Tab name"
 	},
 	"options_global": {
@@ -96,5 +108,29 @@
 	"options_reset": {
 		"message": "Reset to default",
 		"description": "Options - The title attribute for reset button"
+	},
+	"module_cardsPrioritization_critical": {
+		"message": "Critical",
+		"description": "Priority name for value 1"
+	},
+	"module_cardsPrioritization_high": {
+		"message": "High",
+		"description": "Priority name for value 2"
+	},
+	"module_cardsPrioritization_medium": {
+		"message": "Medium",
+		"description": "Priority name for value 3"
+	},
+	"module_cardsPrioritization_low": {
+		"message": "Low",
+		"description": "Priority name for value 4"
+	},
+	"module_cardsPrioritization_lowest": {
+		"message": "Lowest",
+		"description": "Priority name for value 5"
+	},
+	"module_cardsPrioritization_color_description": {
+		"message": "To apply above changes, please refresh Trello board page.",
+		"description": "Options - Option description"
 	}
 }

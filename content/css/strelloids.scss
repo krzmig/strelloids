@@ -127,6 +127,10 @@
 			display: none;
 		}
 	}
+	&.priority-set {
+		border-left-style: solid;
+		border-left-width: 5px;
+	}
 	&:hover {
 		.list-card-title .card-tag {
 			opacity: 1;
