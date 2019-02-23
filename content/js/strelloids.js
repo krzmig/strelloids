@@ -38,6 +38,8 @@
 			self.modules.coloredLists = new ModuleColoredLists( self );
 			self.modules.scrumTimes = new ModuleScrumTimes( self );
 			self.modules.scrumSumTimes = new ModuleScrumSumTimes( self );
+			// other
+			self.modules.boardScroll = new ModuleBoardScroll( self );
 		}
 
 		this.run = function()
@@ -1273,6 +1275,66 @@
 
 			return null;
 		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Board scroll                                                                                          //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Module will allow you to scroll board horizontally (in default view mode), without holding shift key.
+	 * @param {Strelloids} strelloids
+	 * @constructor
+	 */
+	function ModuleBoardScroll( strelloids )
+	{
+		var scroll_started_on_board = false;
+
+		function init()
+		{
+			$w.addEventListener('wheel', doScroll );
+			$w.addEventListener( 'mousemove', clearStartNode );
+		}
+
+		this.update = function() {};
+
+		function doScroll( e )
+		{
+			if( strelloids.modules.settings.getForCurrentBoard( 'displayMode' ) !== 'default' )
+				return;
+
+			if( e.shiftKey )
+				return;
+
+			var target = e.target;
+
+			while( target.parentNode )
+			{
+				if( scroll_started_on_board || target.id === 'board' )
+				{
+					e.preventDefault();
+					var board = $_('board');
+					board.scrollLeft = Math.min(
+						board.scrollLeftMax,
+						board.scrollLeft + e.deltaY * 16
+					);
+					scroll_started_on_board = true;
+					return;
+				}
+				else if( target.classList.contains( 'list' ))
+				{
+					scroll_started_on_board = false;
+					return;
+				}
+				target = target.parentNode;
+			}
+		}
+
+		function clearStartNode()
+		{
+			scroll_started_on_board = false;
+		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
