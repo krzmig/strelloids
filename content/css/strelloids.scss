@@ -1,3 +1,12 @@
+:root {
+	// Just for listing, will be overwrite by values from default_settings.json or by user settings
+	--strelloids-card-priority-critical: #d91d1d;
+	--strelloids-card-priority-high: #fe9900;
+	--strelloids-card-priority-medium: #f3ee07;
+	--strelloids-card-priority-low: #42ef38;
+	--strelloids-card-priority-lowest: #50bafb;
+}
+
 #strelloids-settings-btn {
 	padding-left: 32px;
 	padding-right: 5px;
@@ -127,9 +136,20 @@
 			display: none;
 		}
 	}
-	&.priority-set {
-		border-left-style: solid;
-		border-left-width: 5px;
+	&.priority-critical {
+		border-left: 5px solid var(--strelloids-card-priority-critical);
+	}
+	&.priority-high {
+		border-left: 5px solid var(--strelloids-card-priority-high);
+	}
+	&.priority-medium {
+		border-left: 5px solid var(--strelloids-card-priority-medium);
+	}
+	&.priority-low {
+		border-left: 5px solid var(--strelloids-card-priority-low);
+	}
+	&.priority-lowest {
+		border-left: 5px solid var(--strelloids-card-priority-lowest);
 	}
 	&:hover {
 		.list-card-title .card-tag {

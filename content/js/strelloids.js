@@ -24,6 +24,7 @@
 			if( DEBUG )
 				$log( 'Strelloids: initialized' );
 
+			self.modules.events = new ModuleEvents( self );
 			self.modules.settings = new ModuleSettings( self );
 
 			// lists
@@ -41,6 +42,8 @@
 			self.modules.scrumSumTimes = new ModuleScrumSumTimes( self );
 			// other
 			self.modules.boardScroll = new ModuleBoardScroll( self );
+
+			self.modules.events.add( 'onSettingsLoaded', self.run );
 		}
 
 		this.run = function()
@@ -59,9 +62,7 @@
 			if( DEBUG )
 				var t0 = performance.now();
 
-			for( var i in self.modules )
-				if( self.modules.hasOwnProperty( i ))
-					self.modules[i].update();
+			self.modules.events.trigger( 'onUpdate' );
 
 			if( DEBUG )
 				$dbg( "Strelloids: loop took " + (performance.now() - t0) + " milliseconds.")
@@ -93,12 +94,13 @@
 		{
 			initApiEvents();
 			self.load();
+			strelloids.modules.events.add( 'onUpdate', update );
 		}
 
-		this.update = function()
+		function update()
 		{
 			loadListsIds();
-		};
+		}
 
 		/**
 		 * @param {string} board_id
@@ -196,7 +198,7 @@
 									if( result.hasOwnProperty( i ))
 										settings[i] = result[i];
 
-							strelloids.run();
+							strelloids.modules.events.trigger( 'onSettingsLoaded' );
 						}
 					);
 				}
@@ -229,9 +231,31 @@
 				if( DEBUG )
 					$log( 'Strelloids: storage changed event:', changes );
 
+				var changed_global = false;
+				var changed_board = false;
+				var changed_list = false;
+
 				for( var i in changes )
 					if( changes.hasOwnProperty( i ))
+					{
 						settings[i] = changes[i].newValue;
+
+						if( /board\./.test( i ) )
+							changed_board = true;
+						else if( /list\./.test( i ) )
+							changed_list = true;
+						else
+							changed_global = true;
+					}
+
+				if( changed_global )
+					strelloids.modules.events.trigger( 'onGlobalSettingsChange' );
+				if( changed_board )
+					strelloids.modules.events.trigger( 'onBoardSettingsChange' );
+				if( changed_list )
+					strelloids.modules.events.trigger( 'onListSettingsChange' );
+
+				strelloids.modules.events.trigger( 'onSettingsChange' );
 
 				strelloids.run();
 			});
@@ -338,6 +362,65 @@
 		init();
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - For local events                                                                                      //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Module will trigger local script events for automation modules logic.
+	 * @param strelloids
+	 * @constructor
+	 */
+	function ModuleEvents( strelloids )
+	{
+		var events_list = {
+			onUpdate: [],
+			onSettingsLoaded: [],
+			onSettingsChange: [],
+			onGlobalSettingsChange: [],
+			onBoardSettingsChange: [],
+			onListSettingsChange: []
+		};
+
+		/**
+		 * @param {string} event
+		 * @param {function} callback
+		 */
+		this.add = function( event, callback )
+		{
+			if( typeof events_list[event] === 'undefined' )
+				$err( 'Strelloids: Unknown event: ', event );
+			if( typeof callback !== 'function' )
+				$err( 'Strelloids: Wrong callback type' );
+
+			events_list[event].push( callback );
+		};
+
+		/**
+		 * @param {string} event
+		 * @param {function} callback
+		 */
+		this.remove = function( event, callback )
+		{
+			if( typeof events_list[event] === 'undefined' )
+				$err( 'Strelloids: Unknown event: ', event );
+
+			for( var i = events_list[event].length - 1; i >= 0; --i )
+				if( events_list[event][i] === callback )
+					events_list = events_list.splice( i, 1 );
+		};
+
+		/**
+		 * @param {string} event
+		 */
+		this.trigger = function( event )
+		{
+			if( typeof events_list[event] === 'undefined' )
+				$err( 'Strelloids: Unknown event: ', event );
+
+			for( var i = events_list[event].length - 1; i >= 0; --i )
+				events_list[event][i]();
+		};
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Module - Colored lists for scrum                                                                               //
@@ -353,7 +436,14 @@
 		var settingName = 'coloredLists';
 		var wasEnabled = null;
 
-		this.update = function()
+		function init()
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			if( !self.isEnabled() )
 				return;
@@ -364,23 +454,26 @@
 					closest( lists_titles[i], '.list' ),
 					lists_titles[i].value
 				);
-		};
+		}
 
 		/**
 		 * @returns {boolean}
 		 */
 		this.isEnabled = function()
 		{
-			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged()
+		{
+			var isEnabled = self.isEnabled();
 			if( !isEnabled && wasEnabled )
 				disable();
 			else if( isEnabled && !wasEnabled )
 				enable();
 
 			wasEnabled = isEnabled;
-
-			return isEnabled;
-		};
+		}
 
 		function enable()
 		{
@@ -423,6 +516,8 @@
 			else if( title.match( /fix/i ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.fix' );
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -439,7 +534,14 @@
 		var settingName = 'showCardsCounter';
 		var wasEnabled = null;
 
-		this.update = function()
+		function init()
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			if(	!self.isEnabled() )
 				return;
@@ -447,23 +549,26 @@
 			var counters = $$('.list-header-num-cards.hide');
 			for( var i = counters.length - 1; i >= 0; --i )
 				counters[i].classList.remove( 'hide' );
-		};
+		}
 
 		/**
 		 * @returns {boolean}
 		 */
 		this.isEnabled = function()
 		{
-			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged()
+		{
+			var isEnabled = self.isEnabled();
 			if( !isEnabled && wasEnabled )
 				disable();
 			else if( isEnabled && !wasEnabled )
 				enable();
 
 			wasEnabled = isEnabled;
-
-			return isEnabled;
-		};
+		}
 
 		function enable()
 		{
@@ -480,6 +585,8 @@
 			for( var i = counters.length - 1; i >= 0; --i )
 				counters[i].classList.add( 'hide' );
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -496,7 +603,14 @@
 		var settingName = 'showCardShortId';
 		var wasEnabled = null;
 
-		this.update = function()
+		function init()
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			if(	!self.isEnabled() )
 				return;
@@ -504,23 +618,26 @@
 			var ids = $$('.card-short-id.hide');
 			for( var i = ids.length - 1; i >= 0; --i )
 				ids[i].classList.remove( 'hide' );
-		};
+		}
 
 		/**
 		 * @returns {boolean}
 		 */
 		this.isEnabled = function()
 		{
-			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged()
+		{
+			var isEnabled = self.isEnabled();
 			if( !isEnabled && wasEnabled )
 				disable();
 			else if( isEnabled && !wasEnabled )
 				enable();
 
 			wasEnabled = isEnabled;
-
-			return isEnabled;
-		};
+		}
 
 		function enable()
 		{
@@ -537,6 +654,8 @@
 			for( var i = ids.length - 1; i >= 0; --i )
 				ids[i].classList.add( 'hide' );
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -556,7 +675,14 @@
 		var wasEnabled = null;
 		var tag_regex = /\[([^\]]*[a-z_ -][^\]]*)\]/ig;
 
-		this.update = function()
+		function init()
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			if(	!self.isEnabled() )
 				return;
@@ -582,23 +708,26 @@
 
 				text_node.nodeValue = text_node.nodeValue.replace( tag_regex, '' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
 			}
-		};
+		}
 
 		/**
 		 * @returns {boolean}
 		 */
 		this.isEnabled = function()
 		{
-			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged()
+		{
+			var isEnabled = self.isEnabled();
 			if( !isEnabled && wasEnabled )
 				disable();
 			else if( isEnabled && !wasEnabled )
 				enable();
 
 			wasEnabled = isEnabled;
-
-			return isEnabled;
-		};
+		}
 
 		function enable()
 		{
@@ -693,6 +822,8 @@
 
 			return 'hsl(' + h + ',' + ( 65 + s ) + '%,' + ( 55 + l ) + '%)';
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -712,21 +843,33 @@
 		var settingName = 'displayMode';
 		var lastMode = null;
 
-		this.update = function()
+		function init()
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			var mode = self.getMode();
 			if( mode === 'multi-rows' )
 				enableMultiRows();
 			else if( mode === 'table' )
 				enableTable();
-		};
+		}
 
 		/**
 		 * @return {string}
 		 */
 		this.getMode = function()
 		{
-			var mode = strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged()
+		{
+			var mode = self.getMode();
 
 			if( mode !== lastMode )
 			{
@@ -739,8 +882,7 @@
 					disableMultiRows();
 			}
 			lastMode = mode;
-			return mode;
-		};
+		}
 
 		function enableMultiRows()
 		{
@@ -785,6 +927,8 @@
 
 			board.classList.remove( 'board-table-view' );
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -816,9 +960,10 @@
 				},
 				true
 			);
+			strelloids.modules.events.add( 'onUpdate', update );
 		}
 
-		this.update = function()
+		function update()
 		{
 			var lists = $$( '#board > .js-list' );
 			for( var i = lists.length - 1; i >= 0; --i )
@@ -830,7 +975,7 @@
 				);
 			}
 			appendToggleOption();
-		};
+		}
 
 		function appendToggleOption()
 		{
@@ -892,7 +1037,14 @@
 		var consumption_regex = /\[([0-9\.]*|\?)\/?([0-9\.]*?|\?)\]/i;
 		var last_cards_amount = 0;
 
-		this.update = function()
+		function init()
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			if(	!self.isEnabled() )
 				return;
@@ -961,23 +1113,26 @@
 
 				text_node.nodeValue = text_node.nodeValue.replace( estimation_regex, '' ).replace( consumption_regex, '' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
 			}
-		};
+		}
 
 		/**
 		 * @return {boolean}
 		 */
 		this.isEnabled = function()
 		{
-			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged()
+		{
+			var isEnabled = self.isEnabled();
 			if( !isEnabled && wasEnabled )
 				disable();
 			else if( isEnabled && !wasEnabled )
 				enable();
 
 			wasEnabled = isEnabled;
-
-			return isEnabled;
-		};
+		}
 
 		function enable()
 		{
@@ -1035,6 +1190,8 @@
 			}
 			return container;
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1054,7 +1211,14 @@
 		/** @type {boolean} value determine if times should be recalculated, it's for optimization/ */
 		this.needUpdate = true;
 
-		this.update = function()
+		function init(  )
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			if( !self.isEnabled() || !self.needUpdate )
 				return;
@@ -1072,23 +1236,26 @@
 				sumTimes( lists[i], container, 'consumption', 'team2' );
 			}
 			self.needUpdate = false;
-		};
+		}
 
 		/**
 		 * @return {boolean}
 		 */
 		this.isEnabled = function()
 		{
-			var isEnabled = strelloids.modules.scrumTimes.isEnabled() && strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.scrumTimes.isEnabled() && strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged(  )
+		{
+			var isEnabled = self.isEnabled();
 			if( !isEnabled && wasEnabled )
 				disable();
 			else if( isEnabled && !wasEnabled )
 				enable();
 
 			wasEnabled = isEnabled;
-
-			return isEnabled;
-		};
+		}
 
 		function enable()
 		{
@@ -1151,6 +1318,8 @@
 					)
 				);
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1169,7 +1338,14 @@
 		var separator_regex = /^[=-]{3,}/;
 		var separator_regex_end = /[=-]{3,}$/;
 
-		this.update = function()
+		function init(  )
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			if(	!self.isEnabled() )
 				return;
@@ -1195,23 +1371,26 @@
 
 				text_node.nodeValue = text_node.nodeValue.replace( separator_regex, '' ).replace( separator_regex_end, '' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
 			}
-		};
+		}
 
 		/**
 		 * @returns {boolean}
 		 */
 		this.isEnabled = function()
 		{
-			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged()
+		{
+			var isEnabled = self.isEnabled();
 			if( !isEnabled && wasEnabled )
 				disable();
 			else if( isEnabled && !wasEnabled )
 				enable();
 
 			wasEnabled = isEnabled;
-
-			return isEnabled;
-		};
+		}
 
 		function enable()
 		{
@@ -1238,6 +1417,8 @@
 					text_node.nodeValue = card_title.getAttribute( 'data-original-title' );
 			}
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1257,8 +1438,6 @@
 			$w.addEventListener('wheel', doScroll );
 			$w.addEventListener( 'mousemove', clearStartNode );
 		}
-
-		this.update = function() {};
 
 		function doScroll( e )
 		{
@@ -1316,7 +1495,16 @@
 		var wasEnabled = null;
 		var tag_regex = /(^|\s)!([1-5])($|\s)/i;
 
-		this.update = function()
+		function init(  )
+		{
+			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onSettingsLoaded', globalSettingsChanged );
+			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+		}
+
+		function update()
 		{
 			if(	!self.isEnabled() )
 				return;
@@ -1342,14 +1530,19 @@
 
 				text_node.nodeValue = text_node.nodeValue.replace( tag_regex, ' ' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
 			}
-		};
+		}
 
 		/**
 		 * @returns {boolean}
 		 */
 		this.isEnabled = function()
 		{
-			var isEnabled = strelloids.modules.settings.getForCurrentBoard( settingName );
+			return strelloids.modules.settings.getForCurrentBoard( settingName );
+		};
+
+		function boardSettingsChanged()
+		{
+			var isEnabled = self.isEnabled();
 			if( !isEnabled && wasEnabled )
 				disable();
 			else if( isEnabled && !wasEnabled )
@@ -1358,7 +1551,7 @@
 			wasEnabled = isEnabled;
 
 			return isEnabled;
-		};
+		}
 
 		function enable()
 		{
@@ -1390,13 +1583,36 @@
 			}
 		}
 
+		function globalSettingsChanged()
+		{
+			$b.style.setProperty(
+				'--strelloids-card-priority-critical',
+				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.critical' )
+			);
+			$b.style.setProperty(
+				'--strelloids-card-priority-high',
+				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.high' )
+			);
+			$b.style.setProperty(
+				'--strelloids-card-priority-medium',
+				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.medium' )
+			);
+			$b.style.setProperty(
+				'--strelloids-card-priority-low',
+				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.low' )
+			);
+			$b.style.setProperty(
+				'--strelloids-card-priority-lowest',
+				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.lowest' )
+			);
+		}
+
 		/**
 		 * @param {HTMLElement} card
 		 */
 		function clearPriority( card )
 		{
-			card.classList.remove( 'priority-set' );
-			card.style.borderLeftColor = null;
+			card.classList.remove( 'priority-set', 'priority-critical', 'priority-high', 'priority-medium', 'priority-low', 'priority-lowest' );
 		}
 
 		/**
@@ -1407,21 +1623,20 @@
 		{
 			var card = closest( card_title, '.list-card' );
 			card.classList.add( 'priority-set' );
-			var option_key;
 
 			if( priority === 1 )
-				option_key = 'module.cardsPrioritization.color.critical';
+				card.classList.add( 'priority-critical' );
 			else if( priority === 2 )
-				option_key = 'module.cardsPrioritization.color.high';
+				card.classList.add( 'priority-high' );
 			else if( priority === 3 )
-				option_key = 'module.cardsPrioritization.color.medium';
+				card.classList.add( 'priority-medium' );
 			else if( priority === 4 )
-				option_key = 'module.cardsPrioritization.color.low';
+				card.classList.add( 'priority-low' );
 			else if( priority === 5 )
-				option_key = 'module.cardsPrioritization.color.lowest';
-
-			card.style.borderLeftColor = strelloids.modules.settings.getGlobal( option_key );
+				card.classList.add( 'priority-lowest' );
 		}
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

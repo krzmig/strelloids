@@ -128,9 +128,5 @@
 	"module_cardsPrioritization_lowest": {
 		"message": "Lowest",
 		"description": "Priority name for value 5"
-	},
-	"module_cardsPrioritization_color_description": {
-		"message": "To apply above changes, please refresh Trello board page.",
-		"description": "Options - Option description"
 	}
 }
