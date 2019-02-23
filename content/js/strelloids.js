@@ -796,19 +796,11 @@
 		function determinateTagColor( tag )
 		{
 			var chars = tag.split('').map( function( a ){ return a.charCodeAt( 0 ) });
-			var tmp, sum, i, j;
+			var i, h;
 
-			var h = 0;
-			for( i = chars.length - 1; i >= 0; --i )
-			{
-				tmp = chars[i].toString();
-				sum = tmp.charAt( 0 );
-				for( j = tmp.length - 1; j > 0; --j )
-					if( tmp.charAt( j ) !== '0' )
-						sum *= parseInt( tmp.charAt( j ) );
-				h += sum;
-			}
-			h = h % 360;
+			for(i = 0, h = 0x1e7244ca; i < tag.length; i++)
+				h = Math.imul( h ^ tag.charCodeAt(i), 1852095058 );
+			h = (( h ^ h >>> 16 ) >>> 0 ) % 360;
 
 			var s = 0;
 			for( i = chars.length - 1; i >= 0; i = i - 2 )
