@@ -144,5 +144,11 @@
 	},
 	"font_color": {
 		"message": "Font color"
+	},
+	"options_enableBoardScroll": {
+		"message": "Overwrite vertical scroll on board with horizontal"
+	},
+	"options_enableBoardScroll_description": {
+		"message": "If enabled you will be able to scroll board in horizontal without holding shift key (just in default display mode)."
 	}
 }

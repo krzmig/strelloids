@@ -112,5 +112,11 @@
 	},
 	"font_color": {
 		"message": "Kolor czcionki"
+	},
+	"options_enableBoardScroll": {
+		"message": "Nadpisz na tablicy pionowy scroll poziomym"
+	},
+	"options_enableBoardScroll_description": {
+		"message": "Jeśli włączone będziesz mógł scrollować tablicę w poziomie bez trzymania klawiszu shift (tylko w domyślnym trybie widoku)."
 	}
 }

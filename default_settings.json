@@ -1,5 +1,6 @@
 {
 	"global.loopInterval": 3,
+	"global.enableBoardScroll": true,
 	"module.coloredLists.color.toDo": "#eff5d0",
 	"module.coloredLists.color.sprint": "#d0dff6",
 	"module.coloredLists.color.backlog": "#c0e8ed",

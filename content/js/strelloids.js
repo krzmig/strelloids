@@ -1449,8 +1449,22 @@
 
 		function init()
 		{
-			$w.addEventListener('wheel', doScroll );
-			$w.addEventListener( 'mousemove', clearStartNode );
+			strelloids.modules.events.add( 'onSettingsLoaded', globalSettingsChanged );
+			strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChanged );
+		}
+
+		function globalSettingsChanged()
+		{
+			if( strelloids.modules.settings.getGlobal( 'global.enableBoardScroll' ))
+			{
+				$w.addEventListener('wheel', doScroll );
+				$w.addEventListener( 'mousemove', clearStartNode );
+			}
+			else
+			{
+				$w.removeEventListener('wheel', doScroll );
+				$w.removeEventListener( 'mousemove', clearStartNode );
+			}
 		}
 
 		function doScroll( e )
@@ -1469,10 +1483,7 @@
 				{
 					e.preventDefault();
 					var board = $_('board');
-					board.scrollLeft = Math.min(
-						board.scrollLeftMax,
-						board.scrollLeft + e.deltaY * 16
-					);
+					board.scrollLeft = board.scrollLeft + Math.max( Math.min( e.deltaY * 16, 50 ), -50 );
 					scroll_started_on_board = true;
 					return;
 				}

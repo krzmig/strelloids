@@ -12,6 +12,10 @@ function loadOptionsToUI()
 	var inputs = $$( '[data-toggle=set]' );
 	for( var i = inputs.length - 1; i >= 0; --i )
 		inputs[i].value = settings.getGlobal( inputs[i].getAttribute( 'data-target' ));
+
+	inputs = $$( '[data-toggle=toggle]' );
+	for( i = inputs.length - 1; i >= 0; --i )
+		inputs[i].checked = settings.getGlobal( inputs[i].getAttribute( 'data-target' ));
 }
 
 // tab switcher
@@ -35,7 +39,8 @@ $b.addEventListener(
 	{
 		if( e.target.getAttribute( 'data-toggle' ) === 'set' )
 			settings.setGlobal( e.target.getAttribute( 'data-target' ), e.target.value );
-
+		else if( e.target.getAttribute( 'data-toggle' ) === 'toggle' )
+			settings.setGlobal( e.target.getAttribute( 'data-target' ), e.target.checked );
 	}
 );
 
