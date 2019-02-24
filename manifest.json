@@ -82,7 +82,8 @@
 		}]
 	},
 	"web_accessible_resources": [
-		"default_settings.json"
+		"default_settings.json",
+		"content/font/Strelloids.woff"
 	],
 	"browser_specific_settings": {
 		"gecko": {
