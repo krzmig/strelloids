@@ -89,6 +89,10 @@
 		"message": "Cards prioritization",
 		"description": "Options - Tab name"
 	},
+	"module_name_scrumTimes": {
+		"message": "Scrum times",
+		"description": "Options - Tab name"
+	},
 	"options_global": {
 		"message": "Global",
 		"description": "Options - Tab name"
@@ -128,5 +132,17 @@
 	"module_cardsPrioritization_lowest": {
 		"message": "Lowest",
 		"description": "Priority name for value 5"
+	},
+	"module_scrumTimes_team1LabelColor": {
+		"message": "Team 1 label colors"
+	},
+	"module_scrumTimes_team2LabelColor": {
+		"message": "Team 2 label colors"
+	},
+	"background_color": {
+		"message": "Background color"
+	},
+	"font_color": {
+		"message": "Font color"
 	}
 }

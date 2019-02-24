@@ -14,6 +14,10 @@
 	"module.cardsPrioritization.color.medium": "#f3ee07",
 	"module.cardsPrioritization.color.low": "#42ef38",
 	"module.cardsPrioritization.color.lowest": "#50bafb",
+	"module.scrumTimes.color.bgTeam1": "#9fd1df",
+	"module.scrumTimes.color.fontTeam1": "#17394d",
+	"module.scrumTimes.color.bgTeam2": "#abdf9f",
+	"module.scrumTimes.color.fontTeam2": "#17394d",
 	"board.*": {
 		"coloredLists": false,
 		"showCardsCounter": false,

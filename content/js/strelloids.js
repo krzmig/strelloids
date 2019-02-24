@@ -1033,7 +1033,9 @@
 		{
 			strelloids.modules.events.add( 'onUpdate', update );
 			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onSettingsLoaded', globalSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+			strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChanged );
 		}
 
 		function update()
@@ -1124,6 +1126,26 @@
 				enable();
 
 			wasEnabled = isEnabled;
+		}
+
+		function globalSettingsChanged()
+		{
+			$b.style.setProperty(
+				'--strelloids-scrum-times-bg-team1',
+				strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.bgTeam1' )
+			);
+			$b.style.setProperty(
+				'--strelloids-scrum-times-font-team1',
+				strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.fontTeam1' )
+			);
+			$b.style.setProperty(
+				'--strelloids-scrum-times-bg-team2',
+				strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.bgTeam2' )
+			);
+			$b.style.setProperty(
+				'--strelloids-scrum-times-font-team2',
+				strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.fontTeam2' )
+			);
 		}
 
 		function enable()

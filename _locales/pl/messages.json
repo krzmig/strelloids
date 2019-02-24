@@ -38,6 +38,9 @@
 	"settings_lists_enableModule_cardsSeparator": {
 		"message": "Włącz separatory z kart"
 	},
+	"settings_lists_enableModule_cardsPrioritization": {
+		"message": "Włącz priorytety dla kart"
+	},
 	"settings_lists_enableModule_coloredLists": {
 		"message": "Włącz automatyczne kolorowanie list"
 	},
@@ -56,8 +59,17 @@
 	"module_scrumTime_description" : {
 		"message": "Aby dodać estymację punktową dla karty, umieść ją w nawiasie okrągłym (np. \"(3)\", \"(0.5)\", \"(?)\"). Aby dodać skonsumowane punkty, umieść je w nawiasie kwadratowym (np. \"[5]\", \"[2.5]\")."
 	},
+	"module_cardsPrioritization_description": {
+		"message": "Aby ustawić priorytet dla karty, wstaw w jej tytule jedno ze słów kluczowych: \"!1\", \"!2\", \"!3\", \"!4\" or \"!5\", gdzie 1 jest najwyższym priorytetem."
+	},
 	"module_name_coloredLists": {
 		"message": "Kolorowanie list"
+	},
+	"module_name_cardsPrioritization": {
+		"message": "Priorytety dla kart"
+	},
+	"module_name_scrumTimes": {
+		"message": "Czasy dla scrum"
 	},
 	"options_global": {
 		"message": "Globalne"
@@ -73,5 +85,32 @@
 	},
 	"options_reset": {
 		"message": "Przywróć domyślne"
+	},
+	"module_cardsPrioritization_critical": {
+		"message": "Krytyczny"
+	},
+	"module_cardsPrioritization_high": {
+		"message": "Wysoki"
+	},
+	"module_cardsPrioritization_medium": {
+		"message": "Średni"
+	},
+	"module_cardsPrioritization_low": {
+		"message": "Niski"
+	},
+	"module_cardsPrioritization_lowest": {
+		"message": "Najniższy"
+	},
+	"module_scrumTimes_team1LabelColor": {
+		"message": "Kolory dla zespołu 1"
+	},
+	"module_scrumTimes_team2LabelColor": {
+		"message": "Kolory dla zespołu 2"
+	},
+	"background_color": {
+		"message": "Kolor tła"
+	},
+	"font_color": {
+		"message": "Kolor czcionki"
 	}
 }
