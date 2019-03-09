@@ -231,9 +231,10 @@
 				if( DEBUG )
 					$log( 'Strelloids: storage changed event:', changes );
 
-				var changed_global = false;
-				var changed_board = false;
-				var changed_list = false;
+				var changed_settings = [];
+				var changed_global = [];
+				var changed_board = [];
+				var changed_list = [];
 
 				for( var i in changes )
 					if( changes.hasOwnProperty( i ))
@@ -241,21 +242,22 @@
 						settings[i] = changes[i].newValue;
 
 						if( /board\./.test( i ) )
-							changed_board = true;
+							changed_board.push( i );
 						else if( /list\./.test( i ) )
-							changed_list = true;
+							changed_list.push( i );
 						else
-							changed_global = true;
+							changed_global.push( i );
+						changed_settings.push( i );
 					}
 
-				if( changed_global )
-					strelloids.modules.events.trigger( 'onGlobalSettingsChange' );
-				if( changed_board )
-					strelloids.modules.events.trigger( 'onBoardSettingsChange' );
-				if( changed_list )
-					strelloids.modules.events.trigger( 'onListSettingsChange' );
+				if( changed_global.length )
+					strelloids.modules.events.trigger( 'onGlobalSettingsChange', changed_list );
+				if( changed_board.length )
+					strelloids.modules.events.trigger( 'onBoardSettingsChange', changed_board );
+				if( changed_list.length )
+					strelloids.modules.events.trigger( 'onListSettingsChange', changed_global );
 
-				strelloids.modules.events.trigger( 'onSettingsChange' );
+				strelloids.modules.events.trigger( 'onSettingsChange', changed_settings );
 
 				strelloids.run();
 			});
@@ -417,8 +419,10 @@
 			if( typeof events_list[event] === 'undefined' )
 				$err( 'Strelloids: Unknown event: ', event );
 
+			var args = Array.prototype.slice.call( arguments, 1 );
+
 			for( var i = events_list[event].length - 1; i >= 0; --i )
-				events_list[event][i]();
+				events_list[event][i].apply( null, args );
 		};
 	}
 
