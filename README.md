@@ -26,6 +26,9 @@ If you enable this setting, you can use tags in cards titles eg. `[tag]`. Strell
 ### Cards separator
 To split list into section, you can use separators. To makes them, you can start card title with three or more characters: - or = eg. `--- My separator` `===== Separator` `--== This works too ==--`. As in last example, you can add the same characters at the end of title, they will not display in list view.
 
+### Cards prioritization
+You can set card priority simply adding into title one of this keywords: `!1` `!2` `!3` `!4` or `!5`. `!1` is the highest priority and `!5` is the lowest. Cards with set priority will get colored left border.
+
 ### Scrum colored lists
 Strelloids can set background color for lists depending on their titles. You can use one of this keywords inside title to trigger color:
 
@@ -53,6 +56,9 @@ Estimations are inside round brackets and consumption in squares ones. Times you
 `[/3]` - consumption: not set - _team 1_; 3 sp - _team 2_
 
 You can also turn on sum of this times for each list.
+
+### More
+- You can enable scroll in default view mode, which will scroll page in horizontal without holding `shift` key. 
 
 ## How to install
 ### Normal way
