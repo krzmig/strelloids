@@ -231,33 +231,21 @@
 				if( DEBUG )
 					$log( 'Strelloids: storage changed event:', changes );
 
-				var changed_settings = [];
-				var changed_global = [];
-				var changed_board = [];
-				var changed_list = [];
-
 				for( var i in changes )
 					if( changes.hasOwnProperty( i ))
 					{
 						settings[i] = changes[i].newValue;
 
-						if( /board\./.test( i ) )
-							changed_board.push( i );
-						else if( /list\./.test( i ) )
-							changed_list.push( i );
+						if( /^board\./.test( i ) )
+						{
+							if( new RegExp( '^board\.'+findBoardId() ).test( i ))
+								strelloids.modules.events.trigger( 'onBoardSettingsChange', i, settings[i], changes[i].oldValue );
+						}
+						else if( /^list\./.test( i ) )
+							strelloids.modules.events.trigger( 'onListSettingsChange', i, settings[i], changes[i].oldValue );
 						else
-							changed_global.push( i );
-						changed_settings.push( i );
+							strelloids.modules.events.trigger( 'onGlobalSettingsChange', i, settings[i], changes[i].oldValue );
 					}
-
-				if( changed_global.length )
-					strelloids.modules.events.trigger( 'onGlobalSettingsChange', changed_list );
-				if( changed_board.length )
-					strelloids.modules.events.trigger( 'onBoardSettingsChange', changed_board );
-				if( changed_list.length )
-					strelloids.modules.events.trigger( 'onListSettingsChange', changed_global );
-
-				strelloids.modules.events.trigger( 'onSettingsChange', changed_settings );
 
 				strelloids.run();
 			});
@@ -377,7 +365,6 @@
 		var events_list = {
 			onUpdate: [],
 			onSettingsLoaded: [],
-			onSettingsChange: [],
 			onGlobalSettingsChange: [],
 			onBoardSettingsChange: [],
 			onListSettingsChange: []
@@ -438,7 +425,6 @@
 	{
 		var self = this;
 		var settingName = 'coloredLists';
-		var wasEnabled = null;
 
 		function init()
 		{
@@ -468,15 +454,16 @@
 			return strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged()
+		function boardSettingsChanged( key, new_board_settings, old_board_settings )
 		{
-			var isEnabled = self.isEnabled();
-			if( !isEnabled && wasEnabled )
-				disable();
-			else if( isEnabled && !wasEnabled )
-				enable();
+			if( old_board_settings && new_board_settings )
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
 
-			wasEnabled = isEnabled;
+			if( self.isEnabled() )
+				enable();
+			else
+				disable();
 		}
 
 		function enable()
@@ -501,23 +488,23 @@
 		 */
 		function setListColor( list, title )
 		{
-			if( title.match( /todo/i ))
+			if( /todo/i.test( title ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.toDo' );
-			else if( title.match( /helpdesk/i ))
+			else if( /helpdesk/i.test( title ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.helpdesk' );
-			else if( title.match( /(sprint|stories)/i ))
+			else if( /(sprint|stories)/i.test( title ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.sprint' );
-			else if( title.match( /backlog/i ))
+			else if( /backlog/i.test( title ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.backlog' );
-			else if( title.match( /test/i ))
+			else if( /test/i.test( title ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.test' );
-			else if( title.match( /(progress|working|doing)/i ))
+			else if( /(progress|working|doing)/i.test( title))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.doing' );
-			else if( title.match( /upgrade/i ))
+			else if( /upgrade/i.test( title ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.upgrade' );
-			else if( title.match( /(done|ready)/i ))
+			else if( /(done|ready)/i.test( title ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.done' );
-			else if( title.match( /fix/i ))
+			else if( /fix/i.test( title ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.fix' );
 		}
 
@@ -536,7 +523,6 @@
 	{
 		var self = this;
 		var settingName = 'showCardsCounter';
-		var wasEnabled = null;
 
 		function init()
 		{
@@ -563,15 +549,16 @@
 			return strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged()
+		function boardSettingsChanged( key, new_board_settings, old_board_settings )
 		{
-			var isEnabled = self.isEnabled();
-			if( !isEnabled && wasEnabled )
-				disable();
-			else if( isEnabled && !wasEnabled )
-				enable();
+			if( old_board_settings && new_board_settings )
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
 
-			wasEnabled = isEnabled;
+			if( self.isEnabled() )
+				enable();
+			else
+				disable();
 		}
 
 		function enable()
@@ -605,7 +592,6 @@
 	{
 		var self = this;
 		var settingName = 'showCardShortId';
-		var wasEnabled = null;
 
 		function init()
 		{
@@ -632,15 +618,16 @@
 			return strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged()
+		function boardSettingsChanged( key, new_board_settings, old_board_settings )
 		{
-			var isEnabled = self.isEnabled();
-			if( !isEnabled && wasEnabled )
-				disable();
-			else if( isEnabled && !wasEnabled )
-				enable();
+			if( old_board_settings && new_board_settings )
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
 
-			wasEnabled = isEnabled;
+			if( self.isEnabled() )
+				enable();
+			else
+				disable();
 		}
 
 		function enable()
@@ -676,7 +663,6 @@
 	{
 		var self = this;
 		var settingName = 'customTags';
-		var wasEnabled = null;
 		var tag_regex = /\[([^\]]*[a-z_ -][^\]]*)\]/ig;
 
 		function init()
@@ -722,15 +708,16 @@
 			return strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged()
+		function boardSettingsChanged( key, new_board_settings, old_board_settings )
 		{
-			var isEnabled = self.isEnabled();
-			if( !isEnabled && wasEnabled )
-				disable();
-			else if( isEnabled && !wasEnabled )
-				enable();
+			if( old_board_settings && new_board_settings )
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
 
-			wasEnabled = isEnabled;
+			if( self.isEnabled() )
+				enable();
+			else
+				disable();
 		}
 
 		function enable()
@@ -837,7 +824,6 @@
 	{
 		var self = this;
 		var settingName = 'displayMode';
-		var lastMode = null;
 
 		function init()
 		{
@@ -848,11 +834,6 @@
 
 		function update()
 		{
-			var mode = self.getMode();
-			if( mode === 'multi-rows' )
-				enableMultiRows();
-			else if( mode === 'table' )
-				enableTable();
 		}
 
 		/**
@@ -863,21 +844,23 @@
 			return strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged()
+		function boardSettingsChanged( key, new_board_settings, old_board_settings )
 		{
-			var mode = self.getMode();
-
-			if( mode !== lastMode )
+			if( old_board_settings && new_board_settings )
 			{
-				if( DEBUG )
-					$log( 'Strelloids: view mode changed from: ' + lastMode + '; to: ' + mode );
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
 
-				if( lastMode === 'table' )
+				if( old_board_settings[settingName] === 'table' )
 					disableTable();
-				else if( lastMode === 'multi-rows' )
+				else if( old_board_settings[settingName] === 'multi-rows' )
 					disableMultiRows();
 			}
-			lastMode = mode;
+			var mode = self.getMode();
+			if( mode === 'multi-rows' )
+				enableMultiRows();
+			else if( mode === 'table' )
+				enableTable();
 		}
 
 		function enableMultiRows()
@@ -1028,7 +1011,6 @@
 	{
 		var self = this;
 		var settingName = 'scrumTimes';
-		var wasEnabled = null;
 		var estimation_regex = /\(([0-9\.]*|\?)\/?([0-9\.]*?|\?)\)/i;
 		var consumption_regex = /\[([0-9\.]*|\?)\/?([0-9\.]*?|\?)\]/i;
 		var last_cards_amount = 0;
@@ -1126,35 +1108,48 @@
 			return strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged()
+		function boardSettingsChanged( key, new_board_settings, old_board_settings )
 		{
-			var isEnabled = self.isEnabled();
-			if( !isEnabled && wasEnabled )
-				disable();
-			else if( isEnabled && !wasEnabled )
-				enable();
+			if( old_board_settings && new_board_settings )
+			{
+				if( old_board_settings['scrumTimes.show.estimation'] !== new_board_settings['scrumTimes.show.estimation'] ||
+					old_board_settings['scrumTimes.show.consumption'] !== new_board_settings['scrumTimes.show.consumption'] ||
+					old_board_settings['scrumTimes.show.team1'] !== new_board_settings['scrumTimes.show.team1'] ||
+					old_board_settings['scrumTimes.show.team2'] !== new_board_settings['scrumTimes.show.team2'] )
+					disable();
 
-			wasEnabled = isEnabled;
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
+			}
+
+			if( self.isEnabled() )
+				enable();
+			else
+				disable();
 		}
 
-		function globalSettingsChanged()
+		function globalSettingsChanged( key )
 		{
-			$b.style.setProperty(
-				'--strelloids-scrum-times-bg-team1',
-				strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.bgTeam1' )
-			);
-			$b.style.setProperty(
-				'--strelloids-scrum-times-font-team1',
-				strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.fontTeam1' )
-			);
-			$b.style.setProperty(
-				'--strelloids-scrum-times-bg-team2',
-				strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.bgTeam2' )
-			);
-			$b.style.setProperty(
-				'--strelloids-scrum-times-font-team2',
-				strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.fontTeam2' )
-			);
+			if( !key || key === 'module.scrumTimes.color.bgTeam1' )
+				$b.style.setProperty(
+					'--strelloids-scrum-times-bg-team1',
+					strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.bgTeam1' )
+				);
+			if( !key || key === 'module.scrumTimes.color.fontTeam1' )
+				$b.style.setProperty(
+					'--strelloids-scrum-times-font-team1',
+					strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.fontTeam1' )
+				);
+			if( !key || key === 'module.scrumTimes.color.bgTeam2' )
+				$b.style.setProperty(
+					'--strelloids-scrum-times-bg-team2',
+					strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.bgTeam2' )
+				);
+			if( !key || key === 'module.scrumTimes.color.fontTeam2' )
+				$b.style.setProperty(
+					'--strelloids-scrum-times-font-team2',
+					strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.fontTeam2' )
+				);
 		}
 
 		function enable()
@@ -1230,7 +1225,6 @@
 	{
 		var self = this;
 		var settingName = 'scrumSumTimes';
-		var wasEnabled = null;
 		/** @type {boolean} value determine if times should be recalculated, it's for optimization/ */
 		this.needUpdate = true;
 
@@ -1278,15 +1272,16 @@
 			return strelloids.modules.scrumTimes.isEnabled() && strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged(  )
+		function boardSettingsChanged( key, new_board_settings, old_board_settings  )
 		{
-			var isEnabled = self.isEnabled();
-			if( !isEnabled && wasEnabled )
-				disable();
-			else if( isEnabled && !wasEnabled )
-				enable();
+			if( old_board_settings && new_board_settings )
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
 
-			wasEnabled = isEnabled;
+			if( self.isEnabled() )
+				enable();
+			else
+				disable();
 		}
 
 		function enable()
@@ -1366,7 +1361,6 @@
 	{
 		var self = this;
 		var settingName = 'cardsSeparator';
-		var wasEnabled = null;
 		var separator_regex = /^[=-]{3,}/;
 		var separator_regex_end = /[=-]{3,}$/;
 
@@ -1413,15 +1407,16 @@
 			return strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged()
+		function boardSettingsChanged( key, new_board_settings, old_board_settings )
 		{
-			var isEnabled = self.isEnabled();
-			if( !isEnabled && wasEnabled )
-				disable();
-			else if( isEnabled && !wasEnabled )
-				enable();
+			if( old_board_settings && new_board_settings )
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
 
-			wasEnabled = isEnabled;
+			if( self.isEnabled() )
+				enable();
+			else
+				disable();
 		}
 
 		function enable()
@@ -1464,6 +1459,7 @@
 	function ModuleBoardScroll( strelloids )
 	{
 		var scroll_started_on_board = false;
+		var settingName = 'global.enableBoardScroll';
 
 		function init()
 		{
@@ -1471,17 +1467,20 @@
 			strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChanged );
 		}
 
-		function globalSettingsChanged()
+		function globalSettingsChanged( key )
 		{
-			if( strelloids.modules.settings.getGlobal( 'global.enableBoardScroll' ))
+			if( !key || key === settingName )
 			{
-				$w.addEventListener('wheel', doScroll );
-				$w.addEventListener( 'mousemove', clearStartNode );
-			}
-			else
-			{
-				$w.removeEventListener('wheel', doScroll );
-				$w.removeEventListener( 'mousemove', clearStartNode );
+				if( strelloids.modules.settings.getGlobal( settingName ) )
+				{
+					$w.addEventListener( 'wheel', doScroll );
+					$w.addEventListener( 'mousemove', clearStartNode );
+				}
+				else
+				{
+					$w.removeEventListener( 'wheel', doScroll );
+					$w.removeEventListener( 'mousemove', clearStartNode );
+				}
 			}
 		}
 
@@ -1535,7 +1534,6 @@
 	{
 		var self = this;
 		var settingName = 'cardsPrioritization';
-		var wasEnabled = null;
 		var tag_regex = /(^|\s)!([1-5])($|\s)/i;
 
 		function init(  )
@@ -1583,17 +1581,16 @@
 			return strelloids.modules.settings.getForCurrentBoard( settingName );
 		};
 
-		function boardSettingsChanged()
+		function boardSettingsChanged( key, new_board_settings, old_board_settings )
 		{
-			var isEnabled = self.isEnabled();
-			if( !isEnabled && wasEnabled )
-				disable();
-			else if( isEnabled && !wasEnabled )
+			if( old_board_settings && new_board_settings )
+				if( old_board_settings[settingName] === new_board_settings[settingName] )
+					return;
+
+			if( self.isEnabled() )
 				enable();
-
-			wasEnabled = isEnabled;
-
-			return isEnabled;
+			else
+				disable();
 		}
 
 		function enable()
@@ -1626,28 +1623,33 @@
 			}
 		}
 
-		function globalSettingsChanged()
+		function globalSettingsChanged( key )
 		{
-			$b.style.setProperty(
-				'--strelloids-card-priority-critical',
-				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.critical' )
-			);
-			$b.style.setProperty(
-				'--strelloids-card-priority-high',
-				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.high' )
-			);
-			$b.style.setProperty(
-				'--strelloids-card-priority-medium',
-				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.medium' )
-			);
-			$b.style.setProperty(
-				'--strelloids-card-priority-low',
-				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.low' )
-			);
-			$b.style.setProperty(
-				'--strelloids-card-priority-lowest',
-				strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.lowest' )
-			);
+			if( !key || key === 'module.cardsPrioritization.color.critical' )
+				$b.style.setProperty(
+					'--strelloids-card-priority-critical',
+					strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.critical' )
+				);
+			if( !key || key === 'module.cardsPrioritization.color.high' )
+				$b.style.setProperty(
+					'--strelloids-card-priority-high',
+					strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.high' )
+				);
+			if( !key || key === 'module.cardsPrioritization.color.medium' )
+				$b.style.setProperty(
+					'--strelloids-card-priority-medium',
+					strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.medium' )
+				);
+			if( !key || key === 'module.cardsPrioritization.color.low' )
+				$b.style.setProperty(
+					'--strelloids-card-priority-low',
+					strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.low' )
+				);
+			if( !key || key === 'module.cardsPrioritization.color.lowest' )
+				$b.style.setProperty(
+					'--strelloids-card-priority-lowest',
+					strelloids.modules.settings.getGlobal( 'module.cardsPrioritization.color.lowest' )
+				);
 		}
 
 		/**
