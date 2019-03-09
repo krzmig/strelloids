@@ -1052,6 +1052,11 @@
 			var text_node = null, container = null;
 			var matches, matches2;
 
+			var showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
+			var showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
+			var showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
+			var showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
+
 			for( var i = last_cards_amount - 1; i >= 0; --i )
 			{
 				text_node = findTextNode( cards_titles[i] );
@@ -1069,7 +1074,7 @@
 				container = createContainer( cards_titles[i] );
 				strelloids.modules.scrumSumTimes.needUpdate = true;
 
-				if( matches && matches[1] )
+				if( matches && matches[1] && showEstimation && showTeam1 )
 					container.appendChild(
 						createNode(
 							'span',
@@ -1078,7 +1083,7 @@
 						)
 					);
 
-				if( matches && matches[2] )
+				if( matches && matches[2] && showEstimation && showTeam2 )
 					container.appendChild(
 						createNode(
 							'span',
@@ -1087,7 +1092,7 @@
 						)
 					);
 
-				if( matches2 && matches2[1] )
+				if( matches2 && matches2[1] && showConsumption && showTeam1 )
 					container.appendChild(
 						createNode(
 							'span',
@@ -1096,7 +1101,7 @@
 						)
 					);
 
-				if( matches2 && matches2[2] )
+				if( matches2 && matches2[2] && showConsumption && showTeam2 )
 					container.appendChild(
 						createNode(
 							'span',
@@ -1240,14 +1245,23 @@
 			var lists = $$('#board > .js-list');
 			var container;
 
+			var showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
+			var showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
+			var showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
+			var showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
+
 			for( var i = lists.length - 1; i >= 0; --i )
 			{
 				container = createContainer( lists[i] );
 
-				sumTimes( lists[i], container, 'estimation', 'team1' );
-				sumTimes( lists[i], container, 'estimation', 'team2' );
-				sumTimes( lists[i], container, 'consumption', 'team1' );
-				sumTimes( lists[i], container, 'consumption', 'team2' );
+				if( showEstimation && showTeam1 )
+					sumTimes( lists[i], container, 'estimation', 'team1' );
+				if( showEstimation && showTeam2 )
+					sumTimes( lists[i], container, 'estimation', 'team2' );
+				if( showConsumption && showTeam1 )
+					sumTimes( lists[i], container, 'consumption', 'team1' );
+				if( showConsumption && showTeam2 )
+					sumTimes( lists[i], container, 'consumption', 'team2' );
 			}
 			self.needUpdate = false;
 		}

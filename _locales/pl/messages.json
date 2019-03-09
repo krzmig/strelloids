@@ -118,5 +118,17 @@
 	},
 	"options_enableBoardScroll_description": {
 		"message": "Jeśli włączone będziesz mógł scrollować tablicę w poziomie bez trzymania klawiszu shift (tylko w domyślnym trybie widoku)."
+	},
+	"settings_lists_scrumTimes_showEstimation": {
+		"message": "Pokaż estymację"
+	},
+	"settings_lists_scrumTimes_showConsumption": {
+		"message": "Pokaż konsumpcję"
+	},
+	"settings_lists_scrumTimes_showTeam1": {
+		"message": "Pokaż zespół 1"
+	},
+	"settings_lists_scrumTimes_showTeam2": {
+		"message": "Pokaż zespół 2"
 	}
 }

@@ -26,6 +26,10 @@
 		"customTags": false,
 		"displayMode": "default",
 		"scrumTimes": false,
+		"scrumTimes.show.team1": true,
+		"scrumTimes.show.team2": false,
+		"scrumTimes.show.estimation": true,
+		"scrumTimes.show.consumption": true,
 		"scrumSumTimes": false,
 		"cardsSeparator": true
 	},
