@@ -381,8 +381,7 @@
 .custom-tags-ui .card-detail-item-add-button {
   float: none;
   display: inline-block; }
-
-input[name="custom-tag-input"] {
+.custom-tags-ui input[name="custom-tag-input"] {
   display: inline-block;
   width: auto;
   max-width: 120px;
