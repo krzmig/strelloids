@@ -101,11 +101,17 @@
 	"module_cardsPrioritization_lowest": {
 		"message": "Najniższy"
 	},
-	"module_scrumTimes_team1LabelColor": {
-		"message": "Kolory dla zespołu 1"
+	"module_scrumTimes_team1EstimationLabelColor": {
+		"message": "Kolory estymacji dla zespołu 1"
 	},
-	"module_scrumTimes_team2LabelColor": {
-		"message": "Kolory dla zespołu 2"
+	"module_scrumTimes_team1ConsumptionLabelColor": {
+		"message": "Kolory konsumpcji dla zespołu 1"
+	},
+	"module_scrumTimes_team2EstimationLabelColor": {
+		"message": "Kolory estymacji dla zespołu 2"
+	},
+	"module_scrumTimes_team2ConsumptionLabelColor": {
+		"message": "Kolory konsumpcji dla zespołu 2"
 	},
 	"background_color": {
 		"message": "Kolor tła"
