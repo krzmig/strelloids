@@ -1485,7 +1485,7 @@
 		function boardSettingsChanged( key, new_board_settings, old_board_settings  )
 		{
 			if( old_board_settings && new_board_settings )
-				if( old_board_settings[settingName] === new_board_settings[settingName] )
+				if( old_board_settings[settingName] === new_board_settings[settingName] && old_board_settings['scrumTimes'] === new_board_settings['scrumTimes'] )
 					return;
 
 			if( self.isEnabled() )
