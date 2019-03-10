@@ -1932,7 +1932,16 @@
 					title.value += ' ' + '!' + this.value;
 			}
 			else
+			{
+				var url_matches = window.location.toString().match( /(\/c\/[^\/]+\/)/ );
+				if( url_matches )
+				{
+					var card_in_list = $( '.list-card[href*="' + url_matches[1] + '"]' );
+					if( card_in_list )
+						clearPriority( card_in_list );
+				}
 				title.value = title.value.replace( tag_regex, ' ' );
+			}
 			title.blur();
 		}
 
