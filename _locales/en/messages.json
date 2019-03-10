@@ -162,5 +162,17 @@
 	},
 	"settings_lists_scrumTimes_showTeam2": {
 		"message": "Show team2"
+	},
+	"card_edit_priority": {
+		"message": "Card priority"
+	},
+	"card_edit_estimation": {
+		"message": "Estimation"
+	},
+	"card_edit_consumption": {
+		"message": "Consumption"
+	},
+	"card_edit_customTags": {
+		"message": "Custom tags"
 	}
 }

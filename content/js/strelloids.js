@@ -1,6 +1,5 @@
 ( function(){
 	'use strict';
-
 	if( window.strelloidsInited )
 		return;
 
@@ -352,9 +351,6 @@
 		init();
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Module - For local events                                                                                      //
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Module will trigger local script events for automation modules logic.
 	 * @param strelloids
@@ -362,13 +358,33 @@
 	 */
 	function ModuleEvents( strelloids )
 	{
+		var self = this;
 		var events_list = {
 			onUpdate: [],
 			onSettingsLoaded: [],
 			onGlobalSettingsChange: [],
 			onBoardSettingsChange: [],
-			onListSettingsChange: []
+			onListSettingsChange: [],
+			onCardEditOpened: [],
+			onCardTitleChanged: []
 		};
+
+		function init()
+		{
+			getBrowserObject().runtime.onMessage.addListener( function( message )
+			{
+				if( typeof message.event === 'undefined' || typeof message.event.code === 'undefined' )
+					return;
+
+				if( typeof events_list[message.event.code] !== 'undefined' )
+					self.trigger( message.event.code );
+			});
+			$d.addEventListener( 'change', function( e )
+			{
+				if( e.target.classList.contains( 'mod-card-back-title' ))
+					self.trigger( 'onCardTitleChanged', e );
+			});
+		}
 
 		/**
 		 * @param {string} event
@@ -411,6 +427,8 @@
 			for( var i = events_list[event].length - 1; i >= 0; --i )
 				events_list[event][i].apply( null, args );
 		};
+
+		init();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -670,6 +688,8 @@
 			strelloids.modules.events.add( 'onUpdate', update );
 			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+			strelloids.modules.events.add( 'onCardEditOpened', UI.init );
+			strelloids.modules.events.add( 'onCardTitleChanged', UI.cardTitleChanged );
 		}
 
 		function update()
@@ -805,6 +825,105 @@
 
 			return 'hsl(' + h + ',' + ( 65 + s ) + '%,' + ( 55 + l ) + '%)';
 		}
+
+		var UI = {
+			init: function()
+			{
+				if(	!self.isEnabled() )
+					return;
+
+				var ui_container = $('.card-detail-data');
+				if( $( '.custom-tags-ui' ) || !ui_container)
+					return;
+
+				var title = $('textarea.mod-card-back-title');
+				var container = createNode( 'div', { 'class': ['card-detail-item', 'custom-tags-ui'] } );
+				container.appendChild(createNode(
+					'h3',
+					{ 'class': 'card-detail-item-header' },
+					' ' + _( 'card_edit_customTags' )
+				));
+				var add_btn = createNode( 'a', { 'class': [ 'card-detail-item-add-button', 'dark-hover' ] });
+				add_btn.appendChild( createNode( 'span', { 'class': [ 'icon-sm', 'icon-add' ]}));
+				add_btn.addEventListener( 'click', UI.appendNewInput );
+				container.appendChild( add_btn );
+				UI.appendInputs( container, title.value );
+				ui_container.prepend( container );
+			},
+			/**
+			 * @param {HTMLElement} container
+			 * @param {string} title
+			 */
+			appendInputs: function( container, title )
+			{
+				tag_regex.lastIndex = 0;
+
+				var matches;
+				while(( matches = tag_regex.exec( title ) ) !== null )
+					UI.appendInput( container, matches[1] );
+			},
+
+			appendInput: function( container, content )
+			{
+				var tag = createNode(
+					'input',
+					{ name: 'custom-tag-input', 'data-value': content, value: content }
+				);
+				tag.style.backgroundColor = determinateTagColor( content );
+				tag.style.width = ( 0.6 * content.length ) + 'em';
+				tag.addEventListener( 'input', UI.inputUpdated, true );
+				tag.addEventListener( 'change', UI.inputChanged, true );
+				tag.addEventListener( 'blur', UI.inputBlur, true );
+				container.insertBefore( tag, container.lastChild );
+				return tag;
+			},
+
+			appendNewInput: function()
+			{
+				var tag = UI.appendInput( $('.custom-tags-ui'), '' );
+				setTimeout( function(){ tag.focus() }, 100 );
+			},
+
+			inputUpdated: function()
+			{
+				this.style.width = ( 0.6 * this.value.length ) + 'em';
+				this.style.backgroundColor = determinateTagColor( this.value );
+			},
+
+			inputChanged: function()
+			{
+				var title = $('textarea.mod-card-back-title');
+				var old_tag = this.getAttribute( 'data-value' );
+				title.focus();
+				if( old_tag )
+					title.value = title.value.replace(
+						'[' + old_tag + ']',
+						this.value ? '[' + this.value + ']' : ''
+					);
+				else if( this.value )
+					title.value = '[' + this.value + ']' + title.value;
+
+				this.setAttribute( 'data-value', this.value );
+
+				title.blur();
+			},
+
+			inputBlur: function(  )
+			{
+				if( !this.value )
+					this.remove();
+			},
+
+			cardTitleChanged: function( e )
+			{
+				var container = $('.custom-tags-ui');
+				for( var i = container.children.length - 1; i >= 0; --i )
+					if( container.children[i].tagName === 'INPUT' )
+						container.children[i].remove();
+
+				UI.appendInputs( container, e.target.value );
+			}
+		};
 
 		init();
 	}
@@ -1011,8 +1130,8 @@
 	{
 		var self = this;
 		var settingName = 'scrumTimes';
-		var estimation_regex = /\(([0-9\.]*|\?)\/?([0-9\.]*?|\?)\)/i;
-		var consumption_regex = /\[([0-9\.]*|\?)\/?([0-9\.]*?|\?)\]/i;
+		var estimation_regex = /\((\?|[0-9\.]*)\/?([0-9\.]*?|\?)\)/i;
+		var consumption_regex = /\[(\?|[0-9\.]*)\/?([0-9\.]*?|\?)\]/i;
 		var last_cards_amount = 0;
 
 		function init()
@@ -1022,6 +1141,7 @@
 			strelloids.modules.events.add( 'onSettingsLoaded', globalSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
 			strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChanged );
+			strelloids.modules.events.add( 'onCardEditOpened', cardEditOpened );
 		}
 
 		function update()
@@ -1130,26 +1250,17 @@
 
 		function globalSettingsChanged( key )
 		{
-			if( !key || key === 'module.scrumTimes.color.bgTeam1' )
-				$b.style.setProperty(
-					'--strelloids-scrum-times-bg-team1',
-					strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.bgTeam1' )
-				);
-			if( !key || key === 'module.scrumTimes.color.fontTeam1' )
-				$b.style.setProperty(
-					'--strelloids-scrum-times-font-team1',
-					strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.fontTeam1' )
-				);
-			if( !key || key === 'module.scrumTimes.color.bgTeam2' )
-				$b.style.setProperty(
-					'--strelloids-scrum-times-bg-team2',
-					strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.bgTeam2' )
-				);
-			if( !key || key === 'module.scrumTimes.color.fontTeam2' )
-				$b.style.setProperty(
-					'--strelloids-scrum-times-font-team2',
-					strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.fontTeam2' )
-				);
+			var settings = [ 'bgTeam1Estimation', 'fontTeam1Estimation', 'bgTeam1Consumption', 'fontTeam1Consumption',
+				'bgTeam2Estimation', 'fontTeam2Estimation', 'bgTeam2Consumption', 'fontTeam2Consumption' ];
+			var css = [ 'bg-team1-estimation', 'font-team1-estimation', 'bg-team1-consumption', 'font-team1-consumption',
+				'bg-team2-estimation', 'font-team2-estimation', 'bg-team2-consumption', 'font-team2-consumption' ];
+
+			for( var i in settings )
+				if( !key || key === 'module.scrumTimes.color.'+settings[i] )
+					$b.style.setProperty(
+						'--strelloids-scrum-times-'+css[i],
+						strelloids.modules.settings.getGlobal( 'module.scrumTimes.color.'+settings[i] )
+					);
 		}
 
 		function enable()
@@ -1207,6 +1318,105 @@
 				card_title.parentNode.appendChild( container );
 			}
 			return container;
+		}
+
+		function cardEditOpened()
+		{
+			if(	!self.isEnabled() )
+				return;
+
+			var showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
+			var showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
+			var showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
+			var showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
+			var sequence = strelloids.modules.settings.getGlobal( 'module.scrumTimes.storyPointsSequence' );
+
+			var ui_container = $('.card-detail-data');
+			var container, i, title;
+
+			if( $( '.scrum-buttons' ) || !ui_container)
+				return;
+
+			if( showConsumption && ( showTeam1 || showTeam2 ))
+			{
+				container = createNode( 'div', { 'class': ['card-detail-item', 'scrum-buttons'] } );
+				title = createNode(
+					'h3',
+					{ 'class': 'card-detail-item-header' },
+					' ' + _( 'card_edit_consumption' )
+				);
+				title.prepend( createNode( 'i', { 'class': 'strelloids-icon-fire' }));
+				container.appendChild( title );
+
+				if( showTeam1 )
+					appendSequenceButtons( 'team1', 'consumption' );
+				container.appendChild( createNode( 'div' ) );
+
+				if( showTeam2 )
+					appendSequenceButtons( 'team2', 'consumption' );
+
+				ui_container.prepend( container );
+			}
+			if( showEstimation && ( showTeam1 || showTeam2 ))
+			{
+				container = createNode( 'div', { 'class': ['card-detail-item', 'scrum-buttons'] } );
+				title = createNode(
+					'h3',
+					{ 'class': 'card-detail-item-header' },
+					' ' + _( 'card_edit_estimation' )
+				);
+				title.prepend( createNode( 'i', { 'class': 'strelloids-icon-light-bulb' }));
+				container.appendChild( title );
+
+				if( showTeam1 )
+					appendSequenceButtons( 'team1', 'estimation' );
+				container.appendChild( createNode( 'div' ) );
+
+				if( showTeam2 )
+					appendSequenceButtons( 'team2', 'estimation' );
+				ui_container.prepend( container );
+			}
+
+			function appendSequenceButtons( team, mode )
+			{
+				var btn;
+				container.classList.add( 'show-'+team );
+				for( i = 0; i < sequence.length; ++i )
+				{
+					btn = createNode(
+						'button',
+						{ 'class': ['scrum-button', team, mode], value: sequence[i] },
+						sequence[i]
+					);
+					btn.addEventListener( 'click', buttonClicked );
+					container.appendChild( btn );
+				}
+			}
+
+			function buttonClicked()
+			{
+				var matches, new_tag = '';
+				var team = this.classList.contains( 'team1' ) ? 'team1' : 'team2';
+				var mode = this.classList.contains( 'estimation' ) ? 'estimation' : 'consumption';
+				var title = $('textarea.mod-card-back-title');
+
+				title.focus();
+
+				matches = title.value.match( mode === 'estimation' ? estimation_regex : consumption_regex );
+				new_tag += mode === 'estimation' ? '(' : '[';
+				if( !matches )
+					matches = [ '', '', '' ];
+
+				new_tag += team === 'team1' ? this.value : matches[1];
+				new_tag += team === 'team2' ? '/' + this.value : ( matches[2] ? '/' + matches[2] : '' );
+				new_tag += mode === 'estimation' ? ')' : ']';
+				if( matches[0] )
+					title.value = title.value.replace( matches[0], new_tag );
+				else
+					title.value += ' ' + new_tag;
+
+				title.blur();
+			}
 		}
 
 		init();
@@ -1543,6 +1753,8 @@
 			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
 			strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+			strelloids.modules.events.add( 'onCardEditOpened', cardEditOpened );
+			strelloids.modules.events.add( 'onCardTitleChanged', updatePriorityUI );
 		}
 
 		function update()
@@ -1667,6 +1879,7 @@
 		function setPriority( card_title, priority )
 		{
 			var card = closest( card_title, '.list-card' );
+			clearPriority( card );
 			card.classList.add( 'priority-set' );
 
 			if( priority === 1 )
@@ -1679,6 +1892,58 @@
 				card.classList.add( 'priority-low' );
 			else if( priority === 5 )
 				card.classList.add( 'priority-lowest' );
+		}
+
+		function cardEditOpened()
+		{
+			if(	!self.isEnabled() )
+				return;
+
+			var ui_container = $('.card-detail-data');
+
+			if( !$_( 'cards-prioritization-select' ) && ui_container)
+			{
+				var select = createNode( 'select', { id: 'cards-prioritization-select' } );
+				select.appendChild( createNode( 'option', { value: '' }, '---' ) );
+				select.appendChild( createNode( 'option', { value: '1' }, _( 'module_cardsPrioritization_critical' ) ) );
+				select.appendChild( createNode( 'option', { value: '2' }, _( 'module_cardsPrioritization_high' ) ) );
+				select.appendChild( createNode( 'option', { value: '3' }, _( 'module_cardsPrioritization_medium' ) ) );
+				select.appendChild( createNode( 'option', { value: '4' }, _( 'module_cardsPrioritization_low' ) ) );
+				select.appendChild( createNode( 'option', { value: '5' }, _( 'module_cardsPrioritization_lowest' ) ) );
+				select.addEventListener( 'change', priorityChangedFromUI );
+				var container = createNode( 'div', { 'class': 'card-detail-item' } );
+				container.appendChild( createNode( 'h3', { 'class': 'card-detail-item-header' }, _('card_edit_priority') ));
+				container.appendChild( select );
+				ui_container.prepend( container );
+			}
+			updatePriorityUI();
+		}
+
+		function priorityChangedFromUI()
+		{
+			var title = $('.mod-card-back-title');
+			title.focus();
+			if( this.value )
+			{
+				var matches = title.value.match( tag_regex );
+				if( matches )
+					title.value = title.value.replace( matches[0], matches[1]+'!' + this.value + matches[3] );
+				else
+					title.value += ' ' + '!' + this.value;
+			}
+			else
+				title.value = title.value.replace( tag_regex, ' ' );
+			title.blur();
+		}
+
+		function updatePriorityUI()
+		{
+			var title = $('.mod-card-back-title');
+			var matches = tag_regex.exec( title.value );
+			if( matches === null )
+				$_('cards-prioritization-select').value = '';
+			else
+				$_('cards-prioritization-select').value = matches[2];
 		}
 
 		init();

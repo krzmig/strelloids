@@ -105,6 +105,24 @@ function toggleIconByUrl( current_url )
 }
 
 /**
+ * @param {Object} tab
+ */
+function checkIsCardEditOpened( tab )
+{
+	if( tab.status !== 'complete' )
+		return;
+
+	if( typeof tab.url !== 'undefined' && /^https?:\/\/trello.com\/c\//.test( tab.url ) )
+		getBrowserObject().tabs.sendMessage(
+			tab.id,
+			{
+				event: {
+					code: 'onCardEditOpened'
+				}
+			}
+		)
+}
+/**
  * Return `browser` object, depending on current browser
  * @return {object}
  */
@@ -122,11 +140,13 @@ function getBrowserObject()
 getBrowserObject().tabs.onActivated.addListener( function( info ) {
 	getBrowserObject().tabs.get( info.tabId, function( change ) {
 		toggleIconByUrl( change.url );
+		checkIsCardEditOpened( change );
 	} );
 } );
 
 getBrowserObject().tabs.onUpdated.addListener( function( tabId, change, tab ) {
 	toggleIconByUrl( tab.url );
+	checkIsCardEditOpened( tab );
 } );
 
 
