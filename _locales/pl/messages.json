@@ -113,6 +113,9 @@
 	"module_scrumTimes_team2ConsumptionLabelColor": {
 		"message": "Kolory konsumpcji dla zespołu 2"
 	},
+	"module_scrumTimes_pointsButtonsSequence": {
+		"message": "Sekwencja punktów historii dla przycisków"
+	},
 	"background_color": {
 		"message": "Kolor tła"
 	},

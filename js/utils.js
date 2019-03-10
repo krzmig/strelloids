@@ -1,4 +1,38 @@
 /**
+ * Create HTML node
+ * @param {string} type
+ * @param {object} [params]
+ * @param {string} [text_node]
+ * @returns {HTMLElement}
+ */
+function createNode( type, params, text_node )
+{
+	var node = $d.createElement( type );
+	for( var i in params )
+	{
+		if( !params.hasOwnProperty( i ))
+			continue;
+
+		if( ['id','name','type','value','min','max','src'].indexOf( i ) >= 0 )
+			node[i] = params[i];
+		else if( i === 'class' && isstr( params[i] ))
+			node.className = params[i];
+		else if( i === 'class' && isobj( params[i] ))
+		{
+			for( var j in params[i] )
+				if( params[i].hasOwnProperty( j ))
+					node.classList.add( params[i][j] );
+		}
+		else
+			node.setAttribute( i, params[i] );
+	}
+	if( typeof text_node !== 'undefined' )
+		node.appendChild( $d.createTextNode( text_node ));
+
+	return node;
+}
+
+/**
  * @param variable
  * @return {boolean}
  */
