@@ -81,19 +81,21 @@
   background-color: var(--strelloids-scrum-times-bg-team2-consumption);
   color: var(--strelloids-scrum-times-font-team2-consumption); }
 
-.list-card .list-card-title .card-tag {
-  padding: 0 3px;
-  font-family: monospace;
-  display: inline-block;
-  float: none;
-  vertical-align: middle;
-  min-width: initial;
-  opacity: 0.6;
-  color: #17394D;
-  border-left: 3px solid #555;
-  border-radius: 0 4px 4px 0;
-  line-height: 18px;
-  margin: 0 2px; }
+.list-card .list-card-title {
+  width: 100%; }
+  .list-card .list-card-title .card-tag {
+    padding: 0 3px;
+    font-family: monospace;
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+    min-width: initial;
+    opacity: 0.6;
+    color: #17394D;
+    border-left: 3px solid #555;
+    border-radius: 0 4px 4px 0;
+    line-height: 18px;
+    margin: 0 2px; }
 .list-card .list-card-details {
   display: flex;
   flex-wrap: wrap; }
