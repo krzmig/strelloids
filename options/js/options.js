@@ -32,8 +32,12 @@ function ScrumStorySequence()
 
 	function loadSequenceFromSettings(  )
 	{
+		var inputs = $$('#scrum-sequence-buttons input');
+		for( var i = 0; i < inputs.length; ++i )
+			inputs[i].remove();
+
 		var sequence = settings.getGlobal( settingsName );
-		for( var i = 0; i < sequence.length; ++i )
+		for( i = 0; i < sequence.length; ++i )
 		{
 			if( isNaN( sequence[i] ))
 				continue;
@@ -82,10 +86,6 @@ function ScrumStorySequence()
 
 	function reset(  )
 	{
-		var inputs = $$('#scrum-sequence-buttons input');
-		for( var i = 0; i < inputs.length; ++i )
-			inputs[i].remove();
-
 		settings.resetGlobal( settingsName );
 		loadSequenceFromSettings();
 	}
