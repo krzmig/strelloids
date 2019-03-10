@@ -4,7 +4,7 @@
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/krzmig/strelloids",
-	"version": "2019.2.21",
+	"version": "2019.3.10",
 	"default_locale": "en",
 	"icons": {
 		"16": "img/icon-16.png",
