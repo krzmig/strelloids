@@ -459,6 +459,8 @@
 	.card-detail-item-add-button {
 		float: none;
 		display: inline-block;
+		vertical-align: middle;
+		margin-bottom: 2px;
 	}
 	input[name="custom-tag-input"] {
 		display: inline-block;

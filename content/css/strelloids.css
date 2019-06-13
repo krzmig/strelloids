@@ -379,7 +379,9 @@
 
 .custom-tags-ui .card-detail-item-add-button {
   float: none;
-  display: inline-block; }
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 2px; }
 .custom-tags-ui input[name="custom-tag-input"] {
   display: inline-block;
   width: auto;
