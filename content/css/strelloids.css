@@ -101,7 +101,6 @@
   flex-wrap: wrap; }
 .list-card .card-label {
   opacity: 0.7;
-  min-width: initial;
   flex-grow: 1; }
 .list-card .list-card-members {
   flex-grow: 1;
@@ -380,9 +379,10 @@
 
 .custom-tags-ui .card-detail-item-add-button {
   float: none;
-  display: inline-block; }
-
-input[name="custom-tag-input"] {
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 2px; }
+.custom-tags-ui input[name="custom-tag-input"] {
   display: inline-block;
   width: auto;
   max-width: 120px;
@@ -396,5 +396,9 @@ input[name="custom-tag-input"] {
   border-radius: 0 4px 4px 0;
   box-sizing: content-box;
   box-shadow: none; }
+
+.body-card-label-text-on .card-label.mod-card-front,
+.body-card-label-text .card-label.mod-card-front {
+  min-width: initial; }
 
 /*# sourceMappingURL=strelloids.css.map */

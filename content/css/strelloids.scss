@@ -84,7 +84,6 @@
 	}
 	.card-label {
 		opacity: 0.7;
-		min-width: initial;
 		flex-grow: 1;
 	}
 	.list-card-members {
@@ -460,20 +459,29 @@
 	.card-detail-item-add-button {
 		float: none;
 		display: inline-block;
+		vertical-align: middle;
+		margin-bottom: 2px;
+	}
+	input[name="custom-tag-input"] {
+		display: inline-block;
+		width: auto;
+		max-width: 120px;
+		min-width: 1em;
+		height: 30px;
+		margin: 0 4px 4px 0;
+		padding: 0 5px;
+		font-family: monospace;
+		color: #17394D;
+		border-left: 3px solid #555;
+		border-radius: 0 4px 4px 0;
+		box-sizing: content-box;
+		box-shadow: none;
 	}
 }
-input[name="custom-tag-input"] {
-	display: inline-block;
-	width: auto;
-	max-width: 120px;
-	min-width: 1em;
-	height: 30px;
-	margin: 0 4px 4px 0;
-	padding: 0 5px;
-	font-family: monospace;
-	color: #17394D;
-	border-left: 3px solid #555;
-	border-radius: 0 4px 4px 0;
-	box-sizing: content-box;
-	box-shadow: none;
+
+.body-card-label-text-on,
+.body-card-label-text {
+	.card-label.mod-card-front {
+		min-width: initial;
+	}
 }
