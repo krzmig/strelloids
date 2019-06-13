@@ -84,7 +84,6 @@
 	}
 	.card-label {
 		opacity: 0.7;
-		min-width: initial;
 		flex-grow: 1;
 	}
 	.list-card-members {
@@ -475,5 +474,12 @@
 		border-radius: 0 4px 4px 0;
 		box-sizing: content-box;
 		box-shadow: none;
+	}
+}
+
+.body-card-label-text-on,
+.body-card-label-text {
+	.card-label.mod-card-front {
+		min-width: initial;
 	}
 }

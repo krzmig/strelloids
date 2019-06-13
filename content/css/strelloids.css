@@ -101,7 +101,6 @@
   flex-wrap: wrap; }
 .list-card .card-label {
   opacity: 0.7;
-  min-width: initial;
   flex-grow: 1; }
 .list-card .list-card-members {
   flex-grow: 1;
@@ -395,5 +394,9 @@
   border-radius: 0 4px 4px 0;
   box-sizing: content-box;
   box-shadow: none; }
+
+.body-card-label-text-on .card-label.mod-card-front,
+.body-card-label-text .card-label.mod-card-front {
+  min-width: initial; }
 
 /*# sourceMappingURL=strelloids.css.map */
