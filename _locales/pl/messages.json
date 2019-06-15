@@ -50,6 +50,9 @@
 	"settings_lists_enableModule_scrumSumTime": {
 		"message": "Pokaż sumy czasów dla list"
 	},
+	"settings_globalOptionsLink" : {
+		"message": "Ustawienia globalne"
+	},
 	"module_cardsSeparator_description": {
 		"message": "Aby stworzyć separator, zacznij tytuł karty od trzech lub więcej znaków: - lub = (np. \"--- Mój separator\")"
 	},

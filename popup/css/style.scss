@@ -91,6 +91,12 @@ label {
 			}
 		}
 	}
+	a {
+		display: inline-block;
+		flex-grow: 1;
+		text-align: right;
+		color: dodgerblue;
+	}
 	&:hover {
 		input[type=checkbox] {
 			& + span {
@@ -100,6 +106,10 @@ label {
 				background-color: rgba(9, 45, 66, .13);
 				box-shadow: none;
 			}
+		}
+		a {
+			color: royalblue;
+			text-decoration: underline;
 		}
 	}
 }

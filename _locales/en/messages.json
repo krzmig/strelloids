@@ -65,6 +65,9 @@
 		"message": "Show sum times for lists",
 		"description": "Option label in the popup"
 	},
+	"settings_globalOptionsLink" : {
+		"message": "Global settings"
+	},
 	"module_cardsSeparator_description": {
 		"message": "To make separator, start card title with three or more characters: - or = (eg. \"--- My separator\"",
 		"description": "Popup - Option tooltip inside the title attribute"

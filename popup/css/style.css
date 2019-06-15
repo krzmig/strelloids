@@ -79,11 +79,19 @@ label {
       background-color: rgba(9, 45, 66, 0.04); }
       label input[type=checkbox]:disabled + span + span {
         opacity: 0.5; }
+  label a {
+    display: inline-block;
+    flex-grow: 1;
+    text-align: right;
+    color: dodgerblue; }
   label:hover input[type=checkbox] + span {
     background-color: #ebeef0; }
   label:hover input[type=checkbox]:checked + span {
     background-color: rgba(9, 45, 66, 0.13);
     box-shadow: none; }
+  label:hover a {
+    color: royalblue;
+    text-decoration: underline; }
 
 select {
   background-color: #fafcfc;
