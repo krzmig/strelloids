@@ -160,6 +160,12 @@
 	"options_enableBoardScroll_description": {
 		"message": "If enabled you will be able to scroll board in horizontal without holding shift key (just in default display mode)."
 	},
+	"options_enableTabKeyInTextarea": {
+		"message": "Allow use Tab key in card description and comments"
+	},
+	"options_enableTabKeyInTextarea_description": {
+		"message": "If enabled you will be able to insert indent inside card description and comment textarea by tab key. Thanks to this, eg. you can easily create nested list."
+	},
 	"settings_lists_scrumTimes_showEstimation": {
 		"message": "Show estimations"
 	},

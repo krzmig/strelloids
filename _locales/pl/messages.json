@@ -128,6 +128,12 @@
 	"options_enableBoardScroll_description": {
 		"message": "Jeśli włączone będziesz mógł scrollować tablicę w poziomie bez trzymania klawiszu shift (tylko w domyślnym trybie widoku)."
 	},
+	"options_enableTabKeyInTextarea": {
+		"message": "Włącz obsługę klawisz tab w polach opisów"
+	},
+	"options_enableTabKeyInTextarea_description": {
+		"message": "Jeśli włączone będzie mógł wstawiać wcięcia za pomocą klawisza Tab, w polu opisu karty oraz komentarzach do niej. Dzięki temu można np. łatwo tworzyć zagnieżdżone listy."
+	},
 	"settings_lists_scrumTimes_showEstimation": {
 		"message": "Pokaż estymację"
 	},
