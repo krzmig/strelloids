@@ -1150,8 +1150,8 @@
 	{
 		var self = this;
 		var settingName = 'scrumTimes';
-		var estimation_regex = /\((\?|[0-9\.]*)\/?([0-9\.]*?|\?)\)/i;
-		var consumption_regex = /\[(\?|[0-9\.]*)\/?([0-9\.]*?|\?)\]/i;
+		var estimation_regex = /\((\?|\d+\.\d+|\d+|)(?:\/(\?|\d+\.\d+|\d+))?\)/i;
+		var consumption_regex = /\[(\?|\d+\.\d+|\d+|)(?:\/(\?|\d+\.\d+|\d+))?\]/i;
 		var last_cards_amount = 0;
 
 		function init()
