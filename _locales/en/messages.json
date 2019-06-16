@@ -1,4 +1,7 @@
 {
+	"extensionName": {
+		"message": "Strelloids - Trello on steroids"
+	},
 	"extensionDescription": {
 		"message": "Strelloids - Trello possibilities expander. Custom tags, colored lists, hiding the lists, scrum points, new views and much more."
 	},

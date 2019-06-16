@@ -1,6 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "Strelloids",
+	"name": "__MSG_extensionName__",
+	"short_name": "Strelloids",
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/krzmig/strelloids",
