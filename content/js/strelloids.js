@@ -2074,7 +2074,7 @@
 					var before_text = text.substr( 0, start_position );
 					var after_text = text.substr( start_position );
 
-					var last_line_indent = /(?:^|\n)(\s+).*?\n$/.exec( before_text );
+					var last_line_indent = /(?:^|\n)(\t+).*?\n$/.exec( before_text );
 
 					if( last_line_indent )
 					{
