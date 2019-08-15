@@ -480,12 +480,13 @@
 			if( !self.isEnabled() )
 				return;
 
-			var lists_titles = $$( 'textarea.list-header-name:not(.strelloids-already-colored)' );
+			var lists_titles = $$( 'textarea.list-header-name' );
 			for( var i = lists_titles.length - 1; i >= 0; --i )
-				setListColor(
-					closest( lists_titles[i], '.list' ),
-					lists_titles[i]
-				);
+				if( lists_titles[i].value !== lists_titles[i].getAttribute( 'data-cache-title' ))
+					setListColor(
+						closest( lists_titles[i], '.list' ),
+						lists_titles[i]
+					);
 		}
 
 		/**
@@ -551,7 +552,7 @@
 			else
 				list.style.backgroundColor = '';
 
-			title.classList.add( 'strelloids-already-colored' );
+			title.setAttribute( 'data-cache-title', title.value );
 		}
 
 		function listTitleChanged( e )
