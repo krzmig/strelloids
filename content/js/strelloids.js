@@ -367,6 +367,7 @@
 			onGlobalSettingsChange: [],
 			onBoardSettingsChange: [],
 			onListSettingsChange: [],
+			onListTitleChanged: [],
 			onCardEditOpened: [],
 			onCardTitleChanged: [],
 			onCardDescriptionKeyDown: [],
@@ -389,6 +390,8 @@
 			{
 				if( e.target.classList.contains( 'mod-card-back-title' ))
 					self.trigger( 'onCardTitleChanged', e );
+				else if( e.target.classList.contains( 'list-header-name' ))
+					self.trigger( 'onListTitleChanged', e );
 			});
 			$d.addEventListener( 'keydown', function( e )
 			{
@@ -469,6 +472,7 @@
 			strelloids.modules.events.add( 'onUpdate', update );
 			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+			strelloids.modules.events.add( 'onListTitleChanged', listTitleChanged )
 		}
 
 		function update()
@@ -476,11 +480,11 @@
 			if( !self.isEnabled() )
 				return;
 
-			var lists_titles = $$( 'textarea.list-header-name' );
+			var lists_titles = $$( 'textarea.list-header-name:not(.strelloids-already-colored)' );
 			for( var i = lists_titles.length - 1; i >= 0; --i )
 				setListColor(
 					closest( lists_titles[i], '.list' ),
-					lists_titles[i].value
+					lists_titles[i]
 				);
 		}
 
@@ -522,28 +526,38 @@
 
 		/**
 		 * @param {HTMLElement} list
-		 * @param {string} title
+		 * @param {HTMLElement} title
 		 */
 		function setListColor( list, title )
 		{
-			if( /todo/i.test( title ))
+			if( /todo/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.toDo' );
-			else if( /helpdesk/i.test( title ))
+			else if( /helpdesk/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.helpdesk' );
-			else if( /(sprint|stories)/i.test( title ))
+			else if( /(sprint|stories)/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.sprint' );
-			else if( /backlog/i.test( title ))
+			else if( /backlog/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.backlog' );
-			else if( /test/i.test( title ))
+			else if( /test/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.test' );
-			else if( /(progress|working|doing)/i.test( title))
+			else if( /(progress|working|doing)/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.doing' );
-			else if( /upgrade/i.test( title ))
+			else if( /upgrade/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.upgrade' );
-			else if( /(done|ready)/i.test( title ))
+			else if( /(done|ready)/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.done' );
-			else if( /fix/i.test( title ))
+			else if( /fix/i.test( title.value ))
 				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.fix' );
+			else
+				list.style.backgroundColor = '';
+
+			title.classList.add( 'strelloids-already-colored' );
+		}
+
+		function listTitleChanged( e )
+		{
+			var list = closest( e.target, '.list' );
+			setListColor( list, e.target );
 		}
 
 		init();
