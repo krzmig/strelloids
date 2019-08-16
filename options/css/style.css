@@ -1,9 +1,21 @@
 html {
   min-width: 600px;
-  max-width: 100vw; }
+  max-width: 100vw;
+  font-size: 16px; }
 
 * {
   box-sizing: border-box; }
+
+button {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: #fdfbf9;
+  min-width: auto;
+  min-height: auto;
+  padding: 2px 5px;
+  cursor: pointer; }
+  button:hover {
+    background: lightskyblue; }
 
 .tab-container {
   display: flex;
@@ -18,10 +30,7 @@ html {
     padding: 10px 0;
     z-index: 1; }
     .tab-container .tab-nav button {
-      border-width: 1px;
-      border-style: solid;
       border-color: rgba(0, 0, 0, 0.125) rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.125) rgba(0, 0, 0, 0.2);
-      border-radius: 0;
       background: #fff;
       padding: 4px 8px;
       margin-top: -1px;
@@ -71,6 +80,9 @@ label,
 .mt {
   margin-top: 0.5rem; }
 
+.ml {
+  margin-left: 0.5rem; }
+
 code {
   display: inline-block;
   background-color: #ffe0fc;
@@ -80,9 +92,29 @@ code {
   color: #555;
   font-size: 0.85em; }
 
+input {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin: 2px;
+  height: 22px; }
+  input:invalid {
+    box-shadow: 0 0 1.5px 1px red; }
+  input[type=color] {
+    cursor: pointer; }
+  input[type=number] {
+    max-width: 60px; }
+  input.color {
+    width: 90px;
+    font-family: monospace; }
+
 .input-group {
   display: flex;
-  justify-content: stretch; }
+  justify-content: stretch;
+  margin: 2px; }
+  .input-group input {
+    margin: 0;
+    z-index: 1; }
   .input-group > * {
     border-style: solid;
     border-color: rgba(0, 0, 0, 0.2);
@@ -97,16 +129,8 @@ code {
       border-bottom-right-radius: 4px; }
   .input-group .description {
     background-color: #f6f4f2;
-    padding: 2px 6px; }
-
-.reset {
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  background: #fdfbf9;
-  min-width: auto;
-  min-height: auto;
-  padding: 2px 5px;
-  margin-left: 10px;
-  cursor: pointer; }
+    padding: 2px 6px;
+    height: 22px; }
 
 .option-description {
   font-size: 0.85em;
@@ -114,13 +138,10 @@ code {
   padding-left: 10px;
   color: #555; }
 
-input[type=color] {
-  cursor: pointer; }
-
-input[type=number] {
-  max-width: 60px; }
-
 #scrum-sequence-buttons input {
   margin: 4px 2px; }
+
+#colored-lists-scheme {
+  font-family: monospace; }
 
 /*# sourceMappingURL=style.css.map */

@@ -466,13 +466,15 @@
 	{
 		var self = this;
 		var settingName = 'coloredLists';
+		var schemeSettingName = 'module.coloredLists.scheme';
 
 		function init()
 		{
 			strelloids.modules.events.add( 'onUpdate', update );
 			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
-			strelloids.modules.events.add( 'onListTitleChanged', listTitleChanged )
+			strelloids.modules.events.add( 'onListTitleChanged', listTitleChanged );
+			strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChange );
 		}
 
 		function update()
@@ -509,6 +511,18 @@
 				disable();
 		}
 
+		function globalSettingsChange( key )
+		{
+			if( key === schemeSettingName )
+			{
+				var lists_titles = $$( 'textarea.list-header-name' );
+				for( var i = lists_titles.length - 1; i >= 0; --i )
+					lists_titles[i].removeAttribute( 'data-cache-title' );
+
+				update();
+			}
+		}
+
 		function enable()
 		{
 			if( DEBUG )
@@ -531,26 +545,17 @@
 		 */
 		function setListColor( list, title )
 		{
-			if( /todo/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.toDo' );
-			else if( /helpdesk/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.helpdesk' );
-			else if( /(sprint|stories)/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.sprint' );
-			else if( /backlog/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.backlog' );
-			else if( /test/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.test' );
-			else if( /(progress|working|doing)/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.doing' );
-			else if( /upgrade/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.upgrade' );
-			else if( /(done|ready)/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.done' );
-			else if( /fix/i.test( title.value ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.fix' );
-			else
-				list.style.backgroundColor = '';
+			var scheme = strelloids.modules.settings.getGlobal( schemeSettingName );
+			var regex;
+
+			list.style.backgroundColor = '';
+
+			for( var i = 0, l = scheme.length; i < l; ++i )
+			{
+				regex = new RegExp( scheme[i].pattern, 'i' );
+				if( regex.test( title.value ))
+					list.style.backgroundColor = scheme[i].color;
+			}
 
 			title.setAttribute( 'data-cache-title', title.value );
 		}

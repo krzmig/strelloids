@@ -92,6 +92,15 @@
 	"options_reset": {
 		"message": "Przywróć domyślne"
 	},
+	"module_coloredLists_coloringSchemes": {
+		"message": "Schematy kolorowania"
+	},
+	"module_coloredLists_resetColoringSchemes": {
+		"message": "\u21BB Przywróć wszystkie"
+	},
+	"module_coloredLists_resetColoringSchemesDescription": {
+		"message": "Przywróci WSZYSTKIE powyższe schematy kolorów do domyślnych wartości."
+	},
 	"module_cardsPrioritization_critical": {
 		"message": "Krytyczny"
 	},

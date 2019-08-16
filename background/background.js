@@ -15,8 +15,11 @@ function settingsMigration()
 				if( typeof result !== 'undefined' && result )
 				{
 					options = result;
-					if( typeof options.version === 'undefined' )
-						migrationTo2019_02_20();
+					if( typeof options.version !== 'undefined' )
+					{
+						if( compareVersionsNumber( options.version, '2019.8.16' ) === -1 )
+							migrationTo2019_08_16();
+					}
 
 					updateVersion();
 				}
@@ -31,47 +34,46 @@ function settingsMigration()
 		});
 	}
 
-	function migrationTo2019_02_20()
+	function migrationTo2019_08_16()
 	{
-		var data_to_save = {};
+		var old_data = [
+			[ "module.coloredLists.color.toDo", "#eff5d0" ],
+			[ "module.coloredLists.color.sprint", "#d0dff6" ],
+			[ "module.coloredLists.color.backlog", "#c0e8ed" ],
+			[ "module.coloredLists.color.doing", "#bfe3c6" ],
+			[ "module.coloredLists.color.done", "#d9f0bf" ],
+			[ "module.coloredLists.color.test", "#f5f5c0" ],
+			[ "module.coloredLists.color.fix", "#f9c0d0" ],
+			[ "module.coloredLists.color.upgrade", "#e6ccf5" ],
+			[ "module.coloredLists.color.helpdesk", "#f5d3f3" ]
+		];
+		var new_data = [
+			{ "pattern": "todo", "color": "#eff5d0ff" },
+			{ "pattern": "(sprint|stories)", "color": "#d0dff6ff" },
+			{ "pattern": "backlog", "color": "#c0e8edff" },
+			{ "pattern": "(progress|working|doing)", "color": "#bfe3c6ff" },
+			{ "pattern": "(done|ready)", "color": "#d9f0bfff" },
+			{ "pattern": "test", "color": "#f5f5c0ff" },
+			{ "pattern": "fix", "color": "#f9c0d0ff" },
+			{ "pattern": "upgrade", "color": "#e6ccf5ff" },
+			{ "pattern": "helpdesk", "color": "#f5d3f3ff" }
+		];
+		var do_save = false;
+
 		for( var i in options )
-		{
-			if( !options.hasOwnProperty( i ) )
-				continue;
+			if( options.hasOwnProperty( i ) )
+				for( var j = old_data.length - 1; j >= 0; --j )
+					if( i === old_data[j][0] && options[i] !== old_data[j][1] )
+					{
+						do_save = true;
+						new_data[j].color = options[i] + 'ff';
+						getApiObject().remove( i );
+					}
 
-			if( typeof options[i].cardsCounter !== 'undefined' )
-			{
-				options[i].showCardsCounter = options[i].cardsCounter;
-				delete options[i].cardsCounter;
-			}
-			if( typeof options[i].shortId !== 'undefined' )
-			{
-				options[i].showCardShortId = options[i].shortId;
-				delete options[i].shortId;
-			}
-			if( typeof options[i].hiddenLists !== 'undefined' )
-			{
-				for( var j = options[i].hiddenLists.length - 1; j >= 0; --j )
-					data_to_save['list.'+options[i].hiddenLists[j]] = { hidden: true };
-
-				delete options[i].hiddenLists;
-			}
-			if( typeof options[i].displayAsTable !== 'undefined' && options[i].displayAsTable )
-			{
-				options[i].displayMode = 'table';
-				delete options[i].displayAsTable;
-			}
-			else if( typeof options[i].displayInMultiRows !== 'undefined' && options[i].displayInMultiRows )
-			{
-				options[i].displayMode = 'multi-rows';
-				delete options[i].displayInMultiRows;
-			}
-
-			data_to_save['board.'+i] = options[i];
-			getApiObject().remove( i );
-		}
-		if( data_to_save )
-			getApiObject().set( data_to_save );
+		if( do_save )
+			getApiObject().set({
+				"module.coloredLists.scheme": new_data
+			});
 	}
 
 	/**
@@ -87,6 +89,31 @@ function settingsMigration()
 				return browser.storage.sync;
 			else if( typeof browser.storage.local !== 'undefined' )
 				return browser.storage.local;
+	}
+
+	function compareVersionsNumber( version1, version2 )
+	{
+		var parts1 = version1.split('.');
+		var parts2 = version2.split('.');
+
+		if( parts1.every( isNaN ) || parts2.every( isNaN ))
+			return NaN;
+
+		parts1 = parts1.map( Number );
+		parts2 = parts2.map( Number );
+
+		while( parts1.length < parts2.length )
+			parts1.push( 0 );
+		while( parts2.length < parts1.length )
+			parts2.push( 0 );
+
+		for( var i = 0; i < parts1.length; ++i )
+			if( parts1[i] > parts2[i] )
+				return 1;
+			else if( parts1[i] < parts2[i] )
+				return -1;
+
+		return 0;
 	}
 
 	init();

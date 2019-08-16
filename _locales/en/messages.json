@@ -119,6 +119,15 @@
 		"message": "Reset to default",
 		"description": "Options - The title attribute for reset button"
 	},
+	"module_coloredLists_coloringSchemes": {
+		"message": "Coloring schemes"
+	},
+	"module_coloredLists_resetColoringSchemes": {
+		"message": "\u21BB Reset all"
+	},
+	"module_coloredLists_resetColoringSchemesDescription": {
+		"message": "Will reset ALL above color schemes to default."
+	},
 	"module_cardsPrioritization_critical": {
 		"message": "Critical",
 		"description": "Priority name for value 1"

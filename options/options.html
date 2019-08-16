@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Strelloids options</title>
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="../utils/css/colorPicker.css">
 </head>
 <body>
 	<div class="tab-container">
@@ -26,7 +27,7 @@
 					<input type="number" min="0.3" step="0.1" data-toggle="set" data-target="global.loopInterval">
 					<span class="description">s</span>
 				</div>
-				<button type="button" class="reset" data-toggle="reset" data-target="global.loopInterval" title="__MSG_options_reset__">&times;</button>
+				<button type="button" class="reset ml" data-toggle="reset" data-target="global.loopInterval" title="__MSG_options_reset__">&#8635;</button>
 			</div>
 			<div class="option-description" data-localize="__MSG_options_interval_description__"></div>
 
@@ -46,61 +47,13 @@
 		</div>
 
 		<div class="tab-content" id="colored-lists-tab">
-			<h5 data-localize="__MSG_options_default_colors__"></h5>
+			<h5 data-localize="__MSG_module_coloredLists_coloringSchemes__"></h5>
 			<div class="subsection">
+				<div id="colored-lists-scheme"></div>
+				<br>
 				<div class="flex">
-					<code>/todo/i</code>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.toDo">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.toDo" title="__MSG_options_reset__">&times;</button>
-				</div>
-				<div class="flex">
-					<code>/(sprint|stories)/i</code>
-					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.sprint">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.sprint" title="__MSG_options_reset__">&times;</button>
-				</div>
-				<div class="flex">
-					<code>/backlog/i</code>
-					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.backlog">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.backlog" title="__MSG_options_reset__">&times;</button>
-				</div>
-				<div class="flex">
-					<code>/(progress|working|doing)/i</code>
-					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.doing">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.doing" title="__MSG_options_reset__">&times;</button>
-				</div>
-				<div class="flex">
-					<code>/(done|ready)/i</code>
-					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.done">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.done" title="__MSG_options_reset__">&times;</button>
-				</div>
-				<div class="flex">
-					<code>/test/i</code>
-					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.test">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.test" title="__MSG_options_reset__">&times;</button>
-				</div>
-				<div class="flex">
-					<code>/fix/i</code>
-					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.fix">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.fix" title="__MSG_options_reset__">&times;</button>
-				</div>
-				<div class="flex">
-					<code>/upgrade/i</code>
-					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.upgrade">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.upgrade" title="__MSG_options_reset__">&times;</button>
-				</div>
-				<div class="flex">
-					<code>/helpdesk/i</code>
-					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.coloredLists.color.helpdesk">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.coloredLists.color.helpdesk" title="__MSG_options_reset__">&times;</button>
+					<button type="button" class="reset" data-toggle="reset" data-localize="__MSG_module_coloredLists_resetColoringSchemes__" data-target="module.coloredLists.scheme" title="__MSG_module_coloredLists_resetColoringSchemesDescription__" tabindex="-1"></button>
 				</div>
 			</div>
 		</div>
@@ -111,32 +64,32 @@
 				<div class="flex">
 					<span data-localize="__MSG_module_cardsPrioritization_critical__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.critical">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.critical" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.critical">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.critical" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 				<div class="flex">
 					<span data-localize="__MSG_module_cardsPrioritization_high__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.high">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.high" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.high">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.high" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 				<div class="flex">
 					<span data-localize="__MSG_module_cardsPrioritization_medium__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.medium">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.medium" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.medium">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.medium" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 				<div class="flex">
 					<span data-localize="__MSG_module_cardsPrioritization_low__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.low">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.low" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.low">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.low" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 				<div class="flex">
 					<span data-localize="__MSG_module_cardsPrioritization_lowest__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.cardsPrioritization.color.lowest">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.cardsPrioritization.color.lowest" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.lowest">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.lowest" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 			</div>
 		</div>
@@ -147,7 +100,7 @@
 				<div class="flex">
 					<div id="scrum-sequence-buttons">
 					</div>
-					<button type="button" class="reset" id="resetScrumSequence" title="__MSG_options_reset__">&times;</button>
+					<button type="button" class="reset ml" id="resetScrumSequence" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 			</div>
 			<h5 data-localize="__MSG_module_scrumTimes_team1EstimationLabelColor__"></h5>
@@ -155,14 +108,14 @@
 				<div class="flex">
 					<span data-localize="__MSG_background_color__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam1Estimation">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Estimation" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam1Estimation">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Estimation" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 				<div class="flex">
 					<span data-localize="__MSG_font_color__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam1Estimation">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Estimation" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam1Estimation">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Estimation" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 			</div>
 			<h5 data-localize="__MSG_module_scrumTimes_team1ConsumptionLabelColor__"></h5>
@@ -170,14 +123,14 @@
 				<div class="flex">
 					<span data-localize="__MSG_background_color__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam1Consumption">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Consumption" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam1Consumption">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Consumption" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 				<div class="flex">
 					<span data-localize="__MSG_font_color__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam1Consumption">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Consumption" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam1Consumption">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Consumption" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 			</div>
 			<h5 data-localize="__MSG_module_scrumTimes_team2EstimationLabelColor__"></h5>
@@ -185,14 +138,14 @@
 				<div class="flex">
 					<span data-localize="__MSG_background_color__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam2Estimation">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Estimation" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam2Estimation">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Estimation" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 				<div class="flex">
 					<span data-localize="__MSG_font_color__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam2Estimation">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Estimation" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam2Estimation">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Estimation" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 			</div>
 			<h5 data-localize="__MSG_module_scrumTimes_team2ConsumptionLabelColor__"></h5>
@@ -200,21 +153,96 @@
 				<div class="flex">
 					<span data-localize="__MSG_background_color__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam2Consumption">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Consumption" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam2Consumption">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Consumption" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 				<div class="flex">
 					<span data-localize="__MSG_font_color__"></span>
 					<span style="flex-grow: 1"></span>
-					<input type="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam2Consumption">
-					<button type="button" class="reset" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Consumption" title="__MSG_options_reset__">&times;</button>
+					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam2Consumption">
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Consumption" title="__MSG_options_reset__">&#8635;</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="../js/i18n.js"></script>
-	<script src="../js/utils.js"></script>
-	<script src="../js/settings.js"></script>
+
+	<form id="color-picker" style="display: none">
+		<div class="backdrop"></div>
+		<div class="modal">
+			<div class="modes">
+				<label>
+					<input type="radio" name="mode" value="rgb" checked>
+					<span class="mode-tab">RGB</span>
+				</label>
+				<label>
+					<input type="radio" name="mode" value="hsl">
+					<span class="mode-tab">HSL</span>
+				</label>
+			</div>
+			<div class="content">
+				<div class="slider rgb">
+					<span>R</span>
+					<input type="range" name="R" min="0" max="255" tabindex="1">
+					<input type="number" name="R" min="0" max="255" tabindex="2">
+				</div>
+				<div class="slider rgb">
+					<span>G</span>
+					<input type="range" name="G" min="0" max="255" tabindex="1">
+					<input type="number" name="G" min="0" max="255" tabindex="2">
+				</div>
+				<div class="slider rgb">
+					<span>B</span>
+					<input type="range" name="B" min="0" max="255" tabindex="1">
+					<input type="number" name="B" min="0" max="255" tabindex="2">
+				</div>
+
+				<div class="slider hsl" style="display: none">
+					<span>H</span>
+					<input type="range" name="H" min="0" max="360" tabindex="1">
+					<input type="number" name="H" min="0" max="360" tabindex="2">
+				</div>
+				<div class="slider hsl" style="display: none">
+					<span>S</span>
+					<input type="range" name="S" min="0" max="100" tabindex="1">
+					<input type="number" name="S" min="0" max="100" tabindex="2">
+				</div>
+				<div class="slider hsl" style="display: none">
+					<span>L</span>
+					<input type="range" name="L" min="0" max="100" tabindex="1">
+					<input type="number" name="L" min="0" max="100" tabindex="2">
+				</div>
+
+				<div class="slider hsl rgb">
+					<span>A</span>
+					<label class="bg-transparent">
+						<input type="range" name="A" min="0" max="100" tabindex="1">
+					</label>
+					<input type="number" name="A" min="0" max="100" tabindex="2">
+				</div>
+
+				<footer>
+					<div class="preview"></div>
+					<div class="flex hex-container">
+						<span></span>
+						<label>Hex</label>
+						<input type="text" name="hex" class="hex-color" pattern="#([0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})" tabindex="3">
+					</div>
+
+					<div class="buttons">
+						<button type="reset" class="cancel" tabindex="4">Cancel</button>
+						<button type="submit" class="save" tabindex="4">Save</button>
+					</div>
+				</footer>
+			</div>
+		</div>
+	</form>
+
+	<script src="../utils/js/i18n.js"></script>
+	<script src="../utils/js/utils.js"></script>
+	<script src="../utils/js/settings.js"></script>
+	<script src="../utils/js/colorPicker.js"></script>
+	<script src="js/module/ColoredListsScheme.js"></script>
+	<script src="js/module/ScrumStorySequence.js"></script>
 	<script src="js/options.js"></script>
 </body>
 </html>
