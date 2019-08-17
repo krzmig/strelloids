@@ -23,10 +23,11 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Browser details**
+ - OS: [e.g. Debian, iOS]
+ - Browser [e.g. firefox, chrome]
+ - Version [e.g. 69]
+ - Strelloids version [e.g. 2019.2.29]
 
 **Additional context**
 Add any other context about the problem here.
