@@ -90,6 +90,8 @@
 		var default_settings = {};
 		/** @type {string|null} */
 		var board_id = null;
+		/** @type {string} */
+		var last_board_name;
 
 		function init()
 		{
@@ -101,6 +103,13 @@
 		function update()
 		{
 			loadListsIds();
+
+			var board_name = $( 'input.board-name-input' );
+			if( board_name && last_board_name !== board_name.value )
+			{
+				strelloids.modules.events.trigger( 'onBoardSwitch' );
+				last_board_name = board_name.value;
+			}
 		}
 
 		/**
@@ -275,7 +284,7 @@
 		function findBoardId()
 		{
 			var matches = /trello.com\/b\/([a-z0-9]+)\//i.exec( $w.location.toString() );
-			var node_board_name = $( '.board-header-btn-name' );
+			var node_board_name = $( 'input.board-name-input' );
 
 			if( matches && matches.length )
 			{
@@ -286,7 +295,7 @@
 					if( typeof settings[option_key] === 'undefined' )
 						settings[option_key] = {};
 
-					settings[option_key].board_name = node_board_name.innerText;
+					settings[option_key].board_name = node_board_name.value;
 				}
 				return matches[1];
 			}
@@ -299,7 +308,7 @@
 				if( !node_board_name )
 					return null;
 
-				var board_name = node_board_name.innerText;
+				var board_name = node_board_name.value;
 				for( var i in settings )
 				{
 					if( !settings.hasOwnProperty( i ))
@@ -367,6 +376,7 @@
 			onGlobalSettingsChange: [],
 			onBoardSettingsChange: [],
 			onListSettingsChange: [],
+			onBoardSwitch: [],
 			onListTitleChanged: [],
 			onCardEditOpened: [],
 			onCardTitleChanged: [],
@@ -987,7 +997,7 @@
 		function init()
 		{
 			strelloids.modules.events.add( 'onUpdate', update );
-			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSwitch', boardSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
 		}
 
