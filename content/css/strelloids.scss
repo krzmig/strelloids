@@ -375,11 +375,23 @@
 					grid-row: 1 / span 1;
 					text-align: center;
 				}
+				.list-visibility-switcher {
+					&::before {
+						transform: rotate(90deg);
+					}
+				}
 			}
 			&.list-hidden {
 				text-orientation: initial;
 				writing-mode: initial;
 				-webkit-writing-mode: initial;
+				.list-header {
+					.list-visibility-switcher {
+						&::before {
+							transform: rotate(0deg);
+						}
+					}
+				}
 			}
 			&:first-child {
 				margin-left: 4px;
