@@ -32,7 +32,7 @@ You can set card priority simply adding into title one of this keywords: `!1` `!
 ### Colored lists
 Strelloids can set background color for lists depending on their titles. You can change coloring schemes in global extension settings.
 
-[More info (wiki)](wiki/Modules-|-Colored-lists)
+[More info (wiki)](/krzmig/strelloids/wiki/Modules-|-Colored-lists)
 
 ### Scrum times
 With extension you can also rate cards in story points. For each card you can set estimation and consumption. Additionally you are able to set this each value for two teams separately eg. development and testing.
