@@ -123,6 +123,8 @@
 
 			if( board_id && typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
 				return settings[option_key][key];
+			else if( typeof settings['board.*'] !== 'undefined' && typeof settings['board.*'][key] !== 'undefined' )
+				return settings['board.*'][key];
 			else if( typeof default_settings['board.*'][key] !== 'undefined' )
 				return default_settings['board.*'][key];
 			else

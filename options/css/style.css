@@ -13,6 +13,10 @@ body {
 h1 {
   margin: 8px 0 0 0; }
 
+h4 {
+  margin-top: 1rem;
+  margin-bottom: 4px; }
+
 h5 {
   margin-top: 1rem;
   margin-bottom: 4px; }
@@ -109,10 +113,16 @@ hr {
     .tab-container .tab-content.active {
       display: block; }
 
+label {
+  cursor: pointer; }
+
 label,
 .flex {
   display: flex;
   align-items: center; }
+
+.fg {
+  flex-grow: 1; }
 
 .subsection {
   padding-left: 10px;

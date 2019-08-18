@@ -56,6 +56,9 @@
 	"settings_globalOptionsLink" : {
 		"message": "Ustawienia globalne"
 	},
+	"options_defaultBoardSettings": {
+		"message": "Domyślne ustawienia tablicy"
+	},
 	"module_cardsSeparator_description": {
 		"message": "Aby stworzyć separator, zacznij tytuł karty od trzech lub więcej znaków: - lub = (np. \"--- Mój separator\")"
 	},

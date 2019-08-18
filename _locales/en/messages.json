@@ -103,6 +103,10 @@
 		"message": "Global Settings",
 		"description": "Options / Global settings / Tab name"
 	},
+	"options_defaultBoardSettings": {
+		"message": "Default board settings",
+		"description": "Options / Global settings / Tab name"
+	},
 	"options_modules": {
 		"message": "Modules settings",
 		"description": "Options / Modules settings / Category name"
