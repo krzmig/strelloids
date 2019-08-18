@@ -64,6 +64,7 @@ ColorPicker = function( input )
 	{
 		input.setAttribute( 'data-initialized', 'true' );
 		input.addEventListener( 'focus', events.input.focus, true );
+		input.addEventListener( 'reset', events.input.reset )
 	}
 
 	var picker = {
@@ -90,7 +91,7 @@ ColorPicker = function( input )
 			UI.updateInput();
 
 			var onChangeEvent = document.createEvent( 'HTMLEvents' );
-			onChangeEvent.initEvent('change', false, true );
+			onChangeEvent.initEvent('change', true, true );
 			input.dispatchEvent( onChangeEvent );
 
 			picker.close();
@@ -273,6 +274,11 @@ ColorPicker = function( input )
 			{
 				e.preventDefault();
 				picker.open();
+			},
+			reset: function()
+			{
+				updateCurrentColor.fromInput();
+				UI.updateInput();
 			}
 		},
 

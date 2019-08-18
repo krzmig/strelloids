@@ -11,7 +11,11 @@ function loadOptionsToUI()
 {
 	var inputs = $$( '[data-toggle=set]' );
 	for( var i = inputs.length - 1; i >= 0; --i )
-		inputs[i].value = settings.getGlobal( inputs[i].getAttribute( 'data-target' ));
+	{
+		inputs[i].value = settings.getGlobal( inputs[i].getAttribute( 'data-target' ) );
+		if( inputs[i].classList.contains( 'color' ))
+			inputs[i].dispatchEvent( new CustomEvent( 'reset' ));
+	}
 
 	inputs = $$( '[data-toggle=toggle]' );
 	for( i = inputs.length - 1; i >= 0; --i )
