@@ -1,34 +1,75 @@
 html {
   min-width: 600px;
   max-width: 100vw;
-  font-size: 16px; }
+  background-color: #f9f9fa; }
+
+body {
+  font-size: 14px;
+  font-family: "DejaVu Sans", "Verdana", SansSerif; }
 
 * {
   box-sizing: border-box; }
 
-button {
+h1 {
+  margin: 8px 0 0 0; }
+
+h5 {
+  margin-top: 1rem;
+  margin-bottom: 4px; }
+
+button,
+.button {
+  display: inline-block;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0;
   background: #fdfbf9;
+  color: #000;
   min-width: auto;
   min-height: auto;
   padding: 2px 5px;
+  text-decoration: none;
   cursor: pointer; }
-  button:hover {
-    background: lightskyblue; }
+  button:hover,
+  .button:hover {
+    background: lightskyblue;
+    color: #000; }
+
+hr {
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.2);
+  margin: 6px auto 12px; }
+
+.text-center {
+  text-align: center; }
+
+.logo {
+  display: inline-block;
+  margin: 0 auto; }
 
 .tab-container {
-  display: flex;
+  display: grid;
   align-items: stretch;
-  width: 100%; }
+  width: 100%;
+  margin: 0 auto;
+  max-width: 960px;
+  grid-template-rows: repeat(10, auto) 1fr;
+  grid-template-columns: 256px auto; }
   .tab-container .tab-nav {
+    width: 100%;
     position: relative;
     right: -1px;
     display: flex;
     flex-direction: column;
     justify-content: stretch;
     padding: 10px 0;
-    z-index: 1; }
+    z-index: 1;
+    grid-column-start: 1; }
+    .tab-container .tab-nav h4 {
+      text-align: left;
+      margin: 2px 12px;
+      font-weight: normal;
+      color: rgba(0, 0, 0, 0.65); }
     .tab-container .tab-nav button {
       border-color: rgba(0, 0, 0, 0.125) rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.125) rgba(0, 0, 0, 0.2);
       background: #fff;
@@ -47,25 +88,26 @@ button {
       .tab-container .tab-nav button.active {
         border-right-color: #fff;
         font-weight: bold; }
-      .tab-container .tab-nav button:first-child {
+      .tab-container .tab-nav button:first-of-type {
         margin-top: 0;
         border-top-left-radius: 5px;
         border-top-color: rgba(0, 0, 0, 0.2); }
-      .tab-container .tab-nav button:last-child {
+      .tab-container .tab-nav button:last-of-type {
         border-bottom-left-radius: 5px;
         border-bottom-color: rgba(0, 0, 0, 0.2); }
+    .tab-container .tab-nav:first-child {
+      padding: 0; }
   .tab-container .tab-content {
     display: none;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    padding: 10px;
-    flex-grow: 1; }
+    padding: 10px 20px 30px 20px;
+    flex-grow: 1;
+    background-color: #fff;
+    grid-column-start: 2;
+    grid-row: 1 / span 11; }
     .tab-container .tab-content.active {
       display: block; }
-
-h5 {
-  margin-top: 4px;
-  margin-bottom: 8px; }
 
 label,
 .flex {
@@ -74,11 +116,10 @@ label,
 
 .subsection {
   padding-left: 10px;
-  padding-right: 10px;
   border-left: 4px solid rgba(0, 0, 0, 0.2); }
 
 .mt {
-  margin-top: 0.5rem; }
+  margin-top: 1rem; }
 
 .ml {
   margin-left: 0.5rem; }
@@ -137,6 +178,18 @@ input {
   border-left: 4px solid rgba(0, 0, 0, 0.2);
   padding-left: 10px;
   color: #555; }
+
+.title-group {
+  display: flex;
+  align-items: flex-end;
+  margin: 12px 0; }
+  .title-group h3, .title-group h4 {
+    margin: 0; }
+  .title-group h4 {
+    color: rgba(0, 0, 0, 0.65); }
+  .title-group span {
+    padding: 0 8px;
+    color: rgba(0, 0, 0, 0.65); }
 
 #scrum-sequence-buttons input {
   margin: 4px 2px; }

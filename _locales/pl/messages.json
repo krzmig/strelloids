@@ -78,7 +78,10 @@
 		"message": "Czasy dla scrum"
 	},
 	"options_global": {
-		"message": "Globalne"
+		"message": "Globalne ustawienia"
+	},
+	"options_modules": {
+		"message": "Ustawienia modułów"
 	},
 	"options_interval": {
 		"message": "Opóźnienie pętli"
@@ -96,7 +99,7 @@
 		"message": "Schematy kolorowania"
 	},
 	"module_coloredLists_resetColoringSchemes": {
-		"message": "\u21BB Przywróć wszystkie"
+		"message": "\u21BA Przywróć wszystkie"
 	},
 	"module_coloredLists_resetColoringSchemesDescription": {
 		"message": "Przywróci WSZYSTKIE powyższe schematy kolorów do domyślnych wartości."
@@ -172,5 +175,59 @@
 	},
 	"card_edit_customTags": {
 		"message": "Własne tagi"
+	},
+	"options_about": {
+		"message": "O Strelloids"
+	},
+	"options_about_sourceCode": {
+		"message": "Kod źródłowy:"
+	},
+	"options_about_sourceCodeLink": {
+		"message": "Kod źródłowy na GitHub"
+	},
+	"options_about_sourceCodeDescription": {
+		"message": "Strelloids to otwarte oprogramowanie. Możesz sprawdzić, zweryfikować lub nawet zedytować jego kod. Jest publikowany na GitHub."
+	},
+	"options_about_help": {
+		"message": "Potrzebujesz pomocy?"
+	},
+	"options_about_helpLink": {
+		"message": "Wiki na GitHub (en)"
+	},
+	"options_about_helpDescription": {
+		"message": "Sprawdź wiki aby uzyskać więcej pomocy, opisów i przykładów."
+	},
+	"options_about_issue": {
+		"message": "Znalazłeś/aś błąd albo masz pomysł?"
+	},
+	"options_about_issueLink": {
+		"message": "Utwórz zgłoszenie na GitHub (en)"
+	},
+	"options_about_issueDescription": {
+		"message": "Nie jestem Mr. Robot. Robię wiele błędów!"
+	},
+	"options_about_email": {
+		"message": "E-mail:"
+	},
+	"options_about_emailDescription": {
+		"message": "Jeśli preferujesz bardziej tradycyjną formę kontaktu."
+	},
+	"options_about_donate": {
+		"message": "Wsparcie:"
+	},
+	"options_about_donateDescription": {
+		"message": "Jeśli jesteś zadowolony, możesz rozważyć dotację na kawę, poprzez PayPal."
+	},
+	"help_with_icon": {
+		"message": "\u2753 Pomoc"
+	},
+	"options_pageTitle": {
+		"message": "Strelloids - Ustawienia"
+	},
+	"cancel": {
+		"message": "Anuluj"
+	},
+	"save": {
+		"message": "Zapisz"
 	}
 }

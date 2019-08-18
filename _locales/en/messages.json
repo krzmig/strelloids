@@ -89,19 +89,23 @@
 	},
 	"module_name_coloredLists": {
 		"message": "Colored lists",
-		"description": "Options - Tab name"
+		"description": "Options / Colored lists / Tab name"
 	},
 	"module_name_cardsPrioritization": {
 		"message": "Cards prioritization",
-		"description": "Options - Tab name"
+		"description": "Options / Cards prioritization / Tab name"
 	},
 	"module_name_scrumTimes": {
 		"message": "Scrum times",
-		"description": "Options - Tab name"
+		"description": "Options / Scrum times / Tab name"
 	},
 	"options_global": {
-		"message": "Global",
-		"description": "Options - Tab name"
+		"message": "Global Settings",
+		"description": "Options / Global settings / Tab name"
+	},
+	"options_modules": {
+		"message": "Modules settings",
+		"description": "Options / Modules settings / Category name"
 	},
 	"options_interval": {
 		"message": "Loop interval",
@@ -123,7 +127,7 @@
 		"message": "Coloring schemes"
 	},
 	"module_coloredLists_resetColoringSchemes": {
-		"message": "\u21BB Reset all"
+		"message": "\u21BA Reset all"
 	},
 	"module_coloredLists_resetColoringSchemesDescription": {
 		"message": "Will reset ALL above color schemes to default."
@@ -204,5 +208,60 @@
 	},
 	"card_edit_customTags": {
 		"message": "Custom tags"
+	},
+	"options_about": {
+		"message": "About",
+		"description": "Options / About / Tab name"
+	},
+	"options_about_sourceCode": {
+		"message": "Source code:"
+	},
+	"options_about_sourceCodeLink": {
+		"message": "Source code on GitHub"
+	},
+	"options_about_sourceCodeDescription": {
+		"message": "Strelloids is open source software. You can check, verify or even edit this code. It is published on GitHub."
+	},
+	"options_about_help": {
+		"message": "Need more help?"
+	},
+	"options_about_helpLink": {
+		"message": "Wiki on GitHub"
+	},
+	"options_about_helpDescription": {
+		"message": "Check the wiki for more help, descriptions and examples."
+	},
+	"options_about_issue": {
+		"message": "Found an bug or have an idea?"
+	},
+	"options_about_issueLink": {
+		"message": "Create a issue on GitHub"
+	},
+	"options_about_issueDescription": {
+		"message": "I'm not Mr. Robot. I'm making a lot of bugs!"
+	},
+	"options_about_email": {
+		"message": "E-mail:"
+	},
+	"options_about_emailDescription": {
+		"message": "If you prefer the old way of contact."
+	},
+	"options_about_donate": {
+		"message": "Donate:"
+	},
+	"options_about_donateDescription": {
+		"message": "If you enjoying, consider donation for more coffee via PayPal."
+	},
+	"help_with_icon": {
+		"message": "\u2753 Help"
+	},
+	"options_pageTitle": {
+		"message": "Strelloids - Settings"
+	},
+	"cancel": {
+		"message": "Cancel"
+	},
+	"save": {
+		"message": "Save"
 	}
 }
