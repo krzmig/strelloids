@@ -527,10 +527,7 @@
 		{
 			if( key === schemeSettingName )
 			{
-				var lists_titles = $$( 'textarea.list-header-name' );
-				for( var i = lists_titles.length - 1; i >= 0; --i )
-					lists_titles[i].removeAttribute( 'data-cache-title' );
-
+				removeCachedTitles();
 				update();
 			}
 		}
@@ -549,6 +546,8 @@
 			var lists = $$( '.list' );
 			for( var i = lists.length - 1; i >= 0; --i )
 				lists[i].style.backgroundColor = '';
+
+			removeCachedTitles();
 		}
 
 		/**
@@ -576,6 +575,13 @@
 		{
 			var list = closest( e.target, '.list' );
 			setListColor( list, e.target );
+		}
+
+		function removeCachedTitles()
+		{
+			var lists_titles = $$( 'textarea.list-header-name' );
+			for( var i = lists_titles.length - 1; i >= 0; --i )
+				lists_titles[i].removeAttribute( 'data-cache-title' );
 		}
 
 		init();
