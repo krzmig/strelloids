@@ -15,7 +15,7 @@ function createNode( type, params, text_node )
 
 		if( ['id','name','type','value','min','max','src'].indexOf( i ) >= 0 )
 			node[i] = params[i];
-		else if( i === 'class' && isstr( params[i] ))
+		else if( i === 'class' && typeof params[i] === 'string' )
 			node.className = params[i];
 		else if( i === 'class' && isobj( params[i] ))
 		{
@@ -30,6 +30,22 @@ function createNode( type, params, text_node )
 		node.appendChild( $d.createTextNode( text_node ));
 
 	return node;
+}
+
+/**
+ * Finding closest parent, matching to given selector
+ * @param {HTMLElement} node
+ * @param {string} selector
+ * @return {null|HTMLElement}
+ */
+function closest( node, selector )
+{
+	var parent = node;
+
+	while( parent && !parent.matches( selector ))
+		parent = parent.parentNode;
+
+	return parent;
 }
 
 /**

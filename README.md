@@ -29,20 +29,10 @@ To split list into section, you can use separators. To makes them, you can start
 ### Cards prioritization
 You can set card priority simply adding into title one of this keywords: `!1` `!2` `!3` `!4` or `!5`. `!1` is the highest priority and `!5` is the lowest. Cards with set priority will get colored left border.
 
-### Scrum colored lists
-Strelloids can set background color for lists depending on their titles. You can use one of this keywords inside title to trigger color:
+### Colored lists
+Strelloids can set background color for lists depending on their titles. You can change coloring schemes in global extension settings.
 
-- sprint/stories
-- todo
-- progress/working/doing
-- done/ready
-- fix 
-- test
-- backlog
-- helpdesk
-- ready/upgrade
-
-Keywords are case insensitive.
+[More info (wiki)](https://github.com/krzmig/strelloids/wiki/Modules-%7C-Colored-lists)
 
 ### Scrum times
 With extension you can also rate cards in story points. For each card you can set estimation and consumption. Additionally you are able to set this each value for two teams separately eg. development and testing.

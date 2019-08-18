@@ -1,10 +1,11 @@
 {
 	"manifest_version": 2,
-	"name": "Strelloids",
+	"name": "__MSG_extensionName__",
+	"short_name": "Strelloids",
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/krzmig/strelloids",
-	"version": "2019.6.13",
+	"version": "2019.8.18",
 	"default_locale": "en",
 	"icons": {
 		"16": "img/icon-16.png",
@@ -37,7 +38,10 @@
 		"scripts": ["background/background.js"]
 	},
 	"options_ui": {
-		"page": "options/options.html"
+		"page": "options/options.html",
+		"open_in_tab": true,
+		"browser_style": false,
+		"chrome_style": false
 	},
 	"browser_action": {
 		"default_icon": {

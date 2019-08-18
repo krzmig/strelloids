@@ -17,6 +17,11 @@
 		</select>
 	</label>
 	<label>
+		<input type="checkbox" data-toggle="toggle" data-target="coloredLists">
+		<span></span>
+		<span data-localize="__MSG_settings_lists_enableModule_coloredLists__"></span>
+	</label>
+	<label>
 		<input type="checkbox" data-toggle="toggle" data-target="showCardsCounter">
 		<span></span>
 		<span data-localize="__MSG_settings_lists_enableModule_showCardsCounter__"></span>
@@ -47,11 +52,6 @@
 
 	<hr>
 	<h3 data-localize="__MSG_settings_sectionTitle_Scrum__"></h3>
-	<label>
-		<input type="checkbox" data-toggle="toggle" data-target="coloredLists">
-		<span></span>
-		<span data-localize="__MSG_settings_lists_enableModule_coloredLists__"></span>
-	</label>
 	<label title="__MSG_module_scrumTime_description__">
 		<input type="checkbox" data-toggle="toggle" data-target="scrumTimes">
 		<span></span>
@@ -84,9 +84,15 @@
 			<span data-localize="__MSG_settings_lists_scrumTimes_showTeam2__"></span>
 		</label>
 	</div>
-	<script src="../js/i18n.js"></script>
-	<script src="../js/utils.js"></script>
-	<script src="../js/settings.js"></script>
+	<hr>
+	<label>
+		<a href="#" id="options-page-link">
+			<span data-localize="__MSG_settings_globalOptionsLink__"></span>
+		</a>
+	</label>
+	<script src="../utils/js/i18n.js"></script>
+	<script src="../utils/js/utils.js"></script>
+	<script src="../utils/js/settings.js"></script>
 	<script src="js/popup.js"></script>
 </body>
 </html>

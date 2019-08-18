@@ -26,6 +26,8 @@ function Settings( load_callback )
 
 		if( board_id && typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
 			return settings[option_key][key];
+		else if( typeof settings['board.*'] !== 'undefined' && typeof settings['board.*'][key] !== 'undefined' )
+			return settings['board.*'][key];
 		else if( typeof default_settings['board.*'][key] !== 'undefined' )
 			return default_settings['board.*'][key];
 		else
@@ -72,7 +74,20 @@ function Settings( load_callback )
 	 */
 	this.getGlobal = function( key )
 	{
-		if( typeof settings[key] !== 'undefined' )
+		var keys = /(.+)\[([^\]]+)\]$/.exec( key );
+		if( keys )
+		{
+			key = keys[1];
+			var sub_key = keys[2];
+
+			if( typeof settings[key] !== 'undefined' && typeof settings[key][sub_key] !== 'undefined' )
+				return settings[key][sub_key];
+			else if( typeof default_settings[key] !== 'undefined' && typeof default_settings[key][sub_key] !== 'undefined' )
+				return default_settings[key][sub_key];
+			else
+				return null;
+		}
+		else if( typeof settings[key] !== 'undefined' )
 			return settings[key];
 		else if( typeof default_settings[key] !== 'undefined' )
 			return default_settings[key];
@@ -82,7 +97,20 @@ function Settings( load_callback )
 
 	this.setGlobal = function( key, value )
 	{
-		settings[key] = value;
+		var keys = /(.+)\[([^\]]+)\]$/.exec( key );
+		if( keys )
+		{
+			key = keys[1];
+			var sub_key = keys[2];
+
+			if( typeof settings[key] === 'undefined' )
+				settings[key] = {};
+
+			settings[key][sub_key] = value;
+		}
+		else
+			settings[key] = value;
+
 		self.save( key );
 	};
 

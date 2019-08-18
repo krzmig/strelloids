@@ -22,6 +22,11 @@ function updateDependence(  )
 	}
 }
 
+$('#options-page-link').addEventListener( 'click', function() {
+	getBrowserObject().runtime.openOptionsPage();
+	window.close();
+});
+
 var settings = new Settings( function()
 {
 	var inputs = $$( '[data-toggle=set]' );

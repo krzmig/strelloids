@@ -1,4 +1,7 @@
 {
+	"extensionName": {
+		"message": "Strelloids - Trello on steroids"
+	},
 	"extensionDescription": {
 		"message": "Strelloids - Trello possibilities expander. Custom tags, colored lists, hiding the lists, scrum points, new views and much more."
 	},
@@ -65,6 +68,9 @@
 		"message": "Show sum times for lists",
 		"description": "Option label in the popup"
 	},
+	"settings_globalOptionsLink" : {
+		"message": "Global settings"
+	},
 	"module_cardsSeparator_description": {
 		"message": "To make separator, start card title with three or more characters: - or = (eg. \"--- My separator\"",
 		"description": "Popup - Option tooltip inside the title attribute"
@@ -83,19 +89,27 @@
 	},
 	"module_name_coloredLists": {
 		"message": "Colored lists",
-		"description": "Options - Tab name"
+		"description": "Options / Colored lists / Tab name"
 	},
 	"module_name_cardsPrioritization": {
 		"message": "Cards prioritization",
-		"description": "Options - Tab name"
+		"description": "Options / Cards prioritization / Tab name"
 	},
 	"module_name_scrumTimes": {
 		"message": "Scrum times",
-		"description": "Options - Tab name"
+		"description": "Options / Scrum times / Tab name"
 	},
 	"options_global": {
-		"message": "Global",
-		"description": "Options - Tab name"
+		"message": "Global Settings",
+		"description": "Options / Global settings / Tab name"
+	},
+	"options_defaultBoardSettings": {
+		"message": "Default board settings",
+		"description": "Options / Global settings / Tab name"
+	},
+	"options_modules": {
+		"message": "Modules settings",
+		"description": "Options / Modules settings / Category name"
 	},
 	"options_interval": {
 		"message": "Loop interval",
@@ -112,6 +126,15 @@
 	"options_reset": {
 		"message": "Reset to default",
 		"description": "Options - The title attribute for reset button"
+	},
+	"module_coloredLists_coloringSchemes": {
+		"message": "Coloring schemes"
+	},
+	"module_coloredLists_resetColoringSchemes": {
+		"message": "\u21BA Reset all"
+	},
+	"module_coloredLists_resetColoringSchemesDescription": {
+		"message": "Will reset ALL above color schemes to default."
 	},
 	"module_cardsPrioritization_critical": {
 		"message": "Critical",
@@ -160,6 +183,12 @@
 	"options_enableBoardScroll_description": {
 		"message": "If enabled you will be able to scroll board in horizontal without holding shift key (just in default display mode)."
 	},
+	"options_enableTabKeyInTextarea": {
+		"message": "Allow use Tab key in card description and comments"
+	},
+	"options_enableTabKeyInTextarea_description": {
+		"message": "If enabled you will be able to insert indent inside card description and comment textarea by tab key. Thanks to this, eg. you can easily create nested list."
+	},
 	"settings_lists_scrumTimes_showEstimation": {
 		"message": "Show estimations"
 	},
@@ -183,5 +212,60 @@
 	},
 	"card_edit_customTags": {
 		"message": "Custom tags"
+	},
+	"options_about": {
+		"message": "About",
+		"description": "Options / About / Tab name"
+	},
+	"options_about_sourceCode": {
+		"message": "Source code:"
+	},
+	"options_about_sourceCodeLink": {
+		"message": "Source code on GitHub"
+	},
+	"options_about_sourceCodeDescription": {
+		"message": "Strelloids is open source software. You can check, verify or even edit this code. It is published on GitHub."
+	},
+	"options_about_help": {
+		"message": "Need more help?"
+	},
+	"options_about_helpLink": {
+		"message": "Wiki on GitHub"
+	},
+	"options_about_helpDescription": {
+		"message": "Check the wiki for more help, descriptions and examples."
+	},
+	"options_about_issue": {
+		"message": "Found an bug or have an idea?"
+	},
+	"options_about_issueLink": {
+		"message": "Create a issue on GitHub"
+	},
+	"options_about_issueDescription": {
+		"message": "I'm not Mr. Robot. I'm making a lot of bugs!"
+	},
+	"options_about_email": {
+		"message": "E-mail:"
+	},
+	"options_about_emailDescription": {
+		"message": "If you prefer the old way of contact."
+	},
+	"options_about_donate": {
+		"message": "Donate:"
+	},
+	"options_about_donateDescription": {
+		"message": "If you enjoying, consider donation for more coffee via PayPal."
+	},
+	"help_with_icon": {
+		"message": "\u2753 Help"
+	},
+	"options_pageTitle": {
+		"message": "Strelloids - Settings"
+	},
+	"cancel": {
+		"message": "Cancel"
+	},
+	"save": {
+		"message": "Save"
 	}
 }

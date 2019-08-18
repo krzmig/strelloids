@@ -1,15 +1,37 @@
 {
 	"global.loopInterval": 3,
 	"global.enableBoardScroll": true,
-	"module.coloredLists.color.toDo": "#eff5d0",
-	"module.coloredLists.color.sprint": "#d0dff6",
-	"module.coloredLists.color.backlog": "#c0e8ed",
-	"module.coloredLists.color.doing": "#bfe3c6",
-	"module.coloredLists.color.done": "#d9f0bf",
-	"module.coloredLists.color.test": "#f5f5c0",
-	"module.coloredLists.color.fix": "#f9c0d0",
-	"module.coloredLists.color.upgrade": "#e6ccf5",
-	"module.coloredLists.color.helpdesk": "#f5d3f3",
+	"global.enableTabKeyInTextarea": false,
+	"module.coloredLists.scheme": [
+		{
+			"pattern": "todo",
+			"color": "#eff5d0ff"
+		}, {
+			"pattern": "(sprint|stories)",
+			"color": "#d0dff6ff"
+		}, {
+			"pattern": "backlog",
+			"color": "#c0e8edff"
+		}, {
+			"pattern": "(progress|working|doing)",
+			"color": "#bfe3c6ff"
+		}, {
+			"pattern": "(done|ready)",
+			"color": "#d9f0bfff"
+		}, {
+			"pattern": "test",
+			"color": "#f5f5c0ff"
+		}, {
+			"pattern": "fix",
+			"color": "#f9c0d0ff"
+		}, {
+			"pattern": "upgrade",
+			"color": "#e6ccf5ff"
+		}, {
+			"pattern": "helpdesk",
+			"color": "#f5d3f3ff"
+		}
+	],
 	"module.cardsPrioritization.color.critical": "#d91d1d",
 	"module.cardsPrioritization.color.high": "#fe9900",
 	"module.cardsPrioritization.color.medium": "#f3ee07",

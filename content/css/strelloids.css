@@ -314,10 +314,14 @@
         grid-column: 5 / span 1;
         grid-row: 1 / span 1;
         text-align: center; }
+      #board.board-table-view .list-wrapper .list-header .list-visibility-switcher::before {
+        transform: rotate(90deg); }
     #board.board-table-view .list-wrapper.list-hidden {
       text-orientation: initial;
       writing-mode: initial;
       -webkit-writing-mode: initial; }
+      #board.board-table-view .list-wrapper.list-hidden .list-header .list-visibility-switcher::before {
+        transform: rotate(0deg); }
     #board.board-table-view .list-wrapper:first-child {
       margin-left: 4px; }
 
@@ -400,5 +404,8 @@
 .body-card-label-text-on .card-label.mod-card-front,
 .body-card-label-text .card-label.mod-card-front {
   min-width: initial; }
+
+.tabbed-pane-main-col.mod-wider .tabbed-pane-main-col-wrapper {
+  max-width: initial; }
 
 /*# sourceMappingURL=strelloids.css.map */

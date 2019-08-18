@@ -1,4 +1,7 @@
 {
+	"extensionName": {
+		"message": "Strelloids - Trello na sterydach"
+	},
 	"extensionDescription": {
 		"message": "Strelloids - rozwiń możliwości Trello. Własne tagi, kolorowe listy, ukrywanie list, punkty scrum dla kart, nowe widoki i więcej."
 	},
@@ -50,6 +53,12 @@
 	"settings_lists_enableModule_scrumSumTime": {
 		"message": "Pokaż sumy czasów dla list"
 	},
+	"settings_globalOptionsLink" : {
+		"message": "Ustawienia globalne"
+	},
+	"options_defaultBoardSettings": {
+		"message": "Domyślne ustawienia tablicy"
+	},
 	"module_cardsSeparator_description": {
 		"message": "Aby stworzyć separator, zacznij tytuł karty od trzech lub więcej znaków: - lub = (np. \"--- Mój separator\")"
 	},
@@ -72,7 +81,10 @@
 		"message": "Czasy dla scrum"
 	},
 	"options_global": {
-		"message": "Globalne"
+		"message": "Globalne ustawienia"
+	},
+	"options_modules": {
+		"message": "Ustawienia modułów"
 	},
 	"options_interval": {
 		"message": "Opóźnienie pętli"
@@ -85,6 +97,15 @@
 	},
 	"options_reset": {
 		"message": "Przywróć domyślne"
+	},
+	"module_coloredLists_coloringSchemes": {
+		"message": "Schematy kolorowania"
+	},
+	"module_coloredLists_resetColoringSchemes": {
+		"message": "\u21BA Przywróć wszystkie"
+	},
+	"module_coloredLists_resetColoringSchemesDescription": {
+		"message": "Przywróci WSZYSTKIE powyższe schematy kolorów do domyślnych wartości."
 	},
 	"module_cardsPrioritization_critical": {
 		"message": "Krytyczny"
@@ -128,6 +149,12 @@
 	"options_enableBoardScroll_description": {
 		"message": "Jeśli włączone będziesz mógł scrollować tablicę w poziomie bez trzymania klawiszu shift (tylko w domyślnym trybie widoku)."
 	},
+	"options_enableTabKeyInTextarea": {
+		"message": "Włącz obsługę klawisz tab w polach opisów"
+	},
+	"options_enableTabKeyInTextarea_description": {
+		"message": "Jeśli włączone będzie mógł wstawiać wcięcia za pomocą klawisza Tab, w polu opisu karty oraz komentarzach do niej. Dzięki temu można np. łatwo tworzyć zagnieżdżone listy."
+	},
 	"settings_lists_scrumTimes_showEstimation": {
 		"message": "Pokaż estymację"
 	},
@@ -151,5 +178,59 @@
 	},
 	"card_edit_customTags": {
 		"message": "Własne tagi"
+	},
+	"options_about": {
+		"message": "O Strelloids"
+	},
+	"options_about_sourceCode": {
+		"message": "Kod źródłowy:"
+	},
+	"options_about_sourceCodeLink": {
+		"message": "Kod źródłowy na GitHub"
+	},
+	"options_about_sourceCodeDescription": {
+		"message": "Strelloids to otwarte oprogramowanie. Możesz sprawdzić, zweryfikować lub nawet zedytować jego kod. Jest publikowany na GitHub."
+	},
+	"options_about_help": {
+		"message": "Potrzebujesz pomocy?"
+	},
+	"options_about_helpLink": {
+		"message": "Wiki na GitHub (en)"
+	},
+	"options_about_helpDescription": {
+		"message": "Sprawdź wiki aby uzyskać więcej pomocy, opisów i przykładów."
+	},
+	"options_about_issue": {
+		"message": "Znalazłeś/aś błąd albo masz pomysł?"
+	},
+	"options_about_issueLink": {
+		"message": "Utwórz zgłoszenie na GitHub (en)"
+	},
+	"options_about_issueDescription": {
+		"message": "Nie jestem Mr. Robot. Robię wiele błędów!"
+	},
+	"options_about_email": {
+		"message": "E-mail:"
+	},
+	"options_about_emailDescription": {
+		"message": "Jeśli preferujesz bardziej tradycyjną formę kontaktu."
+	},
+	"options_about_donate": {
+		"message": "Wsparcie:"
+	},
+	"options_about_donateDescription": {
+		"message": "Jeśli jesteś zadowolony, możesz rozważyć dotację na kawę, poprzez PayPal."
+	},
+	"help_with_icon": {
+		"message": "\u2753 Pomoc"
+	},
+	"options_pageTitle": {
+		"message": "Strelloids - Ustawienia"
+	},
+	"cancel": {
+		"message": "Anuluj"
+	},
+	"save": {
+		"message": "Zapisz"
 	}
 }

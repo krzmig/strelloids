@@ -39,6 +39,8 @@
 			self.modules.coloredLists = new ModuleColoredLists( self );
 			self.modules.scrumTimes = new ModuleScrumTimes( self );
 			self.modules.scrumSumTimes = new ModuleScrumSumTimes( self );
+			// card editing
+			self.modules.tabKeyInTextarea = new ModuleTabKeyInTextarea( self );
 			// other
 			self.modules.boardScroll = new ModuleBoardScroll( self );
 
@@ -88,6 +90,8 @@
 		var default_settings = {};
 		/** @type {string|null} */
 		var board_id = null;
+		/** @type {string} */
+		var last_board_name;
 
 		function init()
 		{
@@ -99,6 +103,13 @@
 		function update()
 		{
 			loadListsIds();
+
+			var board_name = $( 'input.board-name-input' );
+			if( board_name && last_board_name !== board_name.value )
+			{
+				strelloids.modules.events.trigger( 'onBoardSwitch' );
+				last_board_name = board_name.value;
+			}
 		}
 
 		/**
@@ -112,6 +123,8 @@
 
 			if( board_id && typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
 				return settings[option_key][key];
+			else if( typeof settings['board.*'] !== 'undefined' && typeof settings['board.*'][key] !== 'undefined' )
+				return settings['board.*'][key];
 			else if( typeof default_settings['board.*'][key] !== 'undefined' )
 				return default_settings['board.*'][key];
 			else
@@ -273,7 +286,7 @@
 		function findBoardId()
 		{
 			var matches = /trello.com\/b\/([a-z0-9]+)\//i.exec( $w.location.toString() );
-			var node_board_name = $( '.board-header-btn-name' );
+			var node_board_name = $( 'input.board-name-input' );
 
 			if( matches && matches.length )
 			{
@@ -284,7 +297,7 @@
 					if( typeof settings[option_key] === 'undefined' )
 						settings[option_key] = {};
 
-					settings[option_key].board_name = node_board_name.innerText;
+					settings[option_key].board_name = node_board_name.value;
 				}
 				return matches[1];
 			}
@@ -297,7 +310,7 @@
 				if( !node_board_name )
 					return null;
 
-				var board_name = node_board_name.innerText;
+				var board_name = node_board_name.value;
 				for( var i in settings )
 				{
 					if( !settings.hasOwnProperty( i ))
@@ -365,8 +378,14 @@
 			onGlobalSettingsChange: [],
 			onBoardSettingsChange: [],
 			onListSettingsChange: [],
+			onBoardSwitch: [],
+			onListTitleChanged: [],
 			onCardEditOpened: [],
-			onCardTitleChanged: []
+			onCardTitleChanged: [],
+			onCardDescriptionKeyDown: [],
+			onCardCommentKeyDown: [],
+			onCardDescriptionKeyUp: [],
+			onCardCommentKeyUp: []
 		};
 
 		function init()
@@ -383,7 +402,23 @@
 			{
 				if( e.target.classList.contains( 'mod-card-back-title' ))
 					self.trigger( 'onCardTitleChanged', e );
+				else if( e.target.classList.contains( 'list-header-name' ))
+					self.trigger( 'onListTitleChanged', e );
 			});
+			$d.addEventListener( 'keydown', function( e )
+			{
+				if( e.target.classList.contains( 'card-description' ))
+					self.trigger( 'onCardDescriptionKeyDown', e );
+				else if( e.target.classList.contains( 'comment-box-input' ))
+					self.trigger( 'onCardDescriptionKeyDown', e );
+			}, true );
+			$d.addEventListener( 'keyup', function( e )
+			{
+				if( e.target.classList.contains( 'card-description' ))
+					self.trigger( 'onCardDescriptionKeyUp', e );
+				else if( e.target.classList.contains( 'comment-box-input' ))
+					self.trigger( 'onCardDescriptionKeyUp', e );
+			} );
 		}
 
 		/**
@@ -443,12 +478,15 @@
 	{
 		var self = this;
 		var settingName = 'coloredLists';
+		var schemeSettingName = 'module.coloredLists.scheme';
 
 		function init()
 		{
 			strelloids.modules.events.add( 'onUpdate', update );
 			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
+			strelloids.modules.events.add( 'onListTitleChanged', listTitleChanged );
+			strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChange );
 		}
 
 		function update()
@@ -458,10 +496,11 @@
 
 			var lists_titles = $$( 'textarea.list-header-name' );
 			for( var i = lists_titles.length - 1; i >= 0; --i )
-				setListColor(
-					closest( lists_titles[i], '.list' ),
-					lists_titles[i].value
-				);
+				if( lists_titles[i].value !== lists_titles[i].getAttribute( 'data-cache-title' ))
+					setListColor(
+						closest( lists_titles[i], '.list' ),
+						lists_titles[i]
+					);
 		}
 
 		/**
@@ -484,6 +523,18 @@
 				disable();
 		}
 
+		function globalSettingsChange( key )
+		{
+			if( key === schemeSettingName )
+			{
+				var lists_titles = $$( 'textarea.list-header-name' );
+				for( var i = lists_titles.length - 1; i >= 0; --i )
+					lists_titles[i].removeAttribute( 'data-cache-title' );
+
+				update();
+			}
+		}
+
 		function enable()
 		{
 			if( DEBUG )
@@ -502,28 +553,29 @@
 
 		/**
 		 * @param {HTMLElement} list
-		 * @param {string} title
+		 * @param {HTMLElement} title
 		 */
 		function setListColor( list, title )
 		{
-			if( /todo/i.test( title ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.toDo' );
-			else if( /helpdesk/i.test( title ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.helpdesk' );
-			else if( /(sprint|stories)/i.test( title ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.sprint' );
-			else if( /backlog/i.test( title ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.backlog' );
-			else if( /test/i.test( title ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.test' );
-			else if( /(progress|working|doing)/i.test( title))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.doing' );
-			else if( /upgrade/i.test( title ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.upgrade' );
-			else if( /(done|ready)/i.test( title ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.done' );
-			else if( /fix/i.test( title ))
-				list.style.backgroundColor = strelloids.modules.settings.getGlobal( 'module.coloredLists.color.fix' );
+			var scheme = strelloids.modules.settings.getGlobal( schemeSettingName );
+			var regex;
+
+			list.style.backgroundColor = '';
+
+			for( var i = 0, l = scheme.length; i < l; ++i )
+			{
+				regex = new RegExp( scheme[i].pattern, 'i' );
+				if( regex.test( title.value ))
+					list.style.backgroundColor = scheme[i].color;
+			}
+
+			title.setAttribute( 'data-cache-title', title.value );
+		}
+
+		function listTitleChanged( e )
+		{
+			var list = closest( e.target, '.list' );
+			setListColor( list, e.target );
 		}
 
 		init();
@@ -947,7 +999,7 @@
 		function init()
 		{
 			strelloids.modules.events.add( 'onUpdate', update );
-			strelloids.modules.events.add( 'onSettingsLoaded', boardSettingsChanged );
+			strelloids.modules.events.add( 'onBoardSwitch', boardSettingsChanged );
 			strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
 		}
 
@@ -1130,8 +1182,8 @@
 	{
 		var self = this;
 		var settingName = 'scrumTimes';
-		var estimation_regex = /\((\?|[0-9\.]*)\/?([0-9\.]*?|\?)\)/i;
-		var consumption_regex = /\[(\?|[0-9\.]*)\/?([0-9\.]*?|\?)\]/i;
+		var estimation_regex = /\((\?|\d+\.\d+|\d+|)(?:\/(\?|\d+\.\d+|\d+))?\)/i;
+		var consumption_regex = /\[(\?|\d+\.\d+|\d+|)(?:\/(\?|\d+\.\d+|\d+))?\]/i;
 		var last_cards_amount = 0;
 
 		function init()
@@ -1953,6 +2005,116 @@
 				$_('cards-prioritization-select').value = '';
 			else
 				$_('cards-prioritization-select').value = matches[2];
+		}
+
+		init();
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Module - Tab key in card description textarea                                                                  //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Module allow to use tab key inside card description textarea and comment textarea.
+	 * @param {Strelloids} strelloids
+	 * @constructor
+	 */
+	function ModuleTabKeyInTextarea( strelloids )
+	{
+		var self = this;
+		var settingName = 'global.enableTabKeyInTextarea';
+
+		function init()
+		{
+			strelloids.modules.events.add( 'onCardDescriptionKeyDown', keyDown );
+			strelloids.modules.events.add( 'onCardCommentKeyDown', keyDown );
+			strelloids.modules.events.add( 'onCardDescriptionKeyUp', keyUp );
+			strelloids.modules.events.add( 'onCardCommentKeyUp', keyUp );
+		}
+
+		/**
+		 * @returns {boolean}
+		 */
+		this.isEnabled = function()
+		{
+			return strelloids.modules.settings.getGlobal( settingName );
+		};
+
+		function keyDown( e )
+		{
+			if( !self.isEnabled() )
+				return;
+
+			if( e.key === 'Tab' )
+			{
+				var textarea = e.target;
+				var text = textarea.value;
+				var start_position = textarea.selectionStart;
+				var end_position = textarea.selectionEnd;
+
+				if( start_position === end_position )
+				{
+					e.preventDefault();
+
+					if( !e.shiftKey )
+					{
+						var before_text = text.substr( 0, start_position );
+						var after_text = text.substr( start_position );
+
+						textarea.value = before_text + "\t" + after_text;
+						textarea.selectionStart = textarea.selectionEnd = start_position + 1;
+					}
+				}
+				else
+				{
+					e.preventDefault();
+
+					if( text[start_position] === "\n" )
+						++start_position;
+					while( start_position > 0 && text[start_position-1] !== "\n" )
+						--start_position;
+
+					if( text[end_position-1] === "\n" )
+						--end_position;
+					while( end_position < text.length && text[end_position] !== "\n" )
+						++end_position;
+
+					var indent_text = e.shiftKey ?
+						text.substring( start_position, end_position ).replace( /^\t/mg, '' ) :
+						"\t" + text.substring( start_position, end_position ).replace( /\n/g, "\n\t" );
+
+					textarea.value = text.substr( 0, start_position ) + indent_text + text.substr( end_position );
+					textarea.selectionStart = start_position;
+					textarea.selectionEnd = start_position + indent_text.length;
+				}
+			}
+		}
+
+		function keyUp( e )
+		{
+			if( !self.isEnabled() )
+				return;
+
+			if( e.key === 'Enter' )
+			{
+				var textarea = e.target;
+				var start_position = textarea.selectionStart;
+				var end_position = textarea.selectionEnd;
+
+				if( start_position === end_position )
+				{
+					var text = textarea.value;
+					var before_text = text.substr( 0, start_position );
+					var after_text = text.substr( start_position );
+
+					var last_line_indent = /(?:^|\n)(\t+).*?\n$/.exec( before_text );
+
+					if( last_line_indent )
+					{
+						textarea.value = before_text + last_line_indent[1] + after_text;
+						textarea.selectionStart = textarea.selectionEnd = Math.min(textarea.value.length, start_position + last_line_indent[1].length );
+					}
+				}
+			}
 		}
 
 		init();
