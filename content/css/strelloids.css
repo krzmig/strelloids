@@ -224,7 +224,7 @@
   opacity: 0.8; }
   .list-hidden .list-cards {
     display: none; }
-  .list-hidden .open-card-composer {
+  .list-hidden .card-composer-container {
     display: none; }
   .list-hidden .list-header .list-visibility-switcher::before {
     transform: rotate(90deg); }
