@@ -5,7 +5,7 @@
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/krzmig/strelloids",
-	"version": "2019.8.18.1",
+	"version": "2019.10.23",
 	"default_locale": "en",
 	"icons": {
 		"16": "img/icon-16.png",
@@ -86,8 +86,7 @@
 		}]
 	},
 	"web_accessible_resources": [
-		"default_settings.json",
-		"content/font/Strelloids.woff"
+		"default_settings.json"
 	],
 	"browser_specific_settings": {
 		"gecko": {
