@@ -48,7 +48,9 @@ Estimations are inside round brackets and consumption in squares ones. Times you
 You can also turn on sum of this times for each list.
 
 ### More
-- You can enable scroll in default view mode, which will scroll page in horizontal without holding `shift` key. 
+- You can enable scroll in default view mode, which will scroll page in horizontal without holding `shift` key.
+- Support for Markdown checklist.
+- Support for list indent by `tab` key in card description and comments.
 
 ## How to install
 ### Normal way

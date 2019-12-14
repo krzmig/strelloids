@@ -189,6 +189,12 @@
 	"options_enableTabKeyInTextarea_description": {
 		"message": "If enabled you will be able to insert indent inside card description and comment textarea by tab key. Thanks to this, eg. you can easily create nested list."
 	},
+	"options_enableMarkdownChecklist": {
+		"message": "Allow use Markdown checklist in card description and comments"
+	},
+	"options_enableMarkdownChecklist_description": {
+		"message": "If enabled you will be able to insert checklist in Markdown style inside card description and comment. It can be done by insert at begin of element in standard list \"[x]\" for checked and \"[ ]\" for not."
+	},
 	"settings_lists_scrumTimes_showEstimation": {
 		"message": "Show estimations"
 	},

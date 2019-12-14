@@ -155,6 +155,12 @@
 	"options_enableTabKeyInTextarea_description": {
 		"message": "Jeśli włączone będzie mógł wstawiać wcięcia za pomocą klawisza Tab, w polu opisu karty oraz komentarzach do niej. Dzięki temu można np. łatwo tworzyć zagnieżdżone listy."
 	},
+	"options_enableMarkdownChecklist": {
+		"message": "Włącza obsługę list postępu w opisach kart i komentarzach"
+	},
+	"options_enableMarkdownChecklist_description": {
+		"message": "Jeśli włączone będziesz mógł wstawić listę postępu w stylu Markdown w opisie karty i komentarzu. Można tego dokonać wstawiając na początku elementu standardowej listy \"[x]\" dla wykonanego i \"[ ]\" dla niewykonanego postepu."
+	},
 	"settings_lists_scrumTimes_showEstimation": {
 		"message": "Pokaż estymację"
 	},

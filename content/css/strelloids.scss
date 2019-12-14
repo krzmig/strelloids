@@ -501,3 +501,15 @@
 .tabbed-pane-main-col.mod-wider .tabbed-pane-main-col-wrapper {
 	max-width: initial;
 }
+
+.markeddown {
+	li.checklist {
+		list-style: none;
+
+		input[type=checkbox] {
+			margin-bottom: 0;
+			vertical-align: middle;
+			margin-left: -20px;
+		}
+	}
+}
