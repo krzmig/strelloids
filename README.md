@@ -83,3 +83,13 @@ To try it, you can run it in extension local mode, but it's temporary solution:
 
 ## Why Strelloids?
 Because Trello have official extensions, called "PowerUp", I wanted to do something similar. My first association was "vitamin", but it was too hard to use. If not Vitamin, so next thing was Steroids. "Tero" is similar to trello, so little makeup and that's the whole story. 
+
+asd
+
+ sa | asda
+ --- |:-------------: 
+ col 3 is      | right-aligned 
+ col 2 is      | centered       
+ *Still* | `renders` 
+ zebra stripes | are neat   
+ asdasd    

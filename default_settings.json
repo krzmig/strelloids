@@ -2,7 +2,8 @@
 	"global.loopInterval": 3,
 	"global.enableBoardScroll": true,
 	"global.enableTabKeyInTextarea": false,
-	"global.__MSG_options_enableTabKeyInTextarea__": false,
+	"global.enableMarkdownChecklist": false,
+	"global.enableMarkdownTables": true,
 	"module.coloredLists.scheme": [
 		{
 			"pattern": "todo",
