@@ -3,7 +3,7 @@
 	"global.enableBoardScroll": true,
 	"global.enableTabKeyInTextarea": false,
 	"global.enableMarkdownChecklist": false,
-	"global.enableMarkdownTables": true,
+	"global.enableMarkdownTables": false,
 	"module.coloredLists.scheme": [
 		{
 			"pattern": "todo",

@@ -161,6 +161,12 @@
 	"options_enableMarkdownChecklist_description": {
 		"message": "Jeśli włączone będziesz mógł wstawić listę postępu w stylu Markdown w opisie karty i komentarzu. Można tego dokonać wstawiając na początku elementu standardowej listy \"[x]\" dla wykonanego i \"[ ]\" dla niewykonanego postepu."
 	},
+	"options_enableMarkdownTables": {
+		"message": "Włącza obsługę tabel w opisach kart i komentarzach"
+	},
+	"options_enableMarkdownTables_description": {
+		"message": "Jeśli włączone będziesz mógł wstawić tabelę w stylu Markdown w opisie karty i komentarzu."
+	},
 	"settings_lists_scrumTimes_showEstimation": {
 		"message": "Pokaż estymację"
 	},

@@ -195,6 +195,12 @@
 	"options_enableMarkdownChecklist_description": {
 		"message": "If enabled you will be able to insert checklist in Markdown style inside card description and comment. It can be done by insert at begin of element in standard list \"[x]\" for checked and \"[ ]\" for not."
 	},
+	"options_enableMarkdownTables": {
+		"message": "Allow use Markdown tables in card description and comments"
+	},
+	"options_enableMarkdownTables_description": {
+		"message": "If enabled you will be able to create tables in Markdown style inside card description and comment."
+	},
 	"settings_lists_scrumTimes_showEstimation": {
 		"message": "Show estimations"
 	},
