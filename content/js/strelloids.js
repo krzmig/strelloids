@@ -1979,11 +1979,11 @@
 			{
 				var select = createNode( 'select', { id: 'cards-prioritization-select' } );
 				select.appendChild( createNode( 'option', { value: '' }, '---' ) );
-				select.appendChild( createNode( 'option', { value: '1' }, _( 'module_cardsPrioritization_critical' ) ) );
-				select.appendChild( createNode( 'option', { value: '2' }, _( 'module_cardsPrioritization_high' ) ) );
-				select.appendChild( createNode( 'option', { value: '3' }, _( 'module_cardsPrioritization_medium' ) ) );
-				select.appendChild( createNode( 'option', { value: '4' }, _( 'module_cardsPrioritization_low' ) ) );
-				select.appendChild( createNode( 'option', { value: '5' }, _( 'module_cardsPrioritization_lowest' ) ) );
+				select.appendChild( createNode( 'option', { value: '1' }, _( 'module|CardsPrioritization|Critical' ) ) );
+				select.appendChild( createNode( 'option', { value: '2' }, _( 'module|CardsPrioritization|High' ) ) );
+				select.appendChild( createNode( 'option', { value: '3' }, _( 'module|CardsPrioritization|Medium' ) ) );
+				select.appendChild( createNode( 'option', { value: '4' }, _( 'module|CardsPrioritization|Low' ) ) );
+				select.appendChild( createNode( 'option', { value: '5' }, _( 'module|CardsPrioritization|Lowest' ) ) );
 				select.addEventListener( 'change', priorityChangedFromUI );
 				var container = createNode( 'div', { 'class': 'card-detail-item' } );
 				container.appendChild( createNode( 'h3', { 'class': 'card-detail-item-header' }, _('card_edit_priority') ));
