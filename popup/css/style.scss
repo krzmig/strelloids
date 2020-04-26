@@ -1,14 +1,18 @@
+@import "../../content/css/font";
+
 html {
 	color: #17394d;
 	font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
 	font-size: 14px;
 	line-height: 20px;
 	font-weight: 400;
-	background-color: #ebeef0;
+	background-color: #f4f5f7;
 	border-radius: 2px;
+	overflow-x: hidden;
+	padding: 0;
 }
 body {
-	padding: 8px;
+	padding: 0;
 	box-sizing: border-box;
 	width: 280px;
 }
@@ -16,6 +20,15 @@ hr {
 	border-width: 1px 0 0 0;
 	border-style: solid;
 	border-color: rgba(9,45,66,.13);
+	margin: 16px 0;
+}
+.mt0 {
+	margin-top: 0;
+}
+.tab {
+	&.hidden {
+		display: none;
+	}
 }
 label,
 .flex {
@@ -27,12 +40,25 @@ label,
 	transition: background-color 0.14s ease-in;
 	width: content-box;
 	&:hover {
-		background-color: rgba(9,45,66,.08);
+		background-color: rgba(9,30,66,.08);
+		color: #091e42;
+	}
+}
+
+div.title {
+	display: flex;
+	align-items: center;
+	height: 48px;
+	i {
+		cursor: pointer;
 	}
 }
 h3 {
 	font-size: 16px;
 	line-height: 20px;
+	flex-grow: 1;
+	text-align: center;
+	margin: 0;
 }
 
 .subsection {
@@ -41,6 +67,28 @@ h3 {
 
 label {
 	cursor: pointer;
+
+	&.link {
+		position: relative;
+		font-weight: 600;
+		line-height: 20px;
+		padding: 6px 6px 6px 40px;
+		color: #172b4d;
+		i {
+			font-size: 20px;
+			position: absolute;
+			top: 6px;
+			left: 12px;
+			color: #42526e;
+		}
+		&:hover {
+			color: #091e42;
+			i {
+				color: #172b4d;
+			}
+		}
+	}
+
 	span {
 		display: inline-block;
 		width: content-box;
@@ -91,12 +139,6 @@ label {
 			}
 		}
 	}
-	a {
-		display: inline-block;
-		flex-grow: 1;
-		text-align: right;
-		color: dodgerblue;
-	}
 	&:hover {
 		input[type=checkbox] {
 			& + span {
@@ -106,10 +148,6 @@ label {
 				background-color: rgba(9, 45, 66, .13);
 				box-shadow: none;
 			}
-		}
-		a {
-			color: royalblue;
-			text-decoration: underline;
 		}
 	}
 }

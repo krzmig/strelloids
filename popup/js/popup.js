@@ -39,3 +39,18 @@ var settings = new Settings( function()
 
 	updateDependence();
 });
+
+var tab_links = $$( '[data-toggle="tab"]');
+for( var i = tab_links.length - 1; i >= 0; --i )
+{
+	tab_links[i].addEventListener(
+		'click',
+		function( e )
+		{
+			var target = this.getAttribute('data-target' );
+			var tabs = $$( '.tab' );
+			for( var i = tabs.length - 1; i >= 0; --i )
+				tabs[i].classList.toggle( 'hidden', tabs[i].id !== target );
+		}
+	)
+}

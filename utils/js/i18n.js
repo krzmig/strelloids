@@ -13,24 +13,24 @@ function doLocalize()
 
 function localizeNodeContent( node )
 {
-	node.innerText = node.getAttribute('data-localize').toString().replace(
-		/__MSG_(\w+)__/g,
-		function( full_match, match )
-		{
-			return chrome.i18n.getMessage( match );
-		}
-	);
+	var context = node.getAttribute('data-context');
+	var text = node.innerText.toString().replace( /^\s+/g, '' ). replace( /\s+$/g, '' );
+	if( context )
+		text = context.toString() + '|' + text;
+
+	var translation = chrome.i18n.getMessage( text );
+	if( !translation )
+		translation = '!!! MISSING TRANSLATION (' + text + ') !!!'
+	node.innerText = translation;
 }
 
 function localizeNodeTitle( node )
 {
-	node.title = node.title.replace(
-		/__MSG_(\w+)__/g,
-		function( full_match, match )
-		{
-			return chrome.i18n.getMessage( match );
-		}
-	);
+	var translation = chrome.i18n.getMessage( node.title );
+	if( !translation )
+		translation = '!!! MISSING TRANSLATION (' + node.title + ') !!!'
+
+	node.title = translation;
 }
 
 doLocalize();

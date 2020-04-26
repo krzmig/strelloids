@@ -2,94 +2,195 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title data-localize="__MSG_popup_settings_title__"></title>
+	<title data-localize data-context="popup">
+		Title
+	</title>
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<h3 data-localize="__MSG_settings_sectionTitle_Lists__"></h3>
-	<label>
-		<span data-localize="__MSG_settings_lists_displayMode__"></span>
-		<span style="flex-grow: 1"></span>
-		<select data-toggle="set" data-target="displayMode">
-			<option value="default" data-localize="__MSG_settings_lists_displayMode_standard__"></option>
-			<option value="multi-rows" data-localize="__MSG_settings_lists_displayMode_multiRows__"></option>
-			<option value="table" data-localize="__MSG_settings_lists_displayMode_table__"></option>
-		</select>
-	</label>
-	<label>
-		<input type="checkbox" data-toggle="toggle" data-target="coloredLists">
-		<span></span>
-		<span data-localize="__MSG_settings_lists_enableModule_coloredLists__"></span>
-	</label>
-	<label>
-		<input type="checkbox" data-toggle="toggle" data-target="showCardsCounter">
-		<span></span>
-		<span data-localize="__MSG_settings_lists_enableModule_showCardsCounter__"></span>
-	</label>
+	<div class="tab" id="tab-main">
+		<div class="title">
+			<h3 data-localize>
+				Popup menu
+			</h3>
+		</div>
+		<hr class="mt0">
 
-	<hr>
-	<h3 data-localize="__MSG_settings_sectionTitle_Cards__"></h3>
-	<label>
-		<input type="checkbox" data-toggle="toggle" data-target="showCardShortId">
-		<span></span>
-		<span data-localize="__MSG_settings_lists_enableModule_showCardShortId__"></span>
-	</label>
-	<label title="__MSG_module_customTags_description__">
-		<input type="checkbox" data-toggle="toggle" data-target="customTags">
-		<span></span>
-		<span data-localize="__MSG_settings_lists_enableModule_customTags__ [?]"></span>
-	</label>
-	<label title="__MSG_module_cardsSeparator_description__">
-		<input type="checkbox" data-toggle="toggle" data-target="cardsSeparator">
-		<span></span>
-		<span data-localize="__MSG_settings_lists_enableModule_cardsSeparator__ [?]"></span>
-	</label>
-	<label title="__MSG_module_cardsPrioritization_description__">
-		<input type="checkbox" data-toggle="toggle" data-target="cardsPrioritization">
-		<span></span>
-		<span data-localize="__MSG_settings_lists_enableModule_cardsPrioritization__ [?]"></span>
-	</label>
-
-	<hr>
-	<h3 data-localize="__MSG_settings_sectionTitle_Scrum__"></h3>
-	<label title="__MSG_module_scrumTime_description__">
-		<input type="checkbox" data-toggle="toggle" data-target="scrumTimes">
-		<span></span>
-		<span data-localize="__MSG_settings_lists_enableModule_scrumTime__  [?]"></span>
-	</label>
-	<div class="subsection">
-		<label>
-			<input type="checkbox" data-toggle="toggle" data-target="scrumSumTimes" data-required="scrumTimes">
-			<span></span>
-			<span data-localize="__MSG_settings_lists_enableModule_scrumSumTime__"></span>
+		<label class="link" data-toggle="tab" data-target="tab-lists-settings">
+			<i class="strelloids-icon-list"></i>
+			<span data-localize data-context="popup|section">
+				Lists settings
+			</span>
 		</label>
-		<label>
-			<input type="checkbox" data-toggle="toggle" data-target="scrumTimes.show.estimation" data-required="scrumTimes">
-			<span></span>
-			<span data-localize="__MSG_settings_lists_scrumTimes_showEstimation__"></span>
+		<label class="link" data-toggle="tab" data-target="tab-cards-settings">
+			<i class="strelloids-icon-card"></i>
+			<span data-localize data-context="popup|section">
+				Cards settings
+			</span>
 		</label>
-		<label>
-			<input type="checkbox" data-toggle="toggle" data-target="scrumTimes.show.consumption" data-required="scrumTimes">
-			<span></span>
-			<span data-localize="__MSG_settings_lists_scrumTimes_showConsumption__"></span>
+		<label class="link" data-toggle="tab" data-target="tab-scrum-settings">
+			<i class="strelloids-icon-light-bulb"></i>
+			<span data-localize data-context="popup|section">
+				Scrum settings
+			</span>
 		</label>
-		<label>
-			<input type="checkbox" data-toggle="toggle" data-target="scrumTimes.show.team1" data-required="scrumTimes">
-			<span></span>
-			<span data-localize="__MSG_settings_lists_scrumTimes_showTeam1__"></span>
-		</label>
-		<label>
-			<input type="checkbox" data-toggle="toggle" data-target="scrumTimes.show.team2" data-required="scrumTimes">
-			<span></span>
-			<span data-localize="__MSG_settings_lists_scrumTimes_showTeam2__"></span>
+		<hr>
+		<label class="link" id="options-page-link">
+			<i class="strelloids-icon-settings"></i>
+			<span data-localize>
+				Global settings
+			</span>
 		</label>
 	</div>
-	<hr>
-	<label>
-		<a href="#" id="options-page-link">
-			<span data-localize="__MSG_settings_globalOptionsLink__"></span>
-		</a>
-	</label>
+
+	<div class="tab hidden" id="tab-lists-settings">
+		<div class="title">
+			<i data-toggle="tab" data-target="tab-main" class="strelloids-icon-back"></i>
+			<h3 data-localize data-context="popup|section">
+				Lists settings
+			</h3>
+		</div>
+		<hr class="mt0">
+
+		<label>
+			<span data-localize data-context="popup|lists">
+				Display mode
+			</span>
+			<span style="flex-grow: 1"></span>
+			<select data-toggle="set" data-target="displayMode">
+				<option value="default" data-localize data-context="popup|lists|displayMode">
+					Default
+				</option>
+				<option value="multi-rows" data-localize data-context="popup|lists|displayMode">
+					Multiple rows
+				</option>
+				<option value="table" data-localize data-context="popup|lists|displayMode">
+					Table
+				</option>
+			</select>
+		</label>
+		<label>
+			<input type="checkbox" data-toggle="toggle" data-target="coloredLists">
+			<span></span>
+			<span data-localize data-context="popup|lists">
+				Enable colored lists
+			</span>
+		</label>
+		<label>
+			<input type="checkbox" data-toggle="toggle" data-target="showCardsCounter">
+			<span></span>
+			<span data-localize data-context="popup|lists">
+				Show list cards counter
+			</span>
+		</label>
+	</div>
+
+	<div class="tab hidden" id="tab-cards-settings">
+		<div class="title">
+			<i data-toggle="tab" data-target="tab-main" class="strelloids-icon-back"></i>
+			<h3 data-localize data-context="popup|section">
+				Cards settings
+			</h3>
+		</div>
+		<hr class="mt0">
+
+		<label>
+			<input type="checkbox" data-toggle="toggle" data-target="showCardShortId">
+			<span></span>
+			<span data-localize data-context="popup|cards">
+				Show cards short ID
+			</span>
+		</label>
+		<label title="popup|cards|Enable custom tags for cards|tooltip">
+			<input type="checkbox" data-toggle="toggle" data-target="customTags">
+			<span></span>
+			<span data-localize data-context="popup|cards">
+				Enable custom tags for cards
+			</span>
+			<span>
+				[?]
+			</span>
+		</label>
+		<label title="popup|cards|Enable cards separator|tooltip">
+			<input type="checkbox" data-toggle="toggle" data-target="cardsSeparator">
+			<span></span>
+			<span data-localize data-context="popup|cards">
+				Enable cards separator
+			</span>
+			<span>
+				[?]
+			</span>
+		</label>
+		<label title="popup|cards|Enable cards prioritization|tooltip">
+			<input type="checkbox" data-toggle="toggle" data-target="cardsPrioritization">
+			<span></span>
+			<span data-localize data-context="popup|cards">
+				Enable cards prioritization
+			</span>
+			<span>
+				[?]
+			</span>
+		</label>
+	</div>
+
+	<div class="tab hidden" id="tab-scrum-settings">
+		<div class="title">
+			<i data-toggle="tab" data-target="tab-main" class="strelloids-icon-back"></i>
+			<h3 data-localize data-context="popup|section">
+				Scrum settings
+			</h3>
+		</div>
+		<hr class="mt0">
+
+		<label title="popup|scrum|Enable scrum times|tooltip">
+			<input type="checkbox" data-toggle="toggle" data-target="scrumTimes">
+			<span></span>
+			<span data-localize data-context="popup|scrum">
+				Enable scrum times
+			</span>
+			<span>
+				[?]
+			</span>
+		</label>
+		<div class="subsection">
+			<label>
+				<input type="checkbox" data-toggle="toggle" data-target="scrumSumTimes" data-required="scrumTimes">
+				<span></span>
+				<span data-localize data-context="popup|scrum">
+					Show sum times for lists
+				</span>
+			</label>
+			<label>
+				<input type="checkbox" data-toggle="toggle" data-target="scrumTimes.show.estimation" data-required="scrumTimes">
+				<span></span>
+				<span data-localize data-context="popup|scrum">
+					Show estimations
+				</span>
+			</label>
+			<label>
+				<input type="checkbox" data-toggle="toggle" data-target="scrumTimes.show.consumption" data-required="scrumTimes">
+				<span></span>
+				<span data-localize data-context="popup|scrum">
+					Show consumptions
+				</span>
+			</label>
+			<label>
+				<input type="checkbox" data-toggle="toggle" data-target="scrumTimes.show.team1" data-required="scrumTimes">
+				<span></span>
+				<span data-localize data-context="popup|scrum">
+					Show team1
+				</span>
+			</label>
+			<label>
+				<input type="checkbox" data-toggle="toggle" data-target="scrumTimes.show.team2" data-required="scrumTimes">
+				<span></span>
+				<span data-localize data-context="popup|scrum">
+					Show team2
+				</span>
+			</label>
+		</div>
+	</div>
+
 	<script src="../utils/js/i18n.js"></script>
 	<script src="../utils/js/utils.js"></script>
 	<script src="../utils/js/settings.js"></script>

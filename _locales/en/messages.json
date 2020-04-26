@@ -5,214 +5,234 @@
 	"extensionDescription": {
 		"message": "Strelloids - Trello possibilities expander. Custom tags, colored lists, hiding the lists, scrum points, new views and much more."
 	},
-	"popup_settings_title": {
+	"Popup menu":{
+		"message": "Strelloids menu"
+	},
+	"Board settings": {
+		"message": "Board settings"
+	},
+	"popup|Title": {
 		"message": "Strelloids board settings"
 	},
-	"settings_sectionTitle_Lists": {
-		"message": "Lists",
-		"description": "Section title in the popup"
+	"popup|section|Lists settings": {
+		"message": "Lists settings"
 	},
-	"settings_sectionTitle_Cards": {
-		"message": "Cards",
-		"description": "Section title in the popup"
+		"popup|lists|Display mode": {
+			"message": "Display mode"
+		},
+			"popup|lists|displayMode|Default" : {
+				"message": "Default"
+			},
+			"popup|lists|displayMode|Multiple rows" : {
+				"message": "Multiple rows"
+			},
+			"popup|lists|displayMode|Table" : {
+				"message": "Table"
+			},
+		"popup|lists|Enable colored lists": {
+			"message": "Enable colored lists"
+		},
+		"popup|lists|Show list cards counter": {
+			"message": "Show list cards counter"
+		},
+
+	"popup|section|Cards settings": {
+		"message": "Cards settings"
 	},
-	"settings_sectionTitle_Scrum": {
-		"message": "Scrum",
-		"description": "Section title in the popup"
+		"popup|cards|Show cards short ID": {
+			"message": "Show cards short ID"
+		},
+		"popup|cards|Enable custom tags for cards": {
+			"message": "Enable custom tags for cards"
+		},
+			"popup|cards|Enable custom tags for cards|tooltip" : {
+				"message": "To make tag, put their name inside square brackets into card title (eg. \"[tag name]\")"
+			},
+		"popup|cards|Enable cards separator": {
+			"message": "Enable cards separator"
+		},
+			"popup|cards|Enable cards separator|tooltip": {
+				"message": "To make separator, start card title with three or more characters: - or = (eg. \"--- My separator\")"
+			},
+		"popup|cards|Enable cards prioritization": {
+			"message": "Enable cards prioritization"
+		},
+			"popup|cards|Enable cards prioritization|tooltip": {
+				"message": "To set priority for the card, insert into their title one of this keywords: \"!1\", \"!2\", \"!3\", \"!4\" or \"!5\", where 1 is the highest priority."
+			},
+
+	"popup|section|Scrum settings": {
+		"message": "Scrum settings"
 	},
-	"settings_lists_enableModule_showCardsCounter": {
-		"message": "Show list cards counter",
-		"description": "Option label in the popup"
+		"popup|scrum|Enable scrum times": {
+			"message": "Enable scrum times"
+		},
+			"popup|scrum|Enable scrum times|tooltip" : {
+				"message": "To add estimation points for card, put it into round brackets (eg. \"(3)\", \"(0.5)\", \"(?)\"). To set consumption points, put it into square brackets (eg. \"[5]\", \"[2.5]\")."
+			},
+			"popup|scrum|Show sum times for lists": {
+				"message": "Show sum times for lists"
+			},
+			"popup|scrum|Show estimations": {
+				"message": "Show estimations"
+			},
+			"popup|scrum|Show consumptions": {
+				"message": "Show consumptions"
+			},
+			"popup|scrum|Show team1": {
+				"message": "Show team 1"
+			},
+			"popup|scrum|Show team2": {
+				"message": "Show team 2"
+			},
+
+
+	"Strelloids - Settings": {
+		"message": "Strelloids - Settings"
 	},
-	"settings_lists_displayMode": {
-		"message": "View mode",
-		"description": "Option label in the popup"
-	},
-	"settings_lists_displayMode_standard" : {
-		"message": "Default",
-		"description": "Display mode option name in the select"
-	},
-	"settings_lists_displayMode_multiRows" : {
-		"message": "Multiple rows",
-		"description": "Display mode option name in the select"
-	},
-	"settings_lists_displayMode_table" : {
-		"message": "Table",
-		"description": "Display mode option name in the select"
-	},
-	"settings_lists_enableModule_showCardShortId": {
-		"message": "Show cards short ID",
-		"description": "Option label in the popup"
-	},
-	"settings_lists_enableModule_customTags": {
-		"message": "Enable custom tags for cards",
-		"description": "Option label in the popup"
-	},
-	"settings_lists_enableModule_cardsSeparator": {
-		"message": "Enable cards separator",
-		"description": "Option label in the popup"
-	},
-	"settings_lists_enableModule_cardsPrioritization": {
-		"message": "Enable cards prioritization",
-		"description": "Option label in the popup"
-	},
-	"settings_lists_enableModule_coloredLists": {
-		"message": "Enable colored lists",
-		"description": "Option label in the popup"
-	},
-	"settings_lists_enableModule_scrumTime": {
-		"message": "Enable scrum times",
-		"description": "Option label in the popup"
-	},
-	"settings_lists_enableModule_scrumSumTime": {
-		"message": "Show sum times for lists",
-		"description": "Option label in the popup"
-	},
-	"settings_globalOptionsLink" : {
+	"Global settings" : {
 		"message": "Global settings"
 	},
-	"module_cardsSeparator_description": {
-		"message": "To make separator, start card title with three or more characters: - or = (eg. \"--- My separator\"",
-		"description": "Popup - Option tooltip inside the title attribute"
+		"settings|Loop interval": {
+			"message": "Loop interval"
+		},
+			"settings|loopInterval|description": {
+				"message": "Interval between next loops. If you change card title and eg. tags appears with to long delay, you can reduce this value. Too small value, can \"warm up\" your processor."
+			},
+		"settings|Vertical scroll": {
+			"message": "Overwrite vertical scroll on board with horizontal"
+		},
+			"settings|VerticalScroll|description": {
+				"message": "If enabled you will be able to scroll board in horizontal without holding shift key (just in default display mode)."
+			},
+		"settings|Allow Tab key": {
+			"message": "Allow use Tab key in card description and comments"
+		},
+			"settings|AllowTabKey|description": {
+				"message": "If enabled you will be able to insert indent inside card description and comment textarea by tab key. Thanks to this, eg. you can easily create nested list."
+			},
+		"settings|Markdown checklists": {
+			"message": "Allow use Markdown checklist in card description and comments"
+		},
+			"settings|MarkdownChecklists|description": {
+				"message": "If enabled you will be able to insert checklist in Markdown style inside card description and comment. It can be done by insert at begin of element in standard list \"[x]\" for checked and \"[ ]\" for not."
+			},
+		"settings|Markdown tables": {
+			"message": "Allow use Markdown tables in card description and comments"
+		},
+			"settings|MarkdownTables|description": {
+				"message": "If enabled you will be able to create tables in Markdown style inside card description and comment."
+			},
+
+	"Default board settings": {
+		"message": "Default board settings"
 	},
-	"module_customTags_description" : {
-		"message": "To make tag, put their name inside square brackets into card title (eg. \"[tag name]\")",
-		"description": "Popup - Option tooltip inside the title attribute"
+
+	"Modules settings": {
+		"message": "Modules settings"
 	},
-	"module_scrumTime_description" : {
-		"message": "To add estimation points for card, put it into round brackets (eg. \"(3)\", \"(0.5)\", \"(?)\"). To set consumption points, put it into square brackets (eg. \"[5]\", \"[2.5]\").",
-		"description": "Popup - Option tooltip inside the title attribute"
+
+	"module|Colored lists": {
+		"message": "Colored lists"
 	},
-	"module_cardsPrioritization_description": {
-		"message": "To set priority for the card, insert into their title one of this keywords: \"!1\", \"!2\", \"!3\", \"!4\" or \"!5\", where 1 is the highest priority.",
-		"description": "Popup - Option tooltip inside the title attribute"
+		"module|ColoredLists|Coloring schemes": {
+			"message": "Coloring schemes"
+		},
+		"module|ColoredLists|Reset all": {
+			"message": "\u21BA Reset all"
+		},
+		"module|ColoredLists|ResetAll|description": {
+			"message": "Will reset ALL above color schemes to default."
+		},
+
+	"module|Cards prioritization": {
+		"message": "Cards prioritization"
 	},
-	"module_name_coloredLists": {
-		"message": "Colored lists",
-		"description": "Options / Colored lists / Tab name"
+		"module|CardsPrioritization|Default colors": {
+			"message": "Default colors"
+		},
+		"module|CardsPrioritization|Critical": {
+			"message": "Critical"
+		},
+		"module|CardsPrioritization|High": {
+			"message": "High"
+		},
+		"module|CardsPrioritization|Medium": {
+			"message": "Medium"
+		},
+		"module|CardsPrioritization|Low": {
+			"message": "Low"
+		},
+		"module|CardsPrioritization|Lowest": {
+			"message": "Lowest"
+		},
+
+	"module|Scrum times": {
+		"message": "Scrum times"
 	},
-	"module_name_cardsPrioritization": {
-		"message": "Cards prioritization",
-		"description": "Options / Cards prioritization / Tab name"
+		"module|Scrum|Story points buttons sequence": {
+			"message": "Story points buttons sequence"
+		},
+		"module|Scrum|Team 1 estimation label colors": {
+			"message": "Team 1 estimation label colors"
+		},
+		"module|Scrum|Team 1 consumption label colors": {
+			"message": "Team 1 consumption label colors"
+		},
+		"module|Scrum|Team 2 estimation label colors": {
+			"message": "Team 2 estimation label colors"
+		},
+		"module|Scrum|Team 2 consumption label colors": {
+			"message": "Team 2 consumption label colors"
+		},
+
+	"About": {
+		"message": "About"
 	},
-	"module_name_scrumTimes": {
-		"message": "Scrum times",
-		"description": "Options / Scrum times / Tab name"
-	},
-	"options_global": {
-		"message": "Global Settings",
-		"description": "Options / Global settings / Tab name"
-	},
-	"options_defaultBoardSettings": {
-		"message": "Default board settings",
-		"description": "Options / Global settings / Tab name"
-	},
-	"options_modules": {
-		"message": "Modules settings",
-		"description": "Options / Modules settings / Category name"
-	},
-	"options_interval": {
-		"message": "Loop interval",
-		"description": "Options - Option label"
-	},
-	"options_interval_description": {
-		"message": "Interval between next loops. If you change card title and eg. tags appears with to long delay, you can reduce this value. Too small value, can \"warm up\" your processor.",
-		"description": "Options - Option description"
-	},
-	"options_default_colors": {
-		"message": "Default colors",
-		"description": "Options - option label inside option"
-	},
-	"options_reset": {
-		"message": "Reset to default",
-		"description": "Options - The title attribute for reset button"
-	},
-	"module_coloredLists_coloringSchemes": {
-		"message": "Coloring schemes"
-	},
-	"module_coloredLists_resetColoringSchemes": {
-		"message": "\u21BA Reset all"
-	},
-	"module_coloredLists_resetColoringSchemesDescription": {
-		"message": "Will reset ALL above color schemes to default."
-	},
-	"module_cardsPrioritization_critical": {
-		"message": "Critical",
-		"description": "Priority name for value 1"
-	},
-	"module_cardsPrioritization_high": {
-		"message": "High",
-		"description": "Priority name for value 2"
-	},
-	"module_cardsPrioritization_medium": {
-		"message": "Medium",
-		"description": "Priority name for value 3"
-	},
-	"module_cardsPrioritization_low": {
-		"message": "Low",
-		"description": "Priority name for value 4"
-	},
-	"module_cardsPrioritization_lowest": {
-		"message": "Lowest",
-		"description": "Priority name for value 5"
-	},
-	"module_scrumTimes_team1EstimationLabelColor": {
-		"message": "Team 1 estimation label colors"
-	},
-	"module_scrumTimes_team1ConsumptionLabelColor": {
-		"message": "Team 1 consumption label colors"
-	},
-	"module_scrumTimes_team2EstimationLabelColor": {
-		"message": "Team 2 estimation label colors"
-	},
-	"module_scrumTimes_team2ConsumptionLabelColor": {
-		"message": "Team 2 consumption label colors"
-	},
-	"module_scrumTimes_pointsButtonsSequence": {
-		"message": "Story points buttons sequence"
-	},
-	"background_color": {
-		"message": "Background color"
-	},
-	"font_color": {
-		"message": "Font color"
-	},
-	"options_enableBoardScroll": {
-		"message": "Overwrite vertical scroll on board with horizontal"
-	},
-	"options_enableBoardScroll_description": {
-		"message": "If enabled you will be able to scroll board in horizontal without holding shift key (just in default display mode)."
-	},
-	"options_enableTabKeyInTextarea": {
-		"message": "Allow use Tab key in card description and comments"
-	},
-	"options_enableTabKeyInTextarea_description": {
-		"message": "If enabled you will be able to insert indent inside card description and comment textarea by tab key. Thanks to this, eg. you can easily create nested list."
-	},
-	"options_enableMarkdownChecklist": {
-		"message": "Allow use Markdown checklist in card description and comments"
-	},
-	"options_enableMarkdownChecklist_description": {
-		"message": "If enabled you will be able to insert checklist in Markdown style inside card description and comment. It can be done by insert at begin of element in standard list \"[x]\" for checked and \"[ ]\" for not."
-	},
-	"options_enableMarkdownTables": {
-		"message": "Allow use Markdown tables in card description and comments"
-	},
-	"options_enableMarkdownTables_description": {
-		"message": "If enabled you will be able to create tables in Markdown style inside card description and comment."
-	},
-	"settings_lists_scrumTimes_showEstimation": {
-		"message": "Show estimations"
-	},
-	"settings_lists_scrumTimes_showConsumption": {
-		"message": "Show consumptions"
-	},
-	"settings_lists_scrumTimes_showTeam1": {
-		"message": "Show team1"
-	},
-	"settings_lists_scrumTimes_showTeam2": {
-		"message": "Show team2"
-	},
+		"about|Source code": {
+			"message": "Source code:"
+		},
+			"about|SourceCode|description": {
+				"message": "Strelloids is open source software. You can check, verify or even edit this code. It is published on GitHub."
+			},
+			"about|SourceCode|link": {
+				"message": "Source code on GitHub"
+			},
+		"about|Need more help": {
+			"message": "Need more help?"
+		},
+			"about|NeedHelp|description": {
+				"message": "Check the wiki for more help, descriptions and examples."
+			},
+			"about|NeedHelp|link": {
+				"message": "Wiki on GitHub"
+			},
+		"about|Found a bug": {
+			"message": "Found a bug or have an idea?"
+		},
+			"about|FoundBug|description": {
+				"message": "I'm not Mr. Robot. I'm making a lot of bugs!"
+			},
+			"about|FoundBug|link": {
+				"message": "Create a issue on GitHub"
+			},
+		"about|Email": {
+			"message": "E-mail:"
+		},
+			"about|Email|description": {
+				"message": "If you prefer the old way of contact."
+			},
+		"about|Donate": {
+			"message": "Donate:"
+		},
+			"about|Donate|description": {
+				"message": "If you enjoying, consider donation for more coffee via PayPal."
+			},
+			"about|Donate|PayPal button description": {
+				"message": "PayPal - The safer, easier way to pay online!"
+			},
+
+
 	"card_edit_priority": {
 		"message": "Card priority"
 	},
@@ -225,59 +245,24 @@
 	"card_edit_customTags": {
 		"message": "Custom tags"
 	},
-	"options_about": {
-		"message": "About",
-		"description": "Options / About / Tab name"
+
+
+	"Background color": {
+		"message": "Background color"
 	},
-	"options_about_sourceCode": {
-		"message": "Source code:"
+	"Font color": {
+		"message": "Font color"
 	},
-	"options_about_sourceCodeLink": {
-		"message": "Source code on GitHub"
-	},
-	"options_about_sourceCodeDescription": {
-		"message": "Strelloids is open source software. You can check, verify or even edit this code. It is published on GitHub."
-	},
-	"options_about_help": {
-		"message": "Need more help?"
-	},
-	"options_about_helpLink": {
-		"message": "Wiki on GitHub"
-	},
-	"options_about_helpDescription": {
-		"message": "Check the wiki for more help, descriptions and examples."
-	},
-	"options_about_issue": {
-		"message": "Found an bug or have an idea?"
-	},
-	"options_about_issueLink": {
-		"message": "Create a issue on GitHub"
-	},
-	"options_about_issueDescription": {
-		"message": "I'm not Mr. Robot. I'm making a lot of bugs!"
-	},
-	"options_about_email": {
-		"message": "E-mail:"
-	},
-	"options_about_emailDescription": {
-		"message": "If you prefer the old way of contact."
-	},
-	"options_about_donate": {
-		"message": "Donate:"
-	},
-	"options_about_donateDescription": {
-		"message": "If you enjoying, consider donation for more coffee via PayPal."
-	},
-	"help_with_icon": {
+	"Help": {
 		"message": "\u2753 Help"
 	},
-	"options_pageTitle": {
-		"message": "Strelloids - Settings"
-	},
-	"cancel": {
+	"Cancel": {
 		"message": "Cancel"
 	},
-	"save": {
+	"Save": {
 		"message": "Save"
+	},
+	"Reset to default": {
+		"message": "Reset to default"
 	}
 }
