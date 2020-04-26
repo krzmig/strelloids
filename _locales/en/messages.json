@@ -14,6 +14,14 @@
 	"popup|Title": {
 		"message": "Strelloids board settings"
 	},
+
+	"Expand all lists": {
+		"message": "Expand all lists"
+	},
+	"Collapse all lists": {
+		"message": "Collapse all lists"
+	},
+
 	"popup|section|Lists settings": {
 		"message": "Lists settings"
 	},

@@ -165,6 +165,20 @@
 		};
 
 		/**
+		 * @param {string} list_id
+		 * @param {string} key
+		 */
+		this.resetForList = function( list_id, key)
+		{
+			var option_key = 'list.'+list_id;
+			if( typeof settings[option_key] === 'undefined' )
+				return;
+
+			delete settings[option_key][key];
+			self.save( option_key );
+		};
+
+		/**
 		 * @param {string} key
 		 * @return {null|boolean|number|string|array|object}
 		 */
@@ -389,7 +403,9 @@
 			onCardDescriptionKeyDown: [],
 			onCardCommentKeyDown: [],
 			onCardDescriptionKeyUp: [],
-			onCardCommentKeyUp: []
+			onCardCommentKeyUp: [],
+			onCollapseAllLists: [],
+			onExpandAllLists: []
 		};
 
 		function init()
@@ -1133,6 +1149,8 @@
 				true
 			);
 			strelloids.modules.events.add( 'onUpdate', update );
+			strelloids.modules.events.add( 'onCollapseAllLists', collapseAll );
+			strelloids.modules.events.add( 'onExpandAllLists', expandAll );
 		}
 
 		function update()
@@ -1182,6 +1200,26 @@
 				$_( 'list-' + list_id ).classList.add( 'list-hidden' );
 			}
 			$( '.pop-over' ).classList.remove('is-shown');
+		}
+
+		function collapseAll()
+		{
+			var lists = $$( '#board > .js-list' );
+			for( var i = lists.length - 1; i >= 0; --i )
+			{
+				var id = lists[i].id.replace( 'list-', '' );
+				strelloids.modules.settings.setForList( id, 'hidden', true );
+			}
+		}
+
+		function expandAll()
+		{
+			var lists = $$( '#board > .js-list' );
+			for( var i = lists.length - 1; i >= 0; --i )
+			{
+				var id = lists[i].id.replace( 'list-', '' );
+				strelloids.modules.settings.resetForList( id, 'hidden' );
+			}
 		}
 
 		init();
