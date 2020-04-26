@@ -132,6 +132,13 @@
 		"message": "Ustawienia modułów"
 	},
 
+	"module|Lists collapsing": {
+		"message": "Zwijanie list"
+	},
+		"module|ListCollapsing|Auto collapse empty lists": {
+			"message": "Automatyczne zwijanie pustych list"
+		},
+
 	"module|Colored lists": {
 		"message": "Kolorowanie list"
 	},

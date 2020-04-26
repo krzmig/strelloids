@@ -140,6 +140,13 @@
 		"message": "Modules settings"
 	},
 
+	"module|Lists collapsing": {
+		"message": "Lists collapsing"
+	},
+		"module|ListCollapsing|Auto collapse empty lists": {
+			"message": "Auto collapse empty lists"
+		},
+
 	"module|Colored lists": {
 		"message": "Colored lists"
 	},

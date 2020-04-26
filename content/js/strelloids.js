@@ -1155,14 +1155,15 @@
 
 		function update()
 		{
+			var collapseEmpty = strelloids.modules.settings.getGlobal( 'module.listsCollapsing.collapseEmptyLists' );
 			var lists = $$( '#board > .js-list' );
 			for( var i = lists.length - 1; i >= 0; --i )
 			{
 				var id = lists[i].id.replace( 'list-', '' );
-				lists[i].classList.toggle(
-					'list-hidden',
-					strelloids.modules.settings.getForList( id, 'hidden' )
-				);
+				var hide = strelloids.modules.settings.getForList( id, 'hidden' );
+				if( collapseEmpty && hide === null )
+					hide = !lists[i].querySelector( '.list-card' );
+				lists[i].classList.toggle( 'list-hidden', hide );
 			}
 			appendToggleOption();
 		}
@@ -1183,42 +1184,65 @@
 		 */
 		function toggleVisibility( list_id )
 		{
-			if( strelloids.modules.settings.getForList( list_id, 'hidden' ))
-			{
-				if( DEBUG )
-					$log( 'Strelloids: module toggleList - list', list_id, 'shown in' );
+			var list = $_( 'list-' + list_id );
+			var old_value = strelloids.modules.settings.getForList( list_id, 'hidden' );
+			var new_value = !old_value;
 
-				strelloids.modules.settings.setForList( list_id, 'hidden', false );
-				$_( 'list-' + list_id ).classList.remove( 'list-hidden' );
+			var collapseEmpty = strelloids.modules.settings.getGlobal( 'module.listsCollapsing.collapseEmptyLists' );
+			if( collapseEmpty )
+			{
+				var is_empty = !list.querySelector( '.list-card' );
+				if( old_value === null && is_empty )
+					new_value = false;
+				if( new_value && is_empty )
+					new_value = null;
 			}
-			else
-			{
-				if( DEBUG )
-					$log( 'Strelloids: module toggleList - list', list_id, 'hidden' );
-
+			if( new_value )
 				strelloids.modules.settings.setForList( list_id, 'hidden', true );
-				$_( 'list-' + list_id ).classList.add( 'list-hidden' );
-			}
+			else if( new_value === false )
+				strelloids.modules.settings.setForList( list_id, 'hidden', false );
+			else if( new_value === null )
+				strelloids.modules.settings.resetForList( list_id, 'hidden' );
+
+			if( DEBUG )
+				$log( 'Strelloids: module toggleList - list', list_id, new_value ? 'shown in' : 'hidden' );
+
 			$( '.pop-over' ).classList.remove('is-shown');
 		}
 
 		function collapseAll()
 		{
 			var lists = $$( '#board > .js-list' );
+			var collapseEmpty = strelloids.modules.settings.getGlobal( 'module.listsCollapsing.collapseEmptyLists' );
 			for( var i = lists.length - 1; i >= 0; --i )
 			{
+				var hide = true;
+				if( collapseEmpty && !lists[i].querySelector( '.list-card' ))
+					hide = null
+
 				var id = lists[i].id.replace( 'list-', '' );
-				strelloids.modules.settings.setForList( id, 'hidden', true );
+				if( hide )
+					strelloids.modules.settings.setForList( id, 'hidden', true );
+				else
+					strelloids.modules.settings.resetForList( id, 'hidden' );
 			}
 		}
 
 		function expandAll()
 		{
 			var lists = $$( '#board > .js-list' );
+			var collapseEmpty = strelloids.modules.settings.getGlobal( 'module.listsCollapsing.collapseEmptyLists' );
 			for( var i = lists.length - 1; i >= 0; --i )
 			{
+				var hide = null;
+				if( collapseEmpty && !lists[i].querySelector( '.list-card' ))
+					hide = false
+
 				var id = lists[i].id.replace( 'list-', '' );
-				strelloids.modules.settings.resetForList( id, 'hidden' );
+				if( hide === false )
+					strelloids.modules.settings.setForList( id, 'hidden', false );
+				else
+					strelloids.modules.settings.resetForList( id, 'hidden' );
 			}
 		}
 

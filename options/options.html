@@ -29,6 +29,9 @@
 			<h4 data-localize>
 				Modules settings
 			</h4>
+			<button type="button" data-localize data-context="module" data-toggle="tab" data-target="#lists-collapsing-tab">
+				Lists collapsing
+			</button>
 			<button type="button" data-localize data-context="module" data-toggle="tab" data-target="#colored-lists-tab">
 				Colored lists
 			</button>
@@ -240,6 +243,27 @@
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.team2]" data-required="scrumTimes">
 				</label>
 			</div>
+		</div>
+
+		<!-- MODULE / LIST COLLAPSING -->
+		<div class="tab-content" id="lists-collapsing-tab">
+			<div class="title-group">
+				<h4 data-localize>
+					Modules settings
+				</h4>
+				<span>/</span>
+				<h3 data-localize data-context="module">
+					Lists collapsing
+				</h3>
+			</div>
+			<hr>
+
+			<label class="flex mt">
+				<span data-localize data-context="module|ListCollapsing" class="fg">
+					Auto collapse empty lists
+				</span>
+				<input type="checkbox" data-toggle="toggle" data-target="module.listsCollapsing.collapseEmptyLists">
+			</label>
 		</div>
 
 		<!-- MODULE / COLORED LISTS -->
