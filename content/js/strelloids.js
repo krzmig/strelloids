@@ -2259,7 +2259,9 @@
 			for( var i = marked_down.length - 1; i >= 0; --i )
 			{
 				var text_node = findTextNode( marked_down[i] );
-				if( text_node.nodeValue.indexOf( '[x]' ) === 0 )
+				if( !text_node )
+					continue;
+				else if( text_node.nodeValue.indexOf( '[x]' ) === 0 )
 					input = createNode( 'input', { type: 'checkbox', checked: true, disabled: true } );
 				else if( text_node.nodeValue.indexOf( '[ ]' ) === 0 )
 					input = createNode( 'input', { type: 'checkbox', disabled: true } );
