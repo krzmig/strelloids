@@ -116,7 +116,7 @@ function ModuleSettings( strelloids )
 
 			if( /^board\./.test( message.event.key ) )
 			{
-				if( new RegExp( '^board\.'+findBoardId() ).test( i ))
+				if( new RegExp( '^board\.'+findBoardId() ).test( message.event.key ))
 					strelloids.modules.events.trigger(
 						'onBoardSettingsChange',
 						message.event.key,
@@ -206,7 +206,7 @@ function ModuleSettings( strelloids )
 			$log( 'Strelloids: trying to load lists ids from api' );
 
 		new Ajax({
-			url: 'https://trello.com/1/Boards/' + board_id + '?lists=open&list_fields=name,closed,idBoard,pos',
+			url: 'https://trello.com/1/Boards/' + board_id + '?fields=id&lists=open&list_fields=id,name',
 			onDone: function( raw_response )
 			{
 				if( DEBUG )
@@ -217,8 +217,6 @@ function ModuleSettings( strelloids )
 					return $err( 'Can\'t receive lists from API' );
 
 				var lists_containers = $$( '#board > .js-list' );
-				if( response.lists.length !== lists_containers.length )
-					return $err( 'List on page and from API didn\'t match, response:', response );
 
 				for( var i = 0; i < response.lists.length; ++i )
 					lists_containers[i].setAttribute( 'id', 'list-' + response.lists[i].id );

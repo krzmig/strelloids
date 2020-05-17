@@ -55,5 +55,39 @@ getBrowserObject().tabs.onUpdated.addListener( function( tabId, change, tab ) {
 	checkIsCardEditOpened( tab );
 } );
 
+getBrowserObject().storage.onChanged.addListener(function( changes )
+{
+	getBrowserObject().tabs.query(
+		{
+			url: "*://trello.com/*"
+		},
+		function( tabs)
+		{
+			for( var i in tabs )
+			{
+				if( !tabs.hasOwnProperty( i ))
+					continue;
+
+				for( var j in changes )
+				{
+					if( !changes.hasOwnProperty( j ))
+						continue;
+
+					getBrowserObject().tabs.sendMessage(
+						tabs[i].id,
+						{
+							event: {
+								code: 'onSettingChanged',
+								key: j,
+								oldValue: changes[j].oldValue,
+								newValue: changes[j].newValue
+							}
+						}
+					);
+				}
+			}
+		}
+	);
+});
 
 toggleIconByUrl();

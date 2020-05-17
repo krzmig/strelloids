@@ -248,21 +248,13 @@ function Settings( load_callback )
 
 	function initApiEvents()
 	{
-		getBrowserObject().storage.onChanged.addListener(function( changes )
+		getBrowserObject().runtime.onMessage.addListener(function( message )
 		{
-			for( var i in changes )
-				if( changes.hasOwnProperty( i ))
-				{
-					settings[i] = changes[i].newValue;
-					getBrowserObject().runtime.sendMessage({
-						event: {
-							code: 'onSettingChanged',
-							key: i,
-							oldValue: changes[i].oldValue,
-							newValue: changes[i].newValue
-						}
-					})
-				}
+			if( typeof message.event === 'undefined' || typeof message.event.code === 'undefined' )
+				return;
+
+			if( message.event.code === 'onSettingChanged' )
+				settings[message.event.key] = message.event.newValue;
 		});
 	}
 
