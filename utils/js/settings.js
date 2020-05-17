@@ -17,6 +17,51 @@ function Settings( load_callback )
 	}
 
 	/**
+	 * @param {string} list_id
+	 * @param {string} key
+	 * @return {null|boolean|number|string|array|object}
+	 */
+	this.getForList = function( list_id, key )
+	{
+		var option_key = 'list.'+list_id;
+		if( typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
+			return settings[option_key][key];
+		else if( typeof default_settings['list.*'][key] !== 'undefined' )
+			return default_settings['list.*'][key];
+		else
+			return null;
+	};
+
+	/**
+	 * @param {string} list_id
+	 * @param {string} key
+	 * @param {null|boolean|number|string|array|object} value
+	 */
+	this.setForList = function( list_id, key, value )
+	{
+		var option_key = 'list.'+list_id;
+		if( typeof settings[option_key] === 'undefined' )
+			settings[option_key] = {};
+
+		settings[option_key][key] = value;
+		self.save( option_key );
+	};
+
+	/**
+	 * @param {string} list_id
+	 * @param {string} key
+	 */
+	this.resetForList = function( list_id, key)
+	{
+		var option_key = 'list.'+list_id;
+		if( typeof settings[option_key] === 'undefined' )
+			return;
+
+		delete settings[option_key][key];
+		self.save( option_key );
+	};
+
+	/**
 	 * @param {string} board_id
 	 * @param {string} key
 	 * @return {null|boolean|number|string|array|object}
@@ -184,6 +229,9 @@ function Settings( load_callback )
 
 	function findBoardId()
 	{
+		if( typeof getBrowserObject().tabs === 'undefined' )
+			return;
+
 		getBrowserObject().tabs.query(
 			{ active: true, currentWindow: true },
 			function( tabs )
@@ -204,7 +252,17 @@ function Settings( load_callback )
 		{
 			for( var i in changes )
 				if( changes.hasOwnProperty( i ))
+				{
 					settings[i] = changes[i].newValue;
+					getBrowserObject().runtime.sendMessage({
+						event: {
+							code: 'onSettingChanged',
+							key: i,
+							oldValue: changes[i].oldValue,
+							newValue: changes[i].newValue
+						}
+					})
+				}
 		});
 	}
 

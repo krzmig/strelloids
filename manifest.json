@@ -27,6 +27,24 @@
 				"*://trello.com/*"
 			],
 			"js": [
+				"utils/js/utils.js",
+				"utils/js/settings.js",
+				"content/js/module/BoardScroll.js",
+				"content/js/module/CardsPrioritization.js",
+				"content/js/module/CardsSeparator.js",
+				"content/js/module/ColoredLists.js",
+				"content/js/module/CustomTags.js",
+				"content/js/module/DisplayMode.js",
+				"content/js/module/Events.js",
+				"content/js/module/MarkdownChecklist.js",
+				"content/js/module/MarkdownTable.js",
+				"content/js/module/ScrumSumTimes.js",
+				"content/js/module/ScrumTimes.js",
+				"content/js/module/Settings.js",
+				"content/js/module/ShowCardsCounter.js",
+				"content/js/module/ShowCardShortId.js",
+				"content/js/module/TabKeyInTextarea.js",
+				"content/js/module/ToggleLists.js",
 				"content/js/strelloids.js"
 			],
 			"css": [

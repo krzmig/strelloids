@@ -15,7 +15,7 @@ function createNode( type, params, text_node )
 
 		if( ['id','name','type','value','min','max','src'].indexOf( i ) >= 0 )
 			node[i] = params[i];
-		else if( i === 'class' && typeof params[i] === 'string' )
+		else if( i === 'class' && isstr( params[i] ))
 			node.className = params[i];
 		else if( i === 'class' && isobj( params[i] ))
 		{
@@ -52,6 +52,15 @@ function closest( node, selector )
  * @param variable
  * @return {boolean}
  */
+function isstr( variable )
+{
+	return typeof variable === 'string';
+}
+
+/**
+ * @param variable
+ * @return {boolean}
+ */
 function isobj( variable )
 {
 	return typeof variable === 'object';
@@ -64,6 +73,19 @@ function isobj( variable )
 function isfunc( variable )
 {
 	return typeof variable === 'function';
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {null|HTMLElement}
+ */
+function findTextNode( element )
+{
+	for( var i = 0; i < element.childNodes.length; ++i )
+		if( element.childNodes[i].nodeType === Node.TEXT_NODE )
+			return element.childNodes[i];
+
+	return null;
 }
 
 /**
@@ -160,6 +182,21 @@ function getBrowserObject()
 		return chrome;
 	else if( typeof msBrowser !== 'undefined' )
 		return msBrowser;
+}
+
+/**
+ * Translations
+ * @param {string} message_key
+ * @return {string}
+ * @private
+ */
+function _( message_key )
+{
+	var browser = getBrowserObject();
+	if( typeof browser.i18n !== 'undefined' && typeof browser.i18n.getMessage === 'function' )
+		return browser.i18n.getMessage( message_key );
+	else
+		return '';
 }
 
 var $w = window,
