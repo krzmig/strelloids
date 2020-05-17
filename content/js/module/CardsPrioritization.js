@@ -248,6 +248,9 @@ function ModuleCardsPrioritization( strelloids )
 	function updatePriorityUI()
 	{
 		var title = $('.mod-card-back-title');
+		if( !title )
+			return;
+
 		var matches = tag_regex.exec( title.value );
 		if( matches === null )
 			$_('cards-prioritization-select').value = '';
