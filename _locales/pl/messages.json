@@ -128,6 +128,54 @@
 		"message": "Domyślne ustawienia tablicy"
 	},
 
+
+	"Import/Export": {
+		"message": "Import/Eksport"
+	},
+		"Export": {
+			"message": "Eksport"
+		},
+			"export|Global settings": {
+				"message": "Ustawienia globalne"
+			},
+				"export|Global settings|description": {
+					"message": "Ta opcja dołączy do eksportu wszystkie Twoje preferencje z tej strony ustawień."
+				},
+			"export|Boards settings": {
+				"message": "Ustawienia tablic"
+			},
+				"export|Boards settings|description": {
+					"message": "Ta opcja dołączy do eksportu wszystkie Twoje indywidualne ustawienia tablic (dostępne w wyskakującym menu po kliknięciu ikonki)."
+				},
+			"export|Lists settings": {
+				"message": "Ustawienia list"
+			},
+				"export|Lists settings|description": {
+					"message": "Ta opcja dołączy do eksportu wszystkie Twoje indywidualne ustawienia list (np. ręczne ich zwinięcie)."
+				},
+		"Import": {
+			"message": "Import"
+		},
+			"import|Replace only keys exists in import": {
+				"message": "Zastąp tylko występujące wartości"
+			},
+				"import|Replace only keys exists in import|description": {
+					"message": "Jeśli zaznaczone, import zastąpi tylko właściwości występujące w importowanych danych."
+				},
+			"import|Remove all old settings before import": {
+				"message": "Usuń stare ustawienia przed importem"
+			},
+				"import|Remove all old settings before import|description": {
+					"message": "Jeśli zaznaczone, pierwszym krokiem będzie wyczyszczenie wszystkich Twoich ustawień a drugim import wskazanych danych."
+				},
+
+			"Invalid JSON to import!": {
+				"message": "Błędny format danych JSON przekazanych do importu!"
+			},
+			"Data imported": {
+				"message": "Ustawienia zaimportowane"
+			},
+
 	"Modules settings": {
 		"message": "Ustawienia modułów"
 	},

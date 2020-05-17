@@ -13,6 +13,7 @@ function Settings( load_callback )
 	{
 		findBoardId();
 		self.load();
+		initApiEvents();
 	}
 
 	/**
@@ -119,8 +120,11 @@ function Settings( load_callback )
 	 */
 	this.resetGlobal = function( key )
 	{
-		delete settings[key];
-		getApiObject().remove( key );
+		if( settings.hasOwnProperty( key ))
+		{
+			delete settings[key];
+			getApiObject().remove( key );
+		}
 	};
 
 	/**
@@ -192,6 +196,32 @@ function Settings( load_callback )
 					board_id = null;
 			}
 		);
+	}
+
+	function initApiEvents()
+	{
+		getBrowserObject().storage.onChanged.addListener(function( changes )
+		{
+			for( var i in changes )
+				if( changes.hasOwnProperty( i ))
+					settings[i] = changes[i].newValue;
+		});
+	}
+
+	this.getAllSettings = function()
+	{
+		return settings;
+	}
+
+	this.getAllDefaultSettings = function()
+	{
+		return default_settings;
+	}
+
+	this.removeAllSettings = function()
+	{
+		getApiObject().clear();
+		settings = {};
 	}
 
 	init();

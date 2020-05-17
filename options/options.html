@@ -24,6 +24,9 @@
 			<button type="button" data-localize data-toggle="tab" data-target="#default-board-settings-tab">
 				Default board settings
 			</button>
+			<button type="button" data-localize data-toggle="tab" data-target="#import-export-tab">
+				Import/Export
+			</button>
 		</div>
 
 		<div class="tab-nav">
@@ -244,6 +247,89 @@
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.team2]" data-required="scrumTimes">
 				</label>
 			</div>
+		</div>
+
+		<!-- IMPORT EXPORT -->
+		<div class="tab-content" id="import-export-tab">
+			<h3 data-localize>
+				Import/Export
+			</h3>
+			<hr>
+			<h5 data-localize>
+				Export
+			</h5>
+
+			<label class="flex mt">
+				<span data-localize data-context="export" class="fg">
+					Global settings
+				</span>
+				<input type="checkbox" checked id="export-global-settings">
+			</label>
+			<div class="option-description" data-localize data-context="export">
+				Global settings|description
+			</div>
+
+			<label class="flex mt">
+				<span data-localize data-context="export" class="fg">
+					Boards settings
+				</span>
+				<input type="checkbox" id="export-boards-settings">
+			</label>
+			<div class="option-description" data-localize data-context="export">
+				Boards settings|description
+			</div>
+
+			<label class="flex mt">
+				<span data-localize data-context="export" class="fg">
+					Lists settings
+				</span>
+				<input type="checkbox" id="export-lists-settings">
+			</label>
+			<div class="option-description" data-localize data-context="export">
+				Lists settings|description
+			</div>
+
+			<button data-localize class="mt" id="export-btn">
+				Export
+			</button>
+
+			<label class="mt">
+				<textarea id="export-content" readonly></textarea>
+			</label>
+
+			<hr class="mt">
+
+			<h5 data-localize>
+				Import
+			</h5>
+
+			<label class="mt">
+				<span data-localize data-context="import" class="fg">
+					Replace only keys exists in import
+				</span>
+				<input type="radio" name="input-model" value="merge" checked>
+			</label>
+			<div class="option-description" data-localize data-context="import">
+				Replace only keys exists in import|description
+			</div>
+
+			<label class="mt">
+				<span data-localize data-context="import" class="fg">
+					Remove all old settings before import
+				</span>
+				<input type="radio" name="input-model" value="replace">
+			</label>
+			<div class="option-description" data-localize data-context="import">
+				Remove all old settings before import|description
+			</div>
+
+			<label class="mt">
+				<textarea id="import-content"></textarea>
+			</label>
+
+			<button data-localize class="mt" id="import-btn">
+				Import
+			</button>
 		</div>
 
 		<!-- MODULE / LIST COLLAPSING -->
@@ -598,12 +684,13 @@
 		</div>
 	</form>
 
-	<script src="../utils/js/i18n.js"></script>
 	<script src="../utils/js/utils.js"></script>
+	<script src="../utils/js/i18n.js"></script>
 	<script src="../utils/js/settings.js"></script>
 	<script src="../utils/js/colorPicker.js"></script>
 	<script src="js/module/ColoredListsScheme.js"></script>
 	<script src="js/module/ScrumStorySequence.js"></script>
+	<script src="js/module/ImportExport.js"></script>
 	<script src="js/options.js"></script>
 </body>
 </html>

@@ -136,6 +136,53 @@
 		"message": "Default board settings"
 	},
 
+	"Import/Export": {
+		"message": "Import/Export"
+	},
+		"Export": {
+			"message": "Export"
+		},
+			"export|Global settings": {
+				"message": "Global settings"
+			},
+				"export|Global settings|description": {
+					"message": "This option will append to the export all your preferences from this whole settings page."
+				},
+			"export|Boards settings": {
+				"message": "Boards settings"
+			},
+				"export|Boards settings|description": {
+					"message": "This option will append to the export all your individual preferences for all your boards (accessed from popup triggered by extension icon)."
+				},
+			"export|Lists settings": {
+				"message": "Lists settings"
+			},
+				"export|Lists settings|description": {
+					"message": "This option will append to the export all your individual preferences for all your lists (eg. manually collapsed)."
+				},
+		"Import": {
+			"message": "Import"
+		},
+			"import|Replace only keys exists in import": {
+				"message": "Replace only keys exists in import"
+			},
+				"import|Replace only keys exists in import|description": {
+					"message": "If checked only settings exists in the import content will be replaced."
+				},
+			"import|Remove all old settings before import": {
+				"message": "Remove all old settings before import"
+			},
+				"import|Remove all old settings before import|description": {
+					"message": "If checked first step will be clean up all your settings and the second one will be import content as your settings."
+				},
+
+			"Invalid JSON to import!": {
+				"message": "Invalid JSON to import!"
+			},
+			"Data imported": {
+				"message": "Data imported"
+			},
+
 	"Modules settings": {
 		"message": "Modules settings"
 	},

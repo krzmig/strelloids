@@ -5,7 +5,7 @@
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/krzmig/strelloids",
-	"version": "2020.4.26",
+	"version": "2020.5.17",
 	"default_locale": "en",
 	"icons": {
 		"16": "img/icon-16.png",
@@ -35,7 +35,10 @@
 		}
 	],
 	"background": {
-		"scripts": ["background/background.js"]
+		"scripts": [
+			"background/background.js",
+			"background/settingsMigration.js"
+		]
 	},
 	"options_ui": {
 		"page": "options/options.html",

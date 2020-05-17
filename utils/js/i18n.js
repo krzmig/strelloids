@@ -15,22 +15,27 @@ function localizeNodeContent( node )
 {
 	var context = node.getAttribute('data-context');
 	var text = node.innerText.toString().replace( /^\s+/g, '' ). replace( /\s+$/g, '' );
-	if( context )
-		text = context.toString() + '|' + text;
 
-	var translation = chrome.i18n.getMessage( text );
-	if( !translation )
-		translation = '!!! MISSING TRANSLATION (' + text + ') !!!'
-	node.innerText = translation;
+	node.innerText = context ?
+		_( text, context.toString() ) :
+		_( text );
 }
 
 function localizeNodeTitle( node )
 {
-	var translation = chrome.i18n.getMessage( node.title );
-	if( !translation )
-		translation = '!!! MISSING TRANSLATION (' + node.title + ') !!!'
+	node.title = _( node.title );
+}
 
-	node.title = translation;
+function _( msg, context )
+{
+	if( context !== undefined )
+		msg = context + '|' + msg;
+
+	var translation = getBrowserObject().i18n.getMessage( msg );
+	if( !translation )
+		translation = '!!! MISSING TRANSLATION (' + msg + ') !!!'
+
+	return translation;
 }
 
 doLocalize();

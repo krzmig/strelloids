@@ -2626,4 +2626,5 @@
 		$trc = console.trace;
 
 	new Strelloids();
+	fupa();
 })();
