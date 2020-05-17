@@ -43,11 +43,7 @@
   content: ""; }
 
 html {
-  color: #17394d;
-  font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
   font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
   background-color: #f4f5f7;
   border-radius: 2px;
   overflow-x: hidden;
@@ -56,7 +52,12 @@ html {
 body {
   padding: 0;
   box-sizing: border-box;
-  width: 280px; }
+  width: 280px;
+  font-size: 14px;
+  color: #17394d;
+  font-family: Helvetica Neue,Arial,Helvetica,"DejaVu Sans","Verdana",sans-serif;
+  line-height: 20px;
+  font-weight: 400; }
 
 hr {
   border-width: 1px 0 0 0;
@@ -88,8 +89,13 @@ div.title {
   display: flex;
   align-items: center;
   height: 48px; }
-  div.title i {
-    cursor: pointer; }
+
+.strelloids-icon-back {
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 3px; }
+  .strelloids-icon-back:hover {
+    background-color: rgba(9, 30, 66, 0.08); }
 
 h3 {
   font-size: 16px;
