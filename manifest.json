@@ -28,6 +28,7 @@
 			],
 			"js": [
 				"utils/js/utils.js",
+				"utils/js/i18n.js",
 				"utils/js/settings.js",
 				"content/js/module/BoardScroll.js",
 				"content/js/module/CardsPrioritization.js",
@@ -74,7 +75,6 @@
 			"128": "img/icon-128.png",
 			"256": "img/icon-256.png"
 		},
-		"default_title": "__MSG_popup_settings_title__",
 		"default_popup": "popup/popup.html",
 		"theme_icons": [{
 			"light": "img/icon-16-light.png",
@@ -107,7 +107,8 @@
 		}]
 	},
 	"web_accessible_resources": [
-		"default_settings.json"
+		"default_settings.json",
+		"_locales/*/*.json"
 	],
 	"browser_specific_settings": {
 		"gecko": {

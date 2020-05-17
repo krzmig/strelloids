@@ -1,3 +1,6 @@
+lang.setDomain( 'popup' );
+lang.htmlTranslation();
+
 document.body.addEventListener(
 	'change',
 	function( e )

@@ -1,0 +1,90 @@
+{
+	"Popup menu":{
+		"message": "Strelloids menu"
+	},
+	"Board settings": {
+		"message": "Board settings"
+	},
+	"popup|Title": {
+		"message": "Strelloids board settings"
+	},
+
+	"Expand all lists": {
+		"message": "Expand all lists"
+	},
+	"Collapse all lists": {
+		"message": "Collapse all lists"
+	},
+
+	"popup|section|Lists settings": {
+		"message": "Lists settings"
+	},
+		"popup|lists|Display mode": {
+			"message": "Display mode"
+		},
+			"popup|lists|displayMode|Default" : {
+				"message": "Default"
+			},
+			"popup|lists|displayMode|Multiple rows" : {
+				"message": "Multiple rows"
+			},
+			"popup|lists|displayMode|Table" : {
+				"message": "Table"
+			},
+		"popup|lists|Enable colored lists": {
+			"message": "Enable colored lists"
+		},
+		"popup|lists|Show list cards counter": {
+			"message": "Show list cards counter"
+		},
+
+	"popup|section|Cards settings": {
+		"message": "Cards settings"
+	},
+		"popup|cards|Show cards short ID": {
+			"message": "Show cards short ID"
+		},
+		"popup|cards|Enable custom tags for cards": {
+			"message": "Enable custom tags for cards"
+		},
+			"popup|cards|Enable custom tags for cards|tooltip" : {
+				"message": "To make tag, put their name inside square brackets into card title (eg. \"[tag name]\")"
+			},
+		"popup|cards|Enable cards separator": {
+			"message": "Enable cards separator"
+		},
+			"popup|cards|Enable cards separator|tooltip": {
+				"message": "To make separator, start card title with three or more characters: - or = (eg. \"--- My separator\")"
+			},
+		"popup|cards|Enable cards prioritization": {
+			"message": "Enable cards prioritization"
+		},
+			"popup|cards|Enable cards prioritization|tooltip": {
+				"message": "To set priority for the card, insert into their title one of this keywords: \"!1\", \"!2\", \"!3\", \"!4\" or \"!5\", where 1 is the highest priority."
+			},
+
+	"popup|section|Scrum settings": {
+		"message": "Scrum settings"
+	},
+		"popup|scrum|Enable scrum times": {
+			"message": "Enable scrum times"
+		},
+			"popup|scrum|Enable scrum times|tooltip" : {
+				"message": "To add estimation points for card, put it into round brackets (eg. \"(3)\", \"(0.5)\", \"(?)\"). To set consumption points, put it into square brackets (eg. \"[5]\", \"[2.5]\")."
+			},
+			"popup|scrum|Show sum times for lists": {
+				"message": "Show sum times for lists"
+			},
+			"popup|scrum|Show estimations": {
+				"message": "Show estimations"
+			},
+			"popup|scrum|Show consumptions": {
+				"message": "Show consumptions"
+			},
+			"popup|scrum|Show team1": {
+				"message": "Show team 1"
+			},
+			"popup|scrum|Show team2": {
+				"message": "Show team 2"
+			}
+}

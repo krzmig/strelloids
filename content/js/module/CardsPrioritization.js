@@ -168,12 +168,48 @@ function ModuleCardsPrioritization( strelloids )
 		if( !$_( 'cards-prioritization-select' ) && ui_container)
 		{
 			var select = createNode( 'select', { id: 'cards-prioritization-select' } );
-			select.appendChild( createNode( 'option', { value: '' }, '---' ) );
-			select.appendChild( createNode( 'option', { value: '1' }, _( 'module|CardsPrioritization|Critical' ) ) );
-			select.appendChild( createNode( 'option', { value: '2' }, _( 'module|CardsPrioritization|High' ) ) );
-			select.appendChild( createNode( 'option', { value: '3' }, _( 'module|CardsPrioritization|Medium' ) ) );
-			select.appendChild( createNode( 'option', { value: '4' }, _( 'module|CardsPrioritization|Low' ) ) );
-			select.appendChild( createNode( 'option', { value: '5' }, _( 'module|CardsPrioritization|Lowest' ) ) );
+			select.appendChild(
+				createNode(
+					'option',
+					{ value: '' },
+					'---'
+				)
+			);
+			select.appendChild(
+				createNode(
+					'option',
+					{ value: '1' },
+					_( 'Critical', 'module|CardsPrioritization', 'options' )
+				)
+			);
+			select.appendChild(
+				createNode(
+					'option',
+					{ value: '2' },
+					_( 'High', 'module|CardsPrioritization', 'options' )
+				)
+			);
+			select.appendChild(
+				createNode(
+					'option',
+					{ value: '3' },
+					_( 'Medium', 'module|CardsPrioritization', 'options' )
+				)
+			);
+			select.appendChild(
+				createNode(
+					'option',
+					{ value: '4' },
+					_( 'Low', 'module|CardsPrioritization', 'options' )
+				)
+			);
+			select.appendChild(
+				createNode(
+					'option',
+					{ value: '5' },
+					_( 'Lowest', 'module|CardsPrioritization', 'options' )
+				)
+			);
 			select.addEventListener( 'change', priorityChangedFromUI );
 			var container = createNode( 'div', { 'class': 'card-detail-item' } );
 			container.appendChild( createNode( 'h3', { 'class': 'card-detail-item-header' }, _('card_edit_priority') ));

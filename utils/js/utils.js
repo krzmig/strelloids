@@ -184,21 +184,6 @@ function getBrowserObject()
 		return msBrowser;
 }
 
-/**
- * Translations
- * @param {string} message_key
- * @return {string}
- * @private
- */
-function _( message_key )
-{
-	var browser = getBrowserObject();
-	if( typeof browser.i18n !== 'undefined' && typeof browser.i18n.getMessage === 'function' )
-		return browser.i18n.getMessage( message_key );
-	else
-		return '';
-}
-
 var $w = window,
 	$d = document,
 	$b = $d.body,

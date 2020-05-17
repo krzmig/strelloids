@@ -18,6 +18,8 @@ function Strelloids()
 		if( DEBUG )
 			$log( 'Strelloids: initialized' );
 
+		lang.setDomain( 'content' );
+
 		self.modules.events = new ModuleEvents( self );
 		self.modules.settings = new ModuleSettings( self );
 
