@@ -1,0 +1,90 @@
+{
+	"Popup menu":{
+		"message": "Strelloids menu"
+	},
+	"Board settings": {
+		"message": "Ustawienia tablicy"
+	},
+	"popup|Title": {
+		"message": "Strelloids ustawienia tablicy"
+	},
+
+	"Expand all lists": {
+		"message": "Rozwiń wszystkie listy"
+	},
+	"Collapse all lists": {
+		"message": "Zwiń wszystkie listy"
+	},
+
+	"popup|section|Lists settings": {
+		"message": "Ustawienia list"
+	},
+		"popup|lists|Display mode": {
+			"message": "Tryb widoku"
+		},
+			"popup|lists|displayMode|Default" : {
+				"message": "Domyślny"
+			},
+			"popup|lists|displayMode|Multiple rows" : {
+				"message": "Wiele wierszy"
+			},
+			"popup|lists|displayMode|Table" : {
+				"message": "Tabela"
+			},
+		"popup|lists|Enable colored lists": {
+			"message": "Włącz automatyczne kolorowanie list"
+		},
+		"popup|lists|Show list cards counter": {
+			"message": "Pokazuj licznik kart"
+		},
+
+	"popup|section|Cards settings": {
+		"message": "Ustawienia kart"
+	},
+		"popup|cards|Show cards short ID": {
+			"message": "Pokazuj krótkie ID kart"
+		},
+		"popup|cards|Enable custom tags for cards": {
+			"message": "Włącz własne tagi dla kart"
+		},
+			"popup|cards|Enable custom tags for cards|tooltip" : {
+				"message": "Aby zrobić tag, umieść jego nazwę wewnątrz nawiasów kwadratowych w tytule karty (np. \"[nazwa taga]\")"
+			},
+		"popup|cards|Enable cards separator": {
+			"message": "Włącz separatory z kart"
+		},
+			"popup|cards|Enable cards separator|tooltip": {
+				"message": "Aby stworzyć separator, zacznij tytuł karty od trzech lub więcej znaków: - lub = (np. \"--- Mój separator\")"
+			},
+		"popup|cards|Enable cards prioritization": {
+			"message": "Włącz priorytety dla kart"
+		},
+			"popup|cards|Enable cards prioritization|tooltip": {
+				"message": "Aby ustawić priorytet dla karty, wstaw w jej tytule jedno ze słów kluczowych: \"!1\", \"!2\", \"!3\", \"!4\" or \"!5\", gdzie 1 jest najwyższym priorytetem."
+			},
+
+	"popup|section|Scrum settings": {
+		"message": "Ustawienia Scrum"
+	},
+		"popup|scrum|Enable scrum times": {
+			"message": "Włącz czasy dla scrum"
+		},
+			"popup|scrum|Enable scrum times|tooltip" : {
+				"message": "Aby dodać estymację punktową dla karty, umieść ją w nawiasie okrągłym (np. \"(3)\", \"(0.5)\", \"(?)\"). Aby dodać skonsumowane punkty, umieść je w nawiasie kwadratowym (np. \"[5]\", \"[2.5]\")."
+			},
+			"popup|scrum|Show sum times for lists": {
+				"message": "Pokaż sumy czasów dla list"
+			},
+			"popup|scrum|Show estimations": {
+				"message": "Pokaż estymację"
+			},
+			"popup|scrum|Show consumptions": {
+				"message": "Pokaż konsumpcję"
+			},
+			"popup|scrum|Show team1": {
+				"message": "Pokaż zespół 1"
+			},
+			"popup|scrum|Show team2": {
+				"message": "Pokaż zespół 2"
+			}
+}

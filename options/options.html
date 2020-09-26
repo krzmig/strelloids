@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title data-localize="__MSG_options_pageTitle__"></title>
+	<title data-localize>
+		Strelloids - Settings
+	</title>
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="../utils/css/colorPicker.css">
+	<link rel="icon" type="image/png" href="../img/icon-64.png">
 </head>
 <body>
 	<div class="tab-container">
@@ -15,144 +18,368 @@
 
 		<!-- NAVS -->
 		<div class="tab-nav mt0">
-			<button type="button" data-localize="__MSG_options_global__" class="active" data-toggle="tab" data-target="#global-tab">
+			<button type="button" data-localize class="active" data-toggle="tab" data-target="#global-tab">
+				Global settings
 			</button>
-			<button type="button" data-localize="__MSG_options_defaultBoardSettings__" data-toggle="tab" data-target="#default-board-settings-tab">
+			<button type="button" data-localize data-toggle="tab" data-target="#default-board-settings-tab">
+				Default board settings
 			</button>
-		</div>
-
-		<div class="tab-nav">
-			<h4 data-localize="__MSG_options_modules__"></h4>
-			<button type="button" data-localize="__MSG_module_name_coloredLists__" data-toggle="tab" data-target="#colored-lists-tab">
-			</button>
-			<button type="button" data-localize="__MSG_module_name_cardsPrioritization__" data-toggle="tab" data-target="#cards-prioritization-tab">
-			</button>
-			<button type="button" data-localize="__MSG_module_name_scrumTimes__" data-toggle="tab" data-target="#scrum-times-tab">
+			<button type="button" data-localize data-toggle="tab" data-target="#import-export-tab">
+				Import/Export
 			</button>
 		</div>
 
 		<div class="tab-nav">
-			<button type="button" data-localize="__MSG_options_about__" data-toggle="tab" data-target="#about-tab">
+			<h4 data-localize>
+				Modules settings
+			</h4>
+			<button type="button" data-localize data-context="module" data-toggle="tab" data-target="#lists-collapsing-tab">
+				Lists collapsing
+			</button>
+			<button type="button" data-localize data-context="module" data-toggle="tab" data-target="#colored-lists-tab">
+				Colored lists
+			</button>
+			<button type="button" data-localize data-context="module" data-toggle="tab" data-target="#cards-prioritization-tab">
+				Cards prioritization
+			</button>
+			<button type="button" data-localize data-context="module" data-toggle="tab" data-target="#scrum-times-tab">
+				Scrum times
+			</button>
+		</div>
+
+		<div class="tab-nav">
+			<button type="button" data-localize data-toggle="tab" data-target="#about-tab">
+				About
 			</button>
 		</div>
 
 		<!-- GLOBAL -->
 		<div class="tab-content active" id="global-tab">
-			<h3 data-localize="__MSG_options_global__"></h3>
+			<h3 data-localize>
+				Global settings
+			</h3>
 			<hr>
 			<div class="flex">
-				<label data-localize="__MSG_options_interval__" class="fg" for="global.loopInterval"></label>
+				<label data-localize data-context="settings" class="fg" for="global.loopInterval">
+					Loop interval
+				</label>
 				<div class="input-group">
 					<input type="number" min="0.3" step="0.1" data-toggle="set" data-target="global.loopInterval" id="global.loopInterval">
 					<span class="description">s</span>
 				</div>
-				<button type="button" class="reset ml" data-toggle="reset" data-target="global.loopInterval" title="__MSG_options_reset__">&#8634;</button>
+				<button type="button" class="reset ml" data-toggle="reset" data-target="global.loopInterval" title="Reset to default">&#8634;</button>
 			</div>
-			<div class="option-description" data-localize="__MSG_options_interval_description__"></div>
+			<div class="option-description" data-localize data-context="settings">
+				loopInterval|description
+			</div>
 
 			<label class="flex mt">
-				<span data-localize="__MSG_options_enableBoardScroll__" class="fg"></span>
+				<span data-localize data-context="settings" class="fg">
+					Vertical scroll
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="global.enableBoardScroll">
 			</label>
-			<div class="option-description" data-localize="__MSG_options_enableBoardScroll_description__"></div>
+			<div class="option-description" data-localize data-context="settings">
+				VerticalScroll|description
+			</div>
 
 			<label class="flex mt">
-				<span data-localize="__MSG_options_enableTabKeyInTextarea__" class="fg"></span>
+				<span data-localize data-context="settings" class="fg">
+					Allow Tab key
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="global.enableTabKeyInTextarea">
 			</label>
-			<div class="option-description" data-localize="__MSG_options_enableTabKeyInTextarea_description__"></div>
+			<div class="option-description" data-localize data-context="settings">
+				AllowTabKey|description
+			</div>
+
+			<label class="flex mt">
+				<span data-localize data-context="settings" class="fg">
+					Markdown checklists
+				</span>
+				<input type="checkbox" data-toggle="toggle" data-target="global.enableMarkdownChecklist">
+			</label>
+			<div class="option-description" data-localize data-context="settings">
+				MarkdownChecklists|description
+			</div>
+			<div class="option-description">
+				<a class="button" href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Markdown-%7C-Checklist" data-localize target="_blank">
+					Help
+				</a>
+			</div>
+
+			<label class="flex mt">
+				<span data-localize data-context="settings" class="fg">
+					Markdown tables
+				</span>
+				<input type="checkbox" data-toggle="toggle" data-target="global.enableMarkdownTables">
+			</label>
+			<div class="option-description" data-localize data-context="settings">
+				MarkdownTables|description
+			</div>
+			<div class="option-description">
+				<a class="button" href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Markdown-%7C-Table" data-localize target="_blank">
+					Help
+				</a>
+			</div>
 		</div>
 
 		<!-- DEFAULT FOR BOARD -->
 		<div class="tab-content" id="default-board-settings-tab">
-			<h3 data-localize="__MSG_options_defaultBoardSettings__"></h3>
+			<h3 data-localize>
+				Default board settings
+			</h3>
 			<hr>
 
-			<h4 data-localize="__MSG_settings_sectionTitle_Lists__"></h4>
+			<h4 data-localize data-context="popup|section" data-domain="popup">
+				Lists settings
+			</h4>
 			<label>
-				<span data-localize="__MSG_settings_lists_displayMode__"></span>
+				<span data-localize data-context="popup|lists" data-domain="popup">
+					Display mode
+				</span>
 				<span class="fg"></span>
 				<select data-toggle="set" data-target="board.*[displayMode]">
-					<option value="default" data-localize="__MSG_settings_lists_displayMode_standard__"></option>
-					<option value="multi-rows" data-localize="__MSG_settings_lists_displayMode_multiRows__"></option>
-					<option value="table" data-localize="__MSG_settings_lists_displayMode_table__"></option>
+					<option value="default" data-localize data-context="popup|lists|displayMode" data-domain="popup">
+						Default
+					</option>
+					<option value="multi-rows" data-localize data-context="popup|lists|displayMode" data-domain="popup">
+						Multiple rows
+					</option>
+					<option value="table" data-localize data-context="popup|lists|displayMode" data-domain="popup">
+						Table
+					</option>
 				</select>
 			</label>
 			<label>
-				<span data-localize="__MSG_settings_lists_enableModule_coloredLists__" class="fg"></span>
+				<span data-localize data-context="popup|lists" class="fg" data-domain="popup">
+					Enable colored lists
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[coloredLists]">
 			</label>
 			<label>
-				<span data-localize="__MSG_settings_lists_enableModule_showCardsCounter__" class="fg"></span>
+				<span data-localize data-context="popup|lists" class="fg" data-domain="popup">
+					Show list cards counter
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[showCardsCounter]">
 			</label>
 
 			<hr>
-			<h4 data-localize="__MSG_settings_sectionTitle_Cards__"></h4>
+			<h4 data-localize data-context="popup|section" data-domain="popup">
+				Cards settings
+			</h4>
 			<label>
-				<span data-localize="__MSG_settings_lists_enableModule_showCardShortId__" class="fg"></span>
+				<span data-localize data-context="popup|cards" class="fg" data-domain="popup">
+					Show cards short ID
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[showCardShortId]">
 			</label>
-			<label title="__MSG_module_customTags_description__">
-				<span data-localize="__MSG_settings_lists_enableModule_customTags__ [?]" class="fg"></span>
+			<label title="popup|cards|Enable custom tags for cards|tooltip" data-domain="popup">
+				<span class="fg">
+					<span data-localize data-context="popup|cards" data-domain="popup">
+						Enable custom tags for cards
+					</span>
+					[?]
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[customTags]">
 			</label>
-			<label title="__MSG_module_cardsSeparator_description__">
-				<span data-localize="__MSG_settings_lists_enableModule_cardsSeparator__ [?]" class="fg"></span>
+			<label title="popup|cards|Enable cards separator|tooltip" data-domain="popup">
+				<span class="fg">
+					<span data-localize data-context="popup|cards" data-domain="popup">
+						Enable cards separator
+					</span>
+					[?]
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[cardsSeparator]">
 			</label>
-			<label title="__MSG_module_cardsPrioritization_description__">
-				<span data-localize="__MSG_settings_lists_enableModule_cardsPrioritization__ [?]" class="fg"></span>
+			<label title="popup|cards|Enable cards prioritization|tooltip" data-domain="popup">
+				<span class="fg">
+					<span data-localize data-context="popup|cards" data-domain="popup">
+						Enable cards prioritization
+					</span>
+					[?]
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[cardsPrioritization]">
 			</label>
 
 			<hr>
-			<h4 data-localize="__MSG_settings_sectionTitle_Scrum__"></h4>
-			<label title="__MSG_module_scrumTime_description__">
-				<span data-localize="__MSG_settings_lists_enableModule_scrumTime__  [?]" class="fg"></span>
+			<h4 data-localize data-context="popup|section" data-domain="popup">
+				Scrum settings
+			</h4>
+			<label title="popup|scrum|Enable scrum times|tooltip" data-domain="popup">
+				<span class="fg">
+					<span data-localize data-context="popup|scrum" data-domain="popup">
+						Enable scrum times
+					</span>
+					[?]
+				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes]">
 			</label>
 			<div class="subsection">
 				<label>
-					<span data-localize="__MSG_settings_lists_enableModule_scrumSumTime__" class="fg"></span>
+					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
+						Show sum times for lists
+					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumSumTimes]" data-required="scrumTimes">
 				</label>
 				<label>
-					<span data-localize="__MSG_settings_lists_scrumTimes_showEstimation__" class="fg"></span>
+					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
+						Show estimations
+					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.estimation]" data-required="scrumTimes">
 				</label>
 				<label>
-					<span data-localize="__MSG_settings_lists_scrumTimes_showConsumption__" class="fg"></span>
+					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
+						Show consumptions
+					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.consumption]" data-required="scrumTimes">
 				</label>
 				<label>
-					<span data-localize="__MSG_settings_lists_scrumTimes_showTeam1__" class="fg"></span>
+					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
+						Show team1
+					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.team1]" data-required="scrumTimes">
 				</label>
 				<label>
-					<span data-localize="__MSG_settings_lists_scrumTimes_showTeam2__" class="fg"></span>
+					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
+						Show team2
+					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.team2]" data-required="scrumTimes">
 				</label>
 			</div>
 		</div>
 
-		<!-- MODULE / COLORED LISTS -->
-		<div class="tab-content" id="colored-lists-tab">
+		<!-- IMPORT EXPORT -->
+		<div class="tab-content" id="import-export-tab">
+			<h3 data-localize>
+				Import/Export
+			</h3>
+			<hr>
+			<h5 data-localize>
+				Export
+			</h5>
+
+			<label class="flex mt">
+				<span data-localize data-context="export" class="fg">
+					Global settings
+				</span>
+				<input type="checkbox" checked id="export-global-settings">
+			</label>
+			<div class="option-description" data-localize data-context="export">
+				Global settings|description
+			</div>
+
+			<label class="flex mt">
+				<span data-localize data-context="export" class="fg">
+					Boards settings
+				</span>
+				<input type="checkbox" id="export-boards-settings">
+			</label>
+			<div class="option-description" data-localize data-context="export">
+				Boards settings|description
+			</div>
+
+			<label class="flex mt">
+				<span data-localize data-context="export" class="fg">
+					Lists settings
+				</span>
+				<input type="checkbox" id="export-lists-settings">
+			</label>
+			<div class="option-description" data-localize data-context="export">
+				Lists settings|description
+			</div>
+
+			<button data-localize class="mt" id="export-btn">
+				Export
+			</button>
+
+			<label class="mt">
+				<textarea id="export-content" readonly></textarea>
+			</label>
+
+			<hr class="mt">
+
+			<h5 data-localize>
+				Import
+			</h5>
+
+			<label class="mt">
+				<span data-localize data-context="import" class="fg">
+					Replace only keys exists in import
+				</span>
+				<input type="radio" name="input-model" value="merge" checked>
+			</label>
+			<div class="option-description" data-localize data-context="import">
+				Replace only keys exists in import|description
+			</div>
+
+			<label class="mt">
+				<span data-localize data-context="import" class="fg">
+					Remove all old settings before import
+				</span>
+				<input type="radio" name="input-model" value="replace">
+			</label>
+			<div class="option-description" data-localize data-context="import">
+				Remove all old settings before import|description
+			</div>
+
+			<label class="mt">
+				<textarea id="import-content"></textarea>
+			</label>
+
+			<button data-localize class="mt" id="import-btn">
+				Import
+			</button>
+		</div>
+
+		<!-- MODULE / LIST COLLAPSING -->
+		<div class="tab-content" id="lists-collapsing-tab">
 			<div class="title-group">
-				<h4 data-localize="__MSG_options_modules__"></h4>
+				<h4 data-localize>
+					Modules settings
+				</h4>
 				<span>/</span>
-				<h3 data-localize="__MSG_module_name_coloredLists__"></h3>
+				<h3 data-localize data-context="module">
+					Lists collapsing
+				</h3>
 			</div>
 			<hr>
 
-			<h5 data-localize="__MSG_module_coloredLists_coloringSchemes__"></h5>
+			<label class="flex mt">
+				<span data-localize data-context="module|ListCollapsing" class="fg">
+					Auto collapse empty lists
+				</span>
+				<input type="checkbox" data-toggle="toggle" data-target="module.listsCollapsing.collapseEmptyLists">
+			</label>
+		</div>
+
+		<!-- MODULE / COLORED LISTS -->
+		<div class="tab-content" id="colored-lists-tab">
+			<div class="title-group">
+				<h4 data-localize>
+					Modules settings
+				</h4>
+				<span>/</span>
+				<h3 data-localize data-context="module">
+					Colored lists
+				</h3>
+			</div>
+			<hr>
+
+			<h5 data-localize data-context="module|ColoredLists">
+				Coloring schemes
+			</h5>
 			<div class="subsection">
 				<div id="colored-lists-scheme"></div>
 				<br>
 				<div class="flex">
-					<a class="button" data-localize="__MSG_help_with_icon__" href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Colored-lists" target="_blank"></a>
+					<a class="button" data-localize href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Colored-lists" target="_blank">
+						Help
+					</a>
 					<span class="fg"></span>
-					<button type="button" class="reset" data-toggle="reset" data-localize="__MSG_module_coloredLists_resetColoringSchemes__" data-target="module.coloredLists.scheme" title="__MSG_module_coloredLists_resetColoringSchemesDescription__" tabindex="-1"></button>
+					<button type="button" class="reset" data-toggle="reset" data-localize data-context="module|ColoredLists" data-target="module.coloredLists.scheme" title="module|ColoredLists|ResetAll|description" tabindex="-1">
+						Reset all
+					</button>
 				</div>
 			</div>
 		</div>
@@ -160,38 +387,54 @@
 		<!-- MODULE / CARDS PRIOS -->
 		<div class="tab-content" id="cards-prioritization-tab">
 			<div class="title-group">
-				<h4 data-localize="__MSG_options_modules__"></h4>
+				<h4 data-localize>
+					Modules settings
+				</h4>
 				<span>/</span>
-				<h3 data-localize="__MSG_module_name_cardsPrioritization__"></h3>
+				<h3 data-localize data-context="module">
+					Cards prioritization
+				</h3>
 			</div>
 			<hr>
 
-			<h5 data-localize="__MSG_options_default_colors__"></h5>
+			<h5 data-localize data-context="module|CardsPrioritization">
+				Default colors
+			</h5>
 			<div class="subsection">
 				<div class="flex">
-					<span data-localize="__MSG_module_cardsPrioritization_critical__" class="fg"></span>
+					<span data-localize data-context="module|CardsPrioritization" class="fg">
+						Critical
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.critical">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.critical" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.critical" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
-					<span data-localize="__MSG_module_cardsPrioritization_high__" class="fg"></span>
+					<span data-localize data-context="module|CardsPrioritization" class="fg">
+						High
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.high">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.high" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.high" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
-					<span data-localize="__MSG_module_cardsPrioritization_medium__" class="fg"></span>
+					<span data-localize data-context="module|CardsPrioritization" class="fg">
+						Medium
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.medium">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.medium" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.medium" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
-					<span data-localize="__MSG_module_cardsPrioritization_low__" class="fg"></span>
+					<span data-localize data-context="module|CardsPrioritization" class="fg">
+						Low
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.low">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.low" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.low" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
-					<span data-localize="__MSG_module_cardsPrioritization_lowest__" class="fg"></span>
+					<span data-localize data-context="module|CardsPrioritization" class="fg">
+						Lowest
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.lowest">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.lowest" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.lowest" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
 		</div>
@@ -199,110 +442,169 @@
 		<!-- MODULE / SCRUM TIMES -->
 		<div class="tab-content" id="scrum-times-tab">
 			<div class="title-group">
-				<h4 data-localize="__MSG_options_modules__" class="fg"></h4>
-				<h3 data-localize="__MSG_module_name_scrumTimes__"></h3>
+				<h4 data-localize>
+					Modules settings
+				</h4>
+				<span>/</span>
+				<h3 data-localize data-context="module">
+					Scrum times
+				</h3>
 			</div>
 			<hr>
 
-			<h5 data-localize="__MSG_module_scrumTimes_pointsButtonsSequence__"></h5>
+			<h5 data-localize data-context="module|Scrum">
+				Story points buttons sequence
+			</h5>
 			<div class="subsection">
 				<div class="flex">
 					<div id="scrum-sequence-buttons"></div>
-					<button type="button" class="reset ml" id="resetScrumSequence" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" id="resetScrumSequence" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
-			<h5 data-localize="__MSG_module_scrumTimes_team1EstimationLabelColor__"></h5>
+			<h5 data-localize data-context="module|Scrum">
+				Team 1 estimation label colors
+			</h5>
 			<div class="subsection">
 				<div class="flex">
-					<span data-localize="__MSG_background_color__" class="fg"></span>
+					<span data-localize class="fg">
+						Background color
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam1Estimation">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Estimation" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Estimation" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
-					<span data-localize="__MSG_font_color__" class="fg"></span>
+					<span data-localize class="fg">
+						Font color
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam1Estimation">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Estimation" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Estimation" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
-			<h5 data-localize="__MSG_module_scrumTimes_team1ConsumptionLabelColor__"></h5>
+			<h5 data-localize data-context="module|Scrum">
+				Team 1 consumption label colors
+			</h5>
 			<div class="subsection">
 				<div class="flex">
-					<span data-localize="__MSG_background_color__" class="fg"></span>
+					<span data-localize class="fg">
+						Background color
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam1Consumption">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Consumption" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Consumption" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
-					<span data-localize="__MSG_font_color__" class="fg"></span>
+					<span data-localize class="fg">
+						Font color
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam1Consumption">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Consumption" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Consumption" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
-			<h5 data-localize="__MSG_module_scrumTimes_team2EstimationLabelColor__"></h5>
+			<h5 data-localize data-context="module|Scrum">
+				Team 2 estimation label colors
+			</h5>
 			<div class="subsection">
 				<div class="flex">
-					<span data-localize="__MSG_background_color__" class="fg"></span>
+					<span data-localize class="fg">
+						Background color
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam2Estimation">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Estimation" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Estimation" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
-					<span data-localize="__MSG_font_color__" class="fg"></span>
+					<span data-localize class="fg">
+						Font color
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam2Estimation">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Estimation" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Estimation" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
-			<h5 data-localize="__MSG_module_scrumTimes_team2ConsumptionLabelColor__"></h5>
+			<h5 data-localize data-context="module|Scrum">
+				Team 2 consumption label colors
+			</h5>
 			<div class="subsection">
 				<div class="flex">
-					<span data-localize="__MSG_background_color__" class="fg"></span>
+					<span data-localize class="fg">
+						Background color
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam2Consumption">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Consumption" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Consumption" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
-					<span data-localize="__MSG_font_color__" class="fg"></span>
+					<span data-localize class="fg">
+						Font color
+					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam2Consumption">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Consumption" title="__MSG_options_reset__">&#8634;</button>
+					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Consumption" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
 		</div>
 
 		<!-- ABOUT -->
 		<div class="tab-content" id="about-tab">
-			<h3 data-localize="__MSG_options_about__"></h3>
+			<h3 data-localize>
+				About
+			</h3>
 			<hr>
 
 			<div class="flex">
-				<span data-localize="__MSG_options_about_sourceCode__" class="fg"></span>
-				<a href="https://github.com/krzmig/strelloids" target="_blank" data-localize="__MSG_options_about_sourceCodeLink__"></a>
+				<span data-localize data-context="about" class="fg">
+					Source code
+				</span>
+				<a href="https://github.com/krzmig/strelloids" target="_blank" data-localize data-context="about">
+					SourceCode|link
+				</a>
 			</div>
-			<div class="option-description" data-localize="__MSG_options_about_sourceCodeDescription__"></div>
+			<div class="option-description" data-localize data-context="about">
+				SourceCode|description
+			</div>
 
 			<div class="flex mt">
-				<span data-localize="__MSG_options_about_help__" class="fg"></span>
-				<a href="https://github.com/krzmig/strelloids/wiki" target="_blank" data-localize="__MSG_options_about_helpLink__"></a>
+				<span data-localize data-context="about" class="fg">
+					Need more help
+				</span>
+				<a href="https://github.com/krzmig/strelloids/wiki" target="_blank" data-localize data-context="about">
+					NeedHelp|link
+				</a>
 			</div>
-			<div class="option-description" data-localize="__MSG_options_about_helpDescription__"></div>
+			<div class="option-description" data-localize data-context="about">
+				NeedHelp|description
+			</div>
 
 			<div class="flex mt">
-				<span data-localize="__MSG_options_about_issue__" class="fg"></span>
-				<a href="https://github.com/krzmig/strelloids/issues/new/choose" target="_blank" data-localize="__MSG_options_about_issueLink__"></a>
+				<span data-localize data-context="about" class="fg">
+					Found a bug
+				</span>
+				<a href="https://github.com/krzmig/strelloids/issues/new/choose" target="_blank" data-localize data-context="about">
+					FoundBug|link
+				</a>
 			</div>
-			<div class="option-description" data-localize="__MSG_options_about_issueDescription__"></div>
+			<div class="option-description" data-localize data-context="about">
+				FoundBug|description
+			</div>
 
 			<div class="flex mt">
-				<span data-localize="__MSG_options_about_email__" class="fg"></span>
+				<span data-localize data-context="about" class="fg">
+					Email
+				</span>
 				<a href="mailto:strelloids@gmail.com" target="_blank">
 					strelloids@gmail.com
 				</a>
 			</div>
-			<div class="option-description" data-localize="__MSG_options_about_emailDescription__"></div>
+			<div class="option-description" data-localize data-context="about">
+				Email|description
+			</div>
 
 			<div class="flex mt">
-				<span data-localize="__MSG_options_about_donate__" class="fg"></span>
-				<a href="https://paypal.me/strelloids" target="_blank">
-					<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button">
+				<span data-localize data-context="about" class="fg">
+					Donate
+				</span>
+				<a href="https://paypal.me/strelloids" target="_blank" title="about|Donate|PayPal button description">
+					<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate with PayPal button">
 				</a>
 			</div>
-			<div class="option-description" data-localize="__MSG_options_about_donateDescription__"></div>
+			<div class="option-description" data-localize data-context="about">
+				Donate|description
+			</div>
 		</div>
 	</div>
 
@@ -370,20 +672,25 @@
 					</div>
 
 					<div class="buttons">
-						<button type="reset" class="cancel" tabindex="4" data-localize="__MSG_cancel__"></button>
-						<button type="submit" class="save" tabindex="4" data-localize="__MSG_save__"></button>
+						<button type="reset" class="cancel" tabindex="4" data-localize>
+							Cancel
+						</button>
+						<button type="submit" class="save" tabindex="4" data-localize>
+							Save
+						</button>
 					</div>
 				</footer>
 			</div>
 		</div>
 	</form>
 
-	<script src="../utils/js/i18n.js"></script>
 	<script src="../utils/js/utils.js"></script>
+	<script src="../utils/js/i18n.js"></script>
 	<script src="../utils/js/settings.js"></script>
 	<script src="../utils/js/colorPicker.js"></script>
 	<script src="js/module/ColoredListsScheme.js"></script>
 	<script src="js/module/ScrumStorySequence.js"></script>
+	<script src="js/module/ImportExport.js"></script>
 	<script src="js/options.js"></script>
 </body>
 </html>

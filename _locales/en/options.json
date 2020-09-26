@@ -1,0 +1,219 @@
+{
+	"Strelloids - Settings": {
+		"message": "Strelloids - Settings"
+	},
+	"Global settings" : {
+		"message": "Global settings"
+	},
+		"settings|Loop interval": {
+			"message": "Loop interval"
+		},
+			"settings|loopInterval|description": {
+				"message": "Interval between next loops. If you change card title and eg. tags appears with to long delay, you can reduce this value. Too small value, can \"warm up\" your processor."
+			},
+		"settings|Vertical scroll": {
+			"message": "Overwrite vertical scroll on board with horizontal"
+		},
+			"settings|VerticalScroll|description": {
+				"message": "If enabled you will be able to scroll board in horizontal without holding shift key (just in default display mode)."
+			},
+		"settings|Allow Tab key": {
+			"message": "Allow use Tab key in card description and comments"
+		},
+			"settings|AllowTabKey|description": {
+				"message": "If enabled you will be able to insert indent inside card description and comment textarea by tab key. Thanks to this, eg. you can easily create nested list."
+			},
+		"settings|Markdown checklists": {
+			"message": "Allow use Markdown checklist in card description and comments"
+		},
+			"settings|MarkdownChecklists|description": {
+				"message": "If enabled you will be able to insert checklist in Markdown style inside card description and comment. It can be done by insert at begin of element in standard list \"[x]\" for checked and \"[ ]\" for not."
+			},
+		"settings|Markdown tables": {
+			"message": "Allow use Markdown tables in card description and comments"
+		},
+			"settings|MarkdownTables|description": {
+				"message": "If enabled you will be able to create tables in Markdown style inside card description and comment."
+			},
+
+	"Default board settings": {
+		"message": "Default board settings"
+	},
+
+	"Import/Export": {
+		"message": "Import/Export"
+	},
+		"Export": {
+			"message": "Export"
+		},
+			"export|Global settings": {
+				"message": "Global settings"
+			},
+				"export|Global settings|description": {
+					"message": "This option will append to the export all your preferences from this whole settings page."
+				},
+			"export|Boards settings": {
+				"message": "Boards settings"
+			},
+				"export|Boards settings|description": {
+					"message": "This option will append to the export all your individual preferences for all your boards (accessed from popup triggered by extension icon)."
+				},
+			"export|Lists settings": {
+				"message": "Lists settings"
+			},
+				"export|Lists settings|description": {
+					"message": "This option will append to the export all your individual preferences for all your lists (eg. manually collapsed)."
+				},
+		"Import": {
+			"message": "Import"
+		},
+			"import|Replace only keys exists in import": {
+				"message": "Replace only keys exists in import"
+			},
+				"import|Replace only keys exists in import|description": {
+					"message": "If checked only settings exists in the import content will be replaced."
+				},
+			"import|Remove all old settings before import": {
+				"message": "Remove all old settings before import"
+			},
+				"import|Remove all old settings before import|description": {
+					"message": "If checked first step will be clean up all your settings and the second one will be import content as your settings."
+				},
+
+			"Invalid JSON to import!": {
+				"message": "Invalid JSON to import!"
+			},
+			"Data imported": {
+				"message": "Data imported"
+			},
+
+	"Modules settings": {
+		"message": "Modules settings"
+	},
+
+	"module|Lists collapsing": {
+		"message": "Lists collapsing"
+	},
+		"module|ListCollapsing|Auto collapse empty lists": {
+			"message": "Auto collapse empty lists"
+		},
+
+	"module|Colored lists": {
+		"message": "Colored lists"
+	},
+		"module|ColoredLists|Coloring schemes": {
+			"message": "Coloring schemes"
+		},
+		"module|ColoredLists|Reset all": {
+			"message": "\u21BA Reset all"
+		},
+		"module|ColoredLists|ResetAll|description": {
+			"message": "Will reset ALL above color schemes to default."
+		},
+
+	"module|Cards prioritization": {
+		"message": "Cards prioritization"
+	},
+		"module|CardsPrioritization|Default colors": {
+			"message": "Default colors"
+		},
+		"module|CardsPrioritization|Critical": {
+			"message": "Critical"
+		},
+		"module|CardsPrioritization|High": {
+			"message": "High"
+		},
+		"module|CardsPrioritization|Medium": {
+			"message": "Medium"
+		},
+		"module|CardsPrioritization|Low": {
+			"message": "Low"
+		},
+		"module|CardsPrioritization|Lowest": {
+			"message": "Lowest"
+		},
+
+	"module|Scrum times": {
+		"message": "Scrum times"
+	},
+		"module|Scrum|Story points buttons sequence": {
+			"message": "Story points buttons sequence"
+		},
+		"module|Scrum|Team 1 estimation label colors": {
+			"message": "Team 1 estimation label colors"
+		},
+		"module|Scrum|Team 1 consumption label colors": {
+			"message": "Team 1 consumption label colors"
+		},
+		"module|Scrum|Team 2 estimation label colors": {
+			"message": "Team 2 estimation label colors"
+		},
+		"module|Scrum|Team 2 consumption label colors": {
+			"message": "Team 2 consumption label colors"
+		},
+
+	"About": {
+		"message": "About"
+	},
+		"about|Source code": {
+			"message": "Source code:"
+		},
+			"about|SourceCode|description": {
+				"message": "Strelloids is open source software. You can check, verify or even edit this code. It is published on GitHub."
+			},
+			"about|SourceCode|link": {
+				"message": "Source code on GitHub"
+			},
+		"about|Need more help": {
+			"message": "Need more help?"
+		},
+			"about|NeedHelp|description": {
+				"message": "Check the wiki for more help, descriptions and examples."
+			},
+			"about|NeedHelp|link": {
+				"message": "Wiki on GitHub"
+			},
+		"about|Found a bug": {
+			"message": "Found a bug or have an idea?"
+		},
+			"about|FoundBug|description": {
+				"message": "I'm not Mr. Robot. I'm making a lot of bugs!"
+			},
+			"about|FoundBug|link": {
+				"message": "Create a issue on GitHub"
+			},
+		"about|Email": {
+			"message": "E-mail:"
+		},
+			"about|Email|description": {
+				"message": "If you prefer the old way of contact."
+			},
+		"about|Donate": {
+			"message": "Donate:"
+		},
+			"about|Donate|description": {
+				"message": "If you enjoying, consider donation for more coffee via PayPal."
+			},
+			"about|Donate|PayPal button description": {
+				"message": "PayPal - The safer, easier way to pay online!"
+			},
+
+	"Background color": {
+		"message": "Background color"
+	},
+	"Font color": {
+		"message": "Font color"
+	},
+	"Help": {
+		"message": "\u2753 Help"
+	},
+	"Cancel": {
+		"message": "Cancel"
+	},
+	"Save": {
+		"message": "Save"
+	},
+	"Reset to default": {
+		"message": "Reset to default"
+	}
+}

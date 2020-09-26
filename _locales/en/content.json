@@ -1,0 +1,14 @@
+{
+	"card_edit_priority": {
+		"message": "Card priority"
+	},
+	"card_edit_estimation": {
+		"message": "Estimation"
+	},
+	"card_edit_consumption": {
+		"message": "Consumption"
+	},
+	"card_edit_customTags": {
+		"message": "Custom tags"
+	}
+}

@@ -13,7 +13,53 @@ function Settings( load_callback )
 	{
 		findBoardId();
 		self.load();
+		initApiEvents();
 	}
+
+	/**
+	 * @param {string} list_id
+	 * @param {string} key
+	 * @return {null|boolean|number|string|array|object}
+	 */
+	this.getForList = function( list_id, key )
+	{
+		var option_key = 'list.'+list_id;
+		if( typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
+			return settings[option_key][key];
+		else if( typeof default_settings['list.*'][key] !== 'undefined' )
+			return default_settings['list.*'][key];
+		else
+			return null;
+	};
+
+	/**
+	 * @param {string} list_id
+	 * @param {string} key
+	 * @param {null|boolean|number|string|array|object} value
+	 */
+	this.setForList = function( list_id, key, value )
+	{
+		var option_key = 'list.'+list_id;
+		if( typeof settings[option_key] === 'undefined' )
+			settings[option_key] = {};
+
+		settings[option_key][key] = value;
+		self.save( option_key );
+	};
+
+	/**
+	 * @param {string} list_id
+	 * @param {string} key
+	 */
+	this.resetForList = function( list_id, key)
+	{
+		var option_key = 'list.'+list_id;
+		if( typeof settings[option_key] === 'undefined' )
+			return;
+
+		delete settings[option_key][key];
+		self.save( option_key );
+	};
 
 	/**
 	 * @param {string} board_id
@@ -119,8 +165,11 @@ function Settings( load_callback )
 	 */
 	this.resetGlobal = function( key )
 	{
-		delete settings[key];
-		getApiObject().remove( key );
+		if( settings.hasOwnProperty( key ))
+		{
+			delete settings[key];
+			getApiObject().remove( key );
+		}
 	};
 
 	/**
@@ -180,6 +229,9 @@ function Settings( load_callback )
 
 	function findBoardId()
 	{
+		if( typeof getBrowserObject().tabs === 'undefined' )
+			return;
+
 		getBrowserObject().tabs.query(
 			{ active: true, currentWindow: true },
 			function( tabs )
@@ -192,6 +244,34 @@ function Settings( load_callback )
 					board_id = null;
 			}
 		);
+	}
+
+	function initApiEvents()
+	{
+		getBrowserObject().runtime.onMessage.addListener(function( message )
+		{
+			if( typeof message.event === 'undefined' || typeof message.event.code === 'undefined' )
+				return;
+
+			if( message.event.code === 'onSettingChanged' )
+				settings[message.event.key] = message.event.newValue;
+		});
+	}
+
+	this.getAllSettings = function()
+	{
+		return settings;
+	}
+
+	this.getAllDefaultSettings = function()
+	{
+		return default_settings;
+	}
+
+	this.removeAllSettings = function()
+	{
+		getApiObject().clear();
+		settings = {};
 	}
 
 	init();

@@ -1,3 +1,6 @@
+lang.setDomain( 'popup' );
+lang.htmlTranslation();
+
 document.body.addEventListener(
 	'change',
 	function( e )
@@ -39,3 +42,48 @@ var settings = new Settings( function()
 
 	updateDependence();
 });
+
+var tab_links = $$( '[data-toggle="tab"]');
+for( var i = tab_links.length - 1; i >= 0; --i )
+{
+	tab_links[i].addEventListener(
+		'click',
+		function()
+		{
+			var target = this.getAttribute('data-target' );
+			var tabs = $$( '.tab' );
+			for( var i = tabs.length - 1; i >= 0; --i )
+				tabs[i].classList.toggle( 'hidden', tabs[i].id !== target );
+		}
+	)
+}
+
+var message_links = $$( '[data-toggle="message"]');
+for( i = message_links.length - 1; i >= 0; --i )
+{
+	message_links[i].addEventListener(
+		'click',
+		function()
+		{
+			var target = this.getAttribute('data-target' );
+			getBrowserObject().tabs.query(
+				{
+					currentWindow: true,
+					active: true
+				},
+				function( tabs )
+				{
+					getBrowserObject().tabs.sendMessage(
+						tabs[0].id,
+						{
+							event: {
+								code: target
+							}
+						}
+					);
+					window.close();
+				}
+			);
+		}
+	)
+}

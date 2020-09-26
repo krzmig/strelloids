@@ -5,7 +5,7 @@
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/krzmig/strelloids",
-	"version": "2019.10.23",
+	"version": "2020.9.26",
 	"default_locale": "en",
 	"icons": {
 		"16": "img/icon-16.png",
@@ -27,6 +27,25 @@
 				"*://trello.com/*"
 			],
 			"js": [
+				"utils/js/utils.js",
+				"utils/js/i18n.js",
+				"utils/js/settings.js",
+				"content/js/module/BoardScroll.js",
+				"content/js/module/CardsPrioritization.js",
+				"content/js/module/CardsSeparator.js",
+				"content/js/module/ColoredLists.js",
+				"content/js/module/CustomTags.js",
+				"content/js/module/DisplayMode.js",
+				"content/js/module/Events.js",
+				"content/js/module/MarkdownChecklist.js",
+				"content/js/module/MarkdownTable.js",
+				"content/js/module/ScrumSumTimes.js",
+				"content/js/module/ScrumTimes.js",
+				"content/js/module/Settings.js",
+				"content/js/module/ShowCardsCounter.js",
+				"content/js/module/ShowCardShortId.js",
+				"content/js/module/TabKeyInTextarea.js",
+				"content/js/module/ToggleLists.js",
 				"content/js/strelloids.js"
 			],
 			"css": [
@@ -35,7 +54,10 @@
 		}
 	],
 	"background": {
-		"scripts": ["background/background.js"]
+		"scripts": [
+			"background/background.js",
+			"background/settingsMigration.js"
+		]
 	},
 	"options_ui": {
 		"page": "options/options.html",
@@ -53,7 +75,6 @@
 			"128": "img/icon-128.png",
 			"256": "img/icon-256.png"
 		},
-		"default_title": "__MSG_popup_settings_title__",
 		"default_popup": "popup/popup.html",
 		"theme_icons": [{
 			"light": "img/icon-16-light.png",
@@ -86,7 +107,8 @@
 		}]
 	},
 	"web_accessible_resources": [
-		"default_settings.json"
+		"default_settings.json",
+		"_locales/*/*.json"
 	],
 	"browser_specific_settings": {
 		"gecko": {

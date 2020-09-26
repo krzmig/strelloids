@@ -2,6 +2,9 @@
 	"global.loopInterval": 3,
 	"global.enableBoardScroll": true,
 	"global.enableTabKeyInTextarea": false,
+	"global.enableMarkdownChecklist": false,
+	"global.enableMarkdownTables": false,
+	"module.listsCollapsing.collapseEmptyLists": false,
 	"module.coloredLists.scheme": [
 		{
 			"pattern": "todo",
@@ -61,6 +64,6 @@
 		"cardsSeparator": true
 	},
 	"list.*": {
-		"hidden": false
+		"hidden": null
 	}
 }

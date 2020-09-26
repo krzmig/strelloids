@@ -1,3 +1,6 @@
+lang.setDomain( 'options' );
+lang.htmlTranslation();
+
 function switchTab( btn )
 {
 	$( '.tab-nav button.active' ).classList.remove('active' );
