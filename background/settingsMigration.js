@@ -8,7 +8,7 @@ function settingsMigration()
 
 	function init()
 	{
-		getApiObject().get(
+		getSyncApiObject().get(
 			null,
 			function( result )
 			{
@@ -19,6 +19,8 @@ function settingsMigration()
 					{
 						if( compareVersionsNumber( settings.version, '2019.8.16' ) === -1 )
 							migrationTo2019_08_16();
+						if( compareVersionsNumber( settings.version, '2020.9.27' ) === -1 )
+							migrationTo2020_09_27();
 					}
 
 					cleanUp();
@@ -30,7 +32,7 @@ function settingsMigration()
 
 	function updateVersion()
 	{
-		getApiObject().set({
+		getSyncApiObject().set({
 			'version': manifest.version
 		});
 	}
@@ -68,28 +70,76 @@ function settingsMigration()
 					{
 						do_save = true;
 						new_data[j].color = settings[i] + 'ff';
-						getApiObject().remove( i );
+						getSyncApiObject().remove( i );
 					}
 
 		if( do_save )
-			getApiObject().set({
+			getSyncApiObject().set({
 				"module.coloredLists.scheme": new_data
 			});
 	}
 
 	/**
-	 * Getting browser storage object to save/load settings.
-	 * If synchronize object is exists, will be return, if not local will be returned.
-	 * @return {*}
+	 * Moving all settings for lists to local storage
 	 */
-	function getApiObject()
+	function migrationTo2020_09_27()
+	{
+		if( getSyncApiObject() === getLocalApiObject() )
+			return;
+
+		var do_save = false;
+		var data = {};
+
+		for( var i in settings )
+			if( settings.hasOwnProperty( i ) )
+				if( i.indexOf( 'list.' ) === 0 )
+				{
+					data[i] = settings[i];
+					do_save = true;
+				}
+
+		if( do_save )
+		{
+			getSyncApiObject().remove( Object.keys( data ));
+
+			for( i in data )
+				if( data.hasOwnProperty( i ) )
+					if( typeof data[i] === 'object' && Object.keys( data[i] ).length === 0 )
+						delete data[i];
+			getLocalApiObject().set( data );
+		}
+	}
+
+	/**
+	 * Getting browser synchronize storage object to save/load settings and share it between connected browsers.
+	 * @return {null|chrome.storage.SyncStorageArea}
+	 */
+	function getSyncApiObject()
 	{
 		var browser = getBrowserObject();
 		if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' )
 			if( typeof browser.storage.sync !== 'undefined' )
 				return browser.storage.sync;
-			else if( typeof browser.storage.local !== 'undefined' )
+			else
+				return getLocalApiObject();
+
+		$err( 'No storage container found. Unable to save data!' );
+	}
+
+	/**
+	 * Getting browser local storage object to save/load only on this browser.
+	 * @return {null|chrome.storage.LocalStorageArea}
+	 */
+	function getLocalApiObject()
+	{
+		var browser = getBrowserObject();
+		if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' )
+			if( typeof browser.storage.local !== 'undefined' )
 				return browser.storage.local;
+			else
+				return null;
+
+		$err( 'No storage container found. Unable to save data!' );
 	}
 
 	function compareVersionsNumber( version1, version2 )
