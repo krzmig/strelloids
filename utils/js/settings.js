@@ -44,7 +44,7 @@ function Settings( load_callback )
 			settings[option_key] = {};
 
 		settings[option_key][key] = value;
-		self.save( option_key );
+		self.saveLocal( option_key );
 	};
 
 	/**
@@ -58,7 +58,10 @@ function Settings( load_callback )
 			return;
 
 		delete settings[option_key][key];
-		self.save( option_key );
+		if( typeof settings[option_key] === 'object' && Object.keys( settings[option_key] ).length === 0 )
+			self.getLocalApiObject().remove( option_key );
+		else
+			self.saveLocal( option_key );
 	};
 
 	/**
@@ -92,7 +95,7 @@ function Settings( load_callback )
 			settings[option_key] = {};
 
 		settings[option_key][key] = value;
-		self.save( option_key );
+		self.saveSync( option_key );
 	};
 
 	/**
@@ -157,7 +160,7 @@ function Settings( load_callback )
 		else
 			settings[key] = value;
 
-		self.save( key );
+		self.saveSync( key );
 	};
 
 	/**
@@ -168,7 +171,7 @@ function Settings( load_callback )
 		if( settings.hasOwnProperty( key ))
 		{
 			delete settings[key];
-			getApiObject().remove( key );
+			self.getSyncApiObject().remove( key );
 		}
 	};
 
@@ -182,50 +185,98 @@ function Settings( load_callback )
 			onDone: function( response ) {
 				default_settings = JSON.parse( response );
 
-				getApiObject().get(
-					null,
-					function( result )
-					{
-						if( result !== undefined )
-							for( var i in result )
-								if( result.hasOwnProperty( i ))
-									settings[i] = result[i];
-
-						if( typeof load_callback === 'function' )
-							load_callback();
-					}
-				);
+				loadLocalStorage();
 			}
 		});
+
+		function loadLocalStorage()
+		{
+			self.getLocalApiObject().get(
+				null,
+				function( result )
+				{
+					if( result !== undefined )
+						for( var i in result )
+							if( result.hasOwnProperty( i ))
+								settings[i] = result[i];
+
+					if( self.getSyncApiObject() !== self.getLocalApiObject() )
+						loadSyncStorage();
+					else if( typeof load_callback === 'function' )
+						load_callback();
+				}
+			);
+		}
+
+		function loadSyncStorage()
+		{
+			self.getSyncApiObject().get(
+				null,
+				function( result )
+				{
+					if( result !== undefined )
+						for( var i in result )
+							if( result.hasOwnProperty( i ))
+								settings[i] = result[i];
+
+					if( typeof load_callback === 'function' )
+						load_callback();
+				}
+			);
+		}
 	};
 
 	/**
 	 * @param {string} key
 	 */
-	this.save = function( key )
+	this.saveSync = function( key )
 	{
 		var data_to_save = {};
 		data_to_save[key] = settings[key];
 
-		getApiObject().set( data_to_save );
+		self.getSyncApiObject().set( data_to_save );
 	};
 
 	/**
-	 * Getting browser storage object to save/load settings.
-	 * If synchronize object is exists, will be return, if not local will be returned.
-	 * @return {*}
+	 * @param {string} key
 	 */
-	function getApiObject()
+	this.saveLocal = function( key )
+	{
+		var data_to_save = {};
+		data_to_save[key] = settings[key];
+
+		self.getLocalApiObject().set( data_to_save );
+	};
+
+	/**
+	 * Getting browser synchronize storage object to save/load settings and share it between connected browsers.
+	 * @return {null|chrome.storage.SyncStorageArea|chrome.storage.LocalStorageArea}
+	 */
+	this.getSyncApiObject = function()
 	{
 		var browser = getBrowserObject();
 		if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' )
 			if( typeof browser.storage.sync !== 'undefined' )
 				return browser.storage.sync;
-			else if( typeof browser.storage.local !== 'undefined' )
+			else
+				return self.getLocalApiObject();
+
+		$err( 'No storage container found. Unable to save data!' );
+	};
+
+	/**
+	 * Getting browser local storage object to save/load only on this browser.
+	 * @return {null|chrome.storage.LocalStorageArea}
+	 */
+	this.getLocalApiObject = function()
+	{
+		var browser = getBrowserObject();
+		if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' )
+			if( typeof browser.storage.local !== 'undefined' )
 				return browser.storage.local;
 
 		$err( 'No storage container found. Unable to save data!' );
-	}
+	};
 
 	function findBoardId()
 	{
@@ -270,7 +321,8 @@ function Settings( load_callback )
 
 	this.removeAllSettings = function()
 	{
-		getApiObject().clear();
+		self.getSyncApiObject().clear();
+		self.getLocalApiObject().clear();
 		settings = {};
 	}
 

@@ -74,13 +74,37 @@ function Import()
 	{
 		setFlags();
 		default_settings = settings.getAllDefaultSettings();
+		var current_settings = settings.getAllSettings();
 		var data = getImportData();
 		if( !data )
 			return;
 
+		var local_data = {},
+			sync_data = {};
+
 		for( var key in data )
 			if( data.hasOwnProperty( key ))
-				importValue( key, data[key] );
+			{
+				if( key === 'exportTime' )
+					continue;
+				else if( key === 'exportVersion' )
+				{
+					sync_data.version = data[key];
+					current_settings.version = data[key];
+					continue;
+				}
+				else if( key.indexOf( 'list.' ) === 0 )
+					local_data[key] = data[key];
+				else
+					sync_data[key] = data[key];
+
+				current_settings[key] = data[key];
+			}
+
+		if( Object.keys( local_data ).length )
+			settings.getLocalApiObject().set( local_data );
+		if( Object.keys( sync_data ).length )
+			settings.getSyncApiObject().set( sync_data );
 
 		getBrowserObject().runtime.sendMessage({
 			event: {
@@ -88,7 +112,7 @@ function Import()
 			}
 		});
 
-		alert( _( 'Data imported', 'Import' ));
+		alert( _( 'Data imported' ));
 		$_('export-content').value = '';
 	}
 
@@ -120,14 +144,6 @@ function Import()
 			alert( _( 'Invalid JSON to import!', 'Import' ));
 		else
 			return data;
-	}
-
-	function importValue( key, value )
-	{
-		if( key === 'exportVersion' )
-			settings.setGlobal( 'version', value );
-		else if( key !== 'exportTime' )
-			settings.setGlobal( key, value );
 	}
 
 	init();
