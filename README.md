@@ -1,3 +1,11 @@
+**‼️ Trello changed the entire html structure on which most of the extension was running (which in my case only appeared as of today 2023-10-19).**
+
+**‼️ This requires practically rewriting most of the code.**
+
+**‼️ This will take some time.**
+
+---
+
 # Strelloids
 Browser extension for Trello that adds new features.
 
