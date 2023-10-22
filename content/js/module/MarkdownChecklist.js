@@ -12,14 +12,18 @@
  */
 function ModuleMarkdownChecklist( strelloids )
 {
-	var self = this;
-	var settingName = 'global.enableMarkdownChecklist';
+	let self = this;
+	const settingName = 'global.enableMarkdownChecklist';
 
 	function init()
 	{
 		strelloids.modules.events.add( 'onCardEditOpened', cardEditOpened );
 		strelloids.modules.events.add( 'onCardCommentChanged', cardEditOpened );
 		strelloids.modules.events.add( 'onCardDescriptionChanged', cardEditOpened );
+		$w.addEventListener( 'click', () => {
+			if( self.isEnabled() )
+				cardEditOpened();
+		}, true );
 	}
 
 
@@ -44,25 +48,22 @@ function ModuleMarkdownChecklist( strelloids )
 
 	function createChecklists()
 	{
-		var input;
-		var marked_down = $$( '.card-detail-window .markeddown li' );
-
-		for( var i = marked_down.length - 1; i >= 0; --i )
-		{
-			var text_node = findTextNode( marked_down[i] );
+		$$( '.card-detail-window .markeddown li' ).forEach(( marked_down ) => {
+			let text_node = findTextNode( marked_down );
+			let input;
 			if( !text_node )
-				continue;
+				return;
 			else if( text_node.nodeValue.indexOf( '[x]' ) === 0 )
 				input = createNode( 'input', { type: 'checkbox', checked: true, disabled: true } );
 			else if( text_node.nodeValue.indexOf( '[ ]' ) === 0 )
 				input = createNode( 'input', { type: 'checkbox', disabled: true } );
 			else
-				continue;
+				return;
 
-			text_node.nodeValue = text_node.nodeValue.substr( 3 );
-			marked_down[i].prepend( input );
-			marked_down[i].classList.add( 'checklist' );
-		}
+			text_node.nodeValue = text_node.nodeValue.substring( 3 );
+			marked_down.prepend( input );
+			marked_down.classList.add( 'checklist' );
+		});
 	}
 
 	init();

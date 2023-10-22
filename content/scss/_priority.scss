@@ -1,0 +1,46 @@
+:root {
+	// Just for listing, will be overwrite by values from default_settings.json or by user settings
+	--strelloids-card-priority-critical: #d91d1d;
+	--strelloids-card-priority-high: #fe9900;
+	--strelloids-card-priority-medium: #f3ee07;
+	--strelloids-card-priority-low: #42ef38;
+	--strelloids-card-priority-lowest: #50bafb;
+}
+
+[data-testid="trello-card"] {
+	&.priority-critical {
+		border-left: 5px solid var(--strelloids-card-priority-critical);
+	}
+	&.priority-high {
+		border-left: 5px solid var(--strelloids-card-priority-high);
+	}
+	&.priority-medium {
+		border-left: 5px solid var(--strelloids-card-priority-medium);
+	}
+	&.priority-low {
+		border-left: 5px solid var(--strelloids-card-priority-low);
+	}
+	&.priority-lowest {
+		border-left: 5px solid var(--strelloids-card-priority-lowest);
+	}
+}
+
+#cards-prioritization-select {
+	width: auto;
+	height: 32px;
+	border-radius: 3px;
+	border: none;
+	padding: 4px 24px 4px 8px;
+	box-shadow: inset 0 0 0 2px #dfe3e6;
+	color: #17394d;
+	background: #fafcfc url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='%2317394d' d='M1 1h8 l-4 4z'/%3E%3C/svg%3E") no-repeat right .75rem center;
+	background-size: 10px 6px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	cursor: pointer;
+	margin: 0 4px 4px 0;
+	&:hover {
+		background-color: #ebeef0;
+	}
+}

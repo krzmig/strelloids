@@ -1,6 +1,6 @@
 function ScrumStorySequence()
 {
-	var settingsName = 'module.scrumTimes.storyPointsSequence';
+	const settingsName = 'module.scrumTimes.storyPointsSequence';
 
 	function init(  )
 	{
@@ -10,12 +10,12 @@ function ScrumStorySequence()
 
 	function loadSequenceFromSettings(  )
 	{
-		var inputs = $$('#scrum-sequence-buttons input');
-		for( var i = 0; i < inputs.length; ++i )
-			inputs[i].remove();
+		$$( '#scrum-sequence-buttons input' ).forEach(( input ) => {
+			input.remove();
+		});
 
-		var sequence = settings.getGlobal( settingsName );
-		for( i = 0; i < sequence.length; ++i )
+		const sequence = settings.getGlobal( settingsName );
+		for( let i = 0; i < sequence.length; ++i )
 		{
 			if( isNaN( sequence[i] ))
 				continue;
@@ -27,7 +27,7 @@ function ScrumStorySequence()
 
 	function appendInput( value )
 	{
-		var input = createNode(
+		const input = createNode(
 			'input',
 			{ value: value, type: 'number', min: 0, step: 0.1 }
 		);
@@ -53,11 +53,11 @@ function ScrumStorySequence()
 
 	function save()
 	{
-		var sequence = [];
-		var inputs = $$('#scrum-sequence-buttons input');
-		for( var i = 0; i < inputs.length; ++i )
-			if( inputs[i].value )
-				sequence.push( inputs[i].value );
+		const sequence = [];
+		$$('#scrum-sequence-buttons input').forEach(( input ) => {
+			if( input.value )
+				sequence.push( input.value );
+		});
 		sequence.push( '?' );
 		settings.setGlobal( settingsName, sequence );
 	}

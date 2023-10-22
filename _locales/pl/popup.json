@@ -41,9 +41,6 @@
 	"popup|section|Cards settings": {
 		"message": "Ustawienia kart"
 	},
-		"popup|cards|Show cards short ID": {
-			"message": "Pokazuj krótkie ID kart"
-		},
 		"popup|cards|Enable custom tags for cards": {
 			"message": "Włącz własne tagi dla kart"
 		},
@@ -86,5 +83,15 @@
 			},
 			"popup|scrum|Show team2": {
 				"message": "Pokaż zespół 2"
-			}
+			},
+	
+	"popup|Theme": {
+		"message": "Motyw"
+	},
+		"popup|theme|Dark": {
+			"message": "Ciemny"
+		},
+		"popup|theme|Light": {
+			"message": "Jasny"
+		}
 }

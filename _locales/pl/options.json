@@ -17,12 +17,6 @@
 			"settings|VerticalScroll|description": {
 				"message": "Jeśli włączone będziesz mógł scrollować tablicę w poziomie bez trzymania klawiszu shift (tylko w domyślnym trybie widoku)."
 			},
-		"settings|Allow Tab key": {
-			"message": "Włącz obsługę klawisz tab w polach opisów"
-		},
-			"settings|AllowTabKey|description": {
-				"message": "Jeśli włączone będzie mógł wstawiać wcięcia za pomocą klawisza Tab, w polu opisu karty oraz komentarzach do niej. Dzięki temu można np. łatwo tworzyć zagnieżdżone listy."
-			},
 		"settings|Markdown checklists": {
 			"message": "Włącza obsługę list postępu w opisach kart i komentarzach"
 		},
@@ -111,7 +105,13 @@
 		"module|ColoredLists|ResetAll|description": {
 			"message": "Przywróci WSZYSTKIE powyższe schematy kolorów do domyślnych wartości."
 		},
-
+		"module|ColoredLists|ColorLightMode": {
+			"message": "Kolor w trybie jasnym"
+		},
+		"module|ColoredLists|ColorDarkMode": {
+			"message": "Kolor w trybie ciemnym"
+		},
+	
 	"module|Cards prioritization": {
 		"message": "Priorytety dla kart"
 	},

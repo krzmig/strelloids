@@ -5,8 +5,8 @@
  */
 function ModuleBoardScroll( strelloids )
 {
-	var scroll_started_on_board = false;
-	var settingName = 'global.enableBoardScroll';
+	let scroll_started_on_board = false;
+	let settingName = 'global.enableBoardScroll';
 
 	function init()
 	{
@@ -39,19 +39,19 @@ function ModuleBoardScroll( strelloids )
 		if( e.shiftKey )
 			return;
 
-		var target = e.target;
+		let target = e.target;
 
 		while( target.parentNode )
 		{
 			if( scroll_started_on_board || target.id === 'board' )
 			{
-				e.preventDefault();
-				var board = $_('board');
+				//e.preventDefault();
+				let board = $_('board');
 				board.scrollLeft = board.scrollLeft + Math.max( Math.min( e.deltaY * 16, 50 ), -50 );
 				scroll_started_on_board = true;
 				return;
 			}
-			else if( target.classList.contains( 'list' ))
+			else if( target.dataset.testid === 'list' )
 			{
 				scroll_started_on_board = false;
 				return;

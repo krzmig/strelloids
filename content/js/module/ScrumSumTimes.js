@@ -6,8 +6,8 @@
  */
 function ModuleScrumSumTimes( strelloids )
 {
-	var self = this;
-	var settingName = 'scrumSumTimes';
+	const self = this;
+	const settingName = 'scrumSumTimes';
 	/** @type {boolean} value determine if times should be recalculated, it's for optimization/ */
 	this.needUpdate = true;
 
@@ -23,15 +23,15 @@ function ModuleScrumSumTimes( strelloids )
 		if( !self.isEnabled() || !self.needUpdate )
 			return;
 
-		var lists = $$('#board > .js-list');
-		var container;
+		const lists = $$( '#board [data-testid="list"]' );
+		let container;
 
-		var showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
-		var showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
-		var showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
-		var showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
+		const showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
+		const showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
+		const showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
+		const showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
 
-		for( var i = lists.length - 1; i >= 0; --i )
+		for( let i = lists.length - 1; i >= 0; --i )
 		{
 			container = createContainer( lists[i] );
 
@@ -80,10 +80,9 @@ function ModuleScrumSumTimes( strelloids )
 		if( DEBUG )
 			$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-		var containers = $$('.list-header .scrum-sum-container');
-
-		for( var i = containers.length - 1; i >= 0; --i )
-			containers[i].parentNode.removeChild( containers[i] );
+		$$( '[data-testid="list-header"] .scrum-sum-container' ).forEach(( container ) => {
+			container.parentNode.removeChild( container );
+		});
 	}
 
 	/**
@@ -92,7 +91,7 @@ function ModuleScrumSumTimes( strelloids )
 	 */
 	function createContainer( list )
 	{
-		var container = list.querySelector( '.scrum-sum-container' );
+		let container = list.querySelector( '.scrum-sum-container' );
 		if( container )
 		{
 			while( container.lastChild )
@@ -101,7 +100,7 @@ function ModuleScrumSumTimes( strelloids )
 		else
 		{
 			container = createNode( 'div', { 'class': 'scrum-sum-container' });
-			list.querySelector( '.list-header' ).appendChild( container );
+			list.querySelector( '[data-testid="list-header"]' ).lastChild.before( container );
 		}
 		return container;
 	}
@@ -114,9 +113,9 @@ function ModuleScrumSumTimes( strelloids )
 	 */
 	function sumTimes( list, labels_container, mode, team )
 	{
-		var sum = 0;
-		var labels = list.querySelectorAll( '.scrum-label.' + mode + '.' + team );
-		for( var i = labels.length - 1; i >= 0; --i )
+		let sum = 0;
+		const labels = list.querySelectorAll( '.scrum-label.' + mode + '.' + team );
+		for( let i = labels.length - 1; i >= 0; --i )
 			sum += isNaN( labels[i].innerText ) ? 0 : parseFloat( labels[i].innerText );
 
 		if( sum > 0 )

@@ -1,15 +1,15 @@
 /**
  * Module will replace tags inside cards titles with colored labels.
- * Tags must be inside square brackets and must contains at least one letter, space, underscore or dash.
+ * Tags must be inside square brackets and must contain at least one letter, space, underscore or dash.
  * Tags colors is depends on content inside brackets, and not case.
  * @param {Strelloids} strelloids
  * @constructor
  */
 function ModuleCustomTags( strelloids )
 {
-	var self = this;
-	var settingName = 'customTags';
-	var tag_regex = /\[([^\]]*[a-z_ -][^\]]*)\]/ig;
+	let self = this;
+	let settingName = 'customTags';
+	let tag_regex = /\[([^\]]*[a-z_ -][^\]]*)]/ig;
 
 	function init()
 	{
@@ -25,27 +25,25 @@ function ModuleCustomTags( strelloids )
 		if(	!self.isEnabled() )
 			return;
 
-		var cards_titles = $$('.list-card-title');
-		var text_node = null;
+		let text_node = null;
 
-		for( var i = cards_titles.length - 1; i >= 0; --i )
-		{
-			text_node = findTextNode( cards_titles[i] );
+		$$('[data-testid="card-name"]').forEach(( card_title ) => {
+			text_node = findTextNode( card_title );
 
 			if( !text_node )
-				continue;
+				return;
 
-			if( !cards_titles[i].getAttribute( 'data-original-title' ))
-				cards_titles[i].setAttribute( 'data-original-title', text_node.nodeValue );
+			if( !card_title.dataset.originalTitle )
+				card_title.dataset.originalTitle = text_node.nodeValue;
 
 			if( !tag_regex.test( text_node.nodeValue ))
-				continue;
+				return;
 
-			removeOldTags( cards_titles[i] );
-			appendNewTags( cards_titles[i], text_node );
+			removeOldTags( card_title );
+			appendNewTags( card_title, text_node );
 
 			text_node.nodeValue = text_node.nodeValue.replace( tag_regex, '' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
-		}
+		})
 	}
 
 	/**
@@ -79,22 +77,17 @@ function ModuleCustomTags( strelloids )
 		if( DEBUG )
 			$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-		var cards_titles = $$('.list-card-title');
-		var text_node = null;
-
-		for( var i = cards_titles.length - 1; i >= 0; --i )
-		{
-			text_node = findTextNode( cards_titles[i] );
+		$$('[data-testid="card-name"]').forEach(( card_title ) => {
+			let text_node = findTextNode( card_title );
 
 			if( !text_node )
-				continue;
+				return;
 
-			removeOldTags( cards_titles[i] );
+			removeOldTags( card_title );
 
-			if( cards_titles[i].getAttribute( 'data-original-title' ))
-				text_node.nodeValue = cards_titles[i].getAttribute( 'data-original-title' );
-
-		}
+			if( card_title.dataset.originalTitle )
+				text_node.nodeValue = card_title.dataset.originalTitle;
+		});
 	}
 
 	/**
@@ -102,9 +95,9 @@ function ModuleCustomTags( strelloids )
 	 */
 	function removeOldTags( element )
 	{
-		var old_tags = element.querySelectorAll( '.card-tag' );
-		for( var i = old_tags.length - 1; i >= 0; --i )
-			element.removeChild( old_tags[i] );
+		element.querySelectorAll( '.card-tag' ).forEach(( node ) => {
+			node.remove();
+		});
 	}
 
 	/**
@@ -115,12 +108,12 @@ function ModuleCustomTags( strelloids )
 	{
 		tag_regex.lastIndex = 0;
 
-		var matches;
+		let matches;
 		while(( matches = tag_regex.exec( title.nodeValue ) ) !== null )
 		{
-			var tag = createNode(
+			let tag = createNode(
 				'span',
-				{ 'class': [ 'card-tag' ] },
+				{ class: [ 'card-tag' ] },
 				matches[1]
 			);
 			tag.style.backgroundColor = determinateTagColor( matches[1] );
@@ -134,44 +127,47 @@ function ModuleCustomTags( strelloids )
 	 */
 	function determinateTagColor( tag )
 	{
-		var chars = tag.split('').map( function( a ){ return a.charCodeAt( 0 ) });
-		var i, h;
-
-		for(i = 0, h = 0x1e7244ca; i < tag.length; i++)
+		let chars = tag.split('').map( function( a ){ return a.charCodeAt( 0 ) });
+		let i, h;
+		
+		for( i = 0, h = 0x1e7244ca; i < tag.length; i++)
 			h = Math.imul( h ^ tag.charCodeAt(i), 1852095058 );
 		h = (( h ^ h >>> 16 ) >>> 0 ) % 360;
 
-		var s = 0;
+		let s = 0;
 		for( i = chars.length - 1; i >= 0; i = i - 2 )
 			s += chars[i]* i;
 		s = h % 20;
 
-		var l = 0;
+		let l = 0;
 		for( i = chars.length - 2; i >= 0; i = i - 2 )
 			l += chars[i] * i;
 		l = h % 30;
-
-		return 'hsl(' + h + ',' + ( 65 + s ) + '%,' + ( 55 + l ) + '%)';
+		
+		if( document.documentElement.dataset.colorMode === 'dark' )
+			return 'hsl(' + h + ',' + ( 35 + s ) + '%,' + ( 10 + l ) + '%)';
+		else
+			return 'hsl(' + h + ',' + ( 65 + s ) + '%,' + ( 55 + l ) + '%)';
 	}
 
-	var UI = {
+	let UI = {
 		init: function()
 		{
 			if(	!self.isEnabled() )
 				return;
 
-			var ui_container = $('.card-detail-data');
+			let ui_container = $('.card-detail-data');
 			if( $( '.custom-tags-ui' ) || !ui_container)
 				return;
 
-			var title = $('textarea.mod-card-back-title');
-			var container = createNode( 'div', { 'class': ['card-detail-item', 'custom-tags-ui'] } );
+			let title = $('textarea.mod-card-back-title');
+			let container = createNode( 'div', { 'class': ['card-detail-item', 'custom-tags-ui'] } );
 			container.appendChild(createNode(
 				'h3',
 				{ 'class': 'card-detail-item-header' },
 				' ' + _( 'card_edit_customTags' )
 			));
-			var add_btn = createNode( 'a', { 'class': [ 'card-detail-item-add-button', 'dark-hover' ] });
+			let add_btn = createNode( 'a', { 'class': [ 'card-detail-item-add-button', 'dark-hover' ] });
 			add_btn.appendChild( createNode( 'span', { 'class': [ 'icon-sm', 'icon-add' ]}));
 			add_btn.addEventListener( 'click', UI.appendNewInput );
 			container.appendChild( add_btn );
@@ -186,14 +182,14 @@ function ModuleCustomTags( strelloids )
 		{
 			tag_regex.lastIndex = 0;
 
-			var matches;
+			let matches;
 			while(( matches = tag_regex.exec( title ) ) !== null )
 				UI.appendInput( container, matches[1] );
 		},
 
 		appendInput: function( container, content )
 		{
-			var tag = createNode(
+			let tag = createNode(
 				'input',
 				{ name: 'custom-tag-input', 'data-value': content, value: content }
 			);
@@ -208,7 +204,7 @@ function ModuleCustomTags( strelloids )
 
 		appendNewInput: function()
 		{
-			var tag = UI.appendInput( $('.custom-tags-ui'), '' );
+			let tag = UI.appendInput( $('.custom-tags-ui'), '' );
 			setTimeout( function(){ tag.focus() }, 100 );
 		},
 
@@ -220,8 +216,8 @@ function ModuleCustomTags( strelloids )
 
 		inputChanged: function()
 		{
-			var title = $('textarea.mod-card-back-title');
-			var old_tag = this.getAttribute( 'data-value' );
+			let title = $('textarea.mod-card-back-title');
+			let old_tag = this.getAttribute( 'data-value' );
 			title.focus();
 			if( old_tag )
 				title.value = title.value.replace(
@@ -244,8 +240,8 @@ function ModuleCustomTags( strelloids )
 
 		cardTitleChanged: function( e )
 		{
-			var container = $('.custom-tags-ui');
-			for( var i = container.children.length - 1; i >= 0; --i )
+			let container = $('.custom-tags-ui');
+			for( let i = container.children.length - 1; i >= 0; --i )
 				if( container.children[i].tagName === 'INPUT' )
 					container.children[i].remove();
 

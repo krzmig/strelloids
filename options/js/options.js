@@ -12,24 +12,23 @@ function switchTab( btn )
 
 function loadOptionsToUI()
 {
-	var inputs = $$( '[data-toggle=set]' );
-	for( var i = inputs.length - 1; i >= 0; --i )
-	{
-		inputs[i].value = settings.getGlobal( inputs[i].getAttribute( 'data-target' ) );
-		if( inputs[i].classList.contains( 'color' ))
-			inputs[i].dispatchEvent( new CustomEvent( 'reset' ));
-	}
+	$$( '[data-toggle=set]' ).forEach(( input ) => {
+		input.value = settings.getGlobal( input.dataset.target );
+		if( input.classList.contains( 'color' ))
+			input.dispatchEvent( new CustomEvent( 'reset' ));
+	});
 
-	inputs = $$( '[data-toggle=toggle]' );
-	for( i = inputs.length - 1; i >= 0; --i )
-		inputs[i].checked = settings.getGlobal( inputs[i].getAttribute( 'data-target' ));
+	$$( '[data-toggle=toggle]' ).forEach(( input ) => {
+		input.checked = settings.getGlobal( input.dataset.target );
+	});
 
 	new ScrumStorySequence();
 	new ColoredListsScheme();
 
-	inputs = $$( 'input.color' );
-	for( i = inputs.length - 1; i >= 0; --i )
-		new ColorPicker( inputs[i] );
+	$$( 'input.color' ).forEach(( input ) => {
+		new ColorPicker( input );
+		
+	});
 }
 
 // tab switcher
@@ -37,11 +36,11 @@ $b.addEventListener(
 	'click',
 	function( e )
 	{
-		if( e.target.getAttribute( 'data-toggle' ) === 'tab' )
+		if( e.target.dataset.toggle === 'tab' )
 			switchTab( e.target );
-		else if( e.target.getAttribute( 'data-toggle' ) === 'reset' )
+		else if( e.target.dataset.toggle === 'reset' )
 		{
-			settings.resetGlobal( e.target.getAttribute( 'data-target' ) );
+			settings.resetGlobal( e.target.dataset.target );
 			loadOptionsToUI();
 		}
 	}

@@ -2,7 +2,7 @@
  * Module to show estimation and consumption points for cards.
  * Estimation points should be inside round brackets, consumption in square ones.
  * It's possible to use fractions, with dot as separator.
- * Question mark can be used eg. for big tasks which should be split.
+ * Question mark can be used e.g. for big tasks which should be split.
  * It's possible to enter times for two teams, to do that values should be separated by `/`.
  * Teams will get different colors for the times.
  * @param {Strelloids} strelloids
@@ -10,11 +10,11 @@
  */
 function ModuleScrumTimes( strelloids )
 {
-	var self = this;
-	var settingName = 'scrumTimes';
-	var estimation_regex = /\((\?|\d+\.\d+|\d+|)(?:\/(\?|\d+\.\d+|\d+))?\)/i;
-	var consumption_regex = /\[(\?|\d+\.\d+|\d+|)(?:\/(\?|\d+\.\d+|\d+))?\]/i;
-	var last_cards_amount = 0;
+	const self = this;
+	const settingName = 'scrumTimes';
+	const estimation_regex = /\((\?|\d+\.\d+|\d+|)(?:\/(\?|\d+\.\d+|\d+))?\)/i;
+	const consumption_regex = /\[(\?|\d+\.\d+|\d+|)(?:\/(\?|\d+\.\d+|\d+))?\]/i;
+	let last_cards_amount = 0;
 
 	function init()
 	{
@@ -24,6 +24,7 @@ function ModuleScrumTimes( strelloids )
 		strelloids.modules.events.add( 'onBoardSettingsChange', boardSettingsChanged );
 		strelloids.modules.events.add( 'onGlobalSettingsChange', globalSettingsChanged );
 		strelloids.modules.events.add( 'onCardEditOpened', cardEditOpened );
+		window.addEventListener( 'popstate', boardSettingsChanged );
 	}
 
 	function update()
@@ -31,28 +32,28 @@ function ModuleScrumTimes( strelloids )
 		if(	!self.isEnabled() )
 			return;
 
-		var cards_titles = $$('.list-card-title');
+		const cards_titles = $$( '[data-testid="card-name"]' );
 
 		if( last_cards_amount !== cards_titles.length )
 			strelloids.modules.scrumSumTimes.needUpdate = true;
 
 		last_cards_amount = cards_titles.length;
-		var text_node = null, container = null;
-		var matches, matches2;
+		let text_node = null, container = null;
+		let matches, matches2;
 
-		var showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
-		var showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
-		var showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
-		var showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
+		const showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
+		const showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
+		const showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
+		const showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
 
-		for( var i = last_cards_amount - 1; i >= 0; --i )
+		for( let i = last_cards_amount - 1; i >= 0; --i )
 		{
 			text_node = findTextNode( cards_titles[i] );
 			if( !text_node )
 				continue;
 
-			if( !cards_titles[i].getAttribute( 'data-original-title' ))
-				cards_titles[i].setAttribute( 'data-original-title', text_node.nodeValue );
+			if( !cards_titles[i].dataset.originalTitle )
+				cards_titles[i].dataset.originalTitle = text_node.nodeValue;
 
 			matches = estimation_regex.exec( text_node.nodeValue );
 			matches2 = consumption_regex.exec( text_node.nodeValue );
@@ -60,6 +61,8 @@ function ModuleScrumTimes( strelloids )
 				continue;
 
 			container = createContainer( cards_titles[i] );
+			if( !container )
+				continue;
 			strelloids.modules.scrumSumTimes.needUpdate = true;
 
 			if( matches && matches[1] && showEstimation && showTeam1 )
@@ -132,12 +135,12 @@ function ModuleScrumTimes( strelloids )
 
 	function globalSettingsChanged( key )
 	{
-		var settings = [ 'bgTeam1Estimation', 'fontTeam1Estimation', 'bgTeam1Consumption', 'fontTeam1Consumption',
-			'bgTeam2Estimation', 'fontTeam2Estimation', 'bgTeam2Consumption', 'fontTeam2Consumption' ];
-		var css = [ 'bg-team1-estimation', 'font-team1-estimation', 'bg-team1-consumption', 'font-team1-consumption',
-			'bg-team2-estimation', 'font-team2-estimation', 'bg-team2-consumption', 'font-team2-consumption' ];
+		const settings = ['bgTeam1Estimation', 'fontTeam1Estimation', 'bgTeam1Consumption', 'fontTeam1Consumption',
+			'bgTeam2Estimation', 'fontTeam2Estimation', 'bgTeam2Consumption', 'fontTeam2Consumption'];
+		const css = ['bg-team1-estimation', 'font-team1-estimation', 'bg-team1-consumption', 'font-team1-consumption',
+			'bg-team2-estimation', 'font-team2-estimation', 'bg-team2-consumption', 'font-team2-consumption'];
 
-		for( var i in settings )
+		for( let i in settings )
 			if( !key || key === 'module.scrumTimes.color.'+settings[i] )
 				$b.style.setProperty(
 					'--strelloids-scrum-times-'+css[i],
@@ -156,10 +159,10 @@ function ModuleScrumTimes( strelloids )
 		if( DEBUG )
 			$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-		var cards_titles = $$('.list-card-title');
-		var text_node = null;
+		const cards_titles = $$( '[data-testid="card-name"]' );
+		let text_node = null;
 
-		for( var i = cards_titles.length - 1; i >= 0; --i )
+		for( let i = cards_titles.length - 1; i >= 0; --i )
 		{
 			text_node = findTextNode( cards_titles[i] );
 			if( !text_node )
@@ -167,9 +170,8 @@ function ModuleScrumTimes( strelloids )
 
 			removeOldTags( cards_titles[i] );
 
-			if( cards_titles[i].getAttribute( 'data-original-title' ))
-				text_node.nodeValue = cards_titles[i].getAttribute( 'data-original-title' );
-
+			if( cards_titles[i].dataset.originalTitle )
+				text_node.nodeValue = cards_titles[i].dataset.originalTitle;
 		}
 	}
 
@@ -178,28 +180,36 @@ function ModuleScrumTimes( strelloids )
 	 */
 	function removeOldTags( card_title )
 	{
-		var old_tags = card_title.parentNode.querySelectorAll( '.scrum-label' );
-		for( var i = old_tags.length - 1; i >= 0; --i )
+		const old_tags = card_title.parentNode.querySelectorAll( '.scrum-label' );
+		for( let i = old_tags.length - 1; i >= 0; --i )
 			old_tags[i].parentNode.removeChild( old_tags[i] );
 	}
 
 	/**
 	 * @param {HTMLElement} card_title
-	 * @return {HTMLElement}
+	 * @return {HTMLElement|null}
 	 */
 	function createContainer( card_title )
 	{
-		var container = card_title.parentNode.querySelector( '.scrum-points-container' );
-		if( container )
+		const list_card = card_title.closest('[data-testid="list-card"]');
+		if( list_card )
 		{
-			removeOldTags( card_title );
+			let container = list_card.querySelector( '.scrum-points-container' );
+			if( container )
+			{
+				removeOldTags( card_title );
+			}
+			else
+			{
+				container = createNode( 'div', { class: 'scrum-points-container' });
+				if( card_title.parentNode.dataset.testid !== 'trello-card' && card_title.parentNode.dataset.testid !== 'list-card' && card_title.parentNode.parentNode.dataset.testid !== 'list-card' )
+					card_title.parentNode.appendChild( container );
+				else
+					return null;
+			}
+			return container;
 		}
-		else
-		{
-			container = createNode( 'div', { 'class': 'scrum-points-container' });
-			card_title.parentNode.appendChild( container );
-		}
-		return container;
+		return null;
 	}
 
 	function cardEditOpened()
@@ -207,14 +217,14 @@ function ModuleScrumTimes( strelloids )
 		if(	!self.isEnabled() )
 			return;
 
-		var showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
-		var showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
-		var showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
-		var showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
-		var sequence = strelloids.modules.settings.getGlobal( 'module.scrumTimes.storyPointsSequence' );
+		const showEstimation = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.estimation' );
+		const showConsumption = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.consumption' );
+		const showTeam1 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team1' );
+		const showTeam2 = strelloids.modules.settings.getForCurrentBoard( 'scrumTimes.show.team2' );
+		const sequence = strelloids.modules.settings.getGlobal( 'module.scrumTimes.storyPointsSequence' );
 
-		var ui_container = $('.card-detail-data');
-		var container, i, title;
+		const ui_container = $( '.card-detail-data' );
+		let container, i, title;
 
 		if( $( '.scrum-buttons' ) || !ui_container)
 			return;
@@ -261,7 +271,7 @@ function ModuleScrumTimes( strelloids )
 
 		function appendSequenceButtons( team, mode )
 		{
-			var btn;
+			let btn;
 			container.classList.add( 'show-'+team );
 			for( i = 0; i < sequence.length; ++i )
 			{
@@ -277,10 +287,10 @@ function ModuleScrumTimes( strelloids )
 
 		function buttonClicked()
 		{
-			var matches, new_tag = '';
-			var team = this.classList.contains( 'team1' ) ? 'team1' : 'team2';
-			var mode = this.classList.contains( 'estimation' ) ? 'estimation' : 'consumption';
-			var title = $('textarea.mod-card-back-title');
+			let matches, new_tag = '';
+			const team = this.classList.contains( 'team1' ) ? 'team1' : 'team2';
+			const mode = this.classList.contains( 'estimation' ) ? 'estimation' : 'consumption';
+			const title = $( 'textarea.mod-card-back-title' );
 
 			title.focus();
 

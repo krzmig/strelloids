@@ -1,0 +1,175 @@
+@import "font";
+@import "card_separator";
+@import "cards_counter";
+@import "custom_tags";
+@import "list_toggle";
+@import "priority";
+@import "scrum";
+
+
+
+[data-testid="list"] {
+	backdrop-filter: blur(10px);
+}
+
+[data-testid="list-header"] {
+	& > div:first-of-type {
+		min-width: 65%;
+		min-height: 32px;
+	}
+}
+.list-hidden {
+	[data-testid="list"] {
+		opacity: 0.5;
+	}
+	[data-testid="list-cards"] {
+		display: none;
+	}
+	[data-testid="list-edit-menu-button"] {
+		order: 99;
+	}
+}
+
+#board:not(.board-table-view) {
+	.list-hidden {
+		width: 40px;
+		max-width: 40px;
+		text-orientation: sideways;
+		writing-mode: vertical-lr;
+		-webkit-writing-mode: vertical-lr;
+		min-height: max-content;
+		[data-testid="list"] {
+			width: 40px;
+			max-width: 40px;
+		}
+		[data-testid="list-name-textarea"] {
+			display: none;
+		}
+		.list-header-name-assist {
+			display: block;
+			font-size: 16px;
+		}
+		[data-testid="list-header"] {
+			padding: 4px;
+			align-items: center;
+			h2 {
+				min-width: 20px;
+				padding: 4px;
+				position: relative;
+			}
+			.list-header-name-assist {
+				white-space: nowrap;
+			}
+		}
+		[data-testid="list-footer"] {
+			display: none;
+		}
+	}
+
+}
+
+#board {
+	&.board-multiple-rows {
+		overflow-y: auto;
+		display: flex;
+		flex-wrap: wrap;
+		.flex-placeholder {
+			flex-grow: 1;
+			height: 1px;
+			width: 272px
+		}
+		[data-testid="list"] {
+			width: 100%;
+		}
+		[data-testid="list-wrapper"] {
+			flex-grow: 1;
+			max-height: 500px;
+			margin-bottom: 8px;
+			flex-basis: 272px;
+		}
+	}
+	&.board-table-view {
+		flex-direction: column;
+		overflow-y: auto;
+		[data-testid="list-wrapper"] {
+			align-self: stretch;
+			height: auto;
+			margin-bottom: 8px;
+		}
+		[data-testid="list"] {
+			width: 100%;
+		}
+		[data-testid="list-header"] {
+			display: grid;
+			align-items: center;
+			grid-template-columns: auto 1fr 20% 10% 10% 15% auto;
+			[data-testid="list-edit-menu-button"] {
+				grid-column-start: 7;
+			}
+		}
+		[data-testid="list-card"] {
+			max-width: 100%;
+		}
+		[data-testid="trello-card"] {
+			& > div {
+				display: grid;
+				align-items: center;
+				grid-template-columns: 45% 20% 10% 10% 15%;
+			}
+			[data-testid="card-name"] {
+				grid-column: 1 / span 1;
+				grid-row: 1 / span 1;
+			}
+			[data-testid="card-front-cover"] {
+				display: none;
+			}
+			[data-testid="card-front-badges"] {
+				grid-column: 5 / span 1;
+				grid-row: 1 / span 1;
+				text-align: right;
+			}
+			.list-card-labels {
+				grid-column: 2 / span 1;
+				grid-row: 1 / span 1;
+				text-align: center;
+				.card-label.mod-card-front {
+					display: inline-block;
+					float: none;
+				}
+			}
+			.list-card-members {
+				grid-column: 4 / span 1;
+				grid-row: 1 / span 1;
+				justify-content: center;
+			}
+		}
+		
+		&.list-hidden {
+			text-orientation: initial;
+			writing-mode: initial;
+			-webkit-writing-mode: initial;
+		}
+	}
+}
+
+.card-detail-data {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+.tabbed-pane-main-col.mod-wider .tabbed-pane-main-col-wrapper {
+	max-width: initial;
+}
+
+.markeddown {
+	li.checklist {
+		list-style: none;
+		margin-bottom: 4px;
+		input[type=checkbox] {
+			margin-bottom: 0;
+			vertical-align: middle;
+			margin-left: -20px;
+		}
+	}
+}

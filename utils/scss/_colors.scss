@@ -1,0 +1,50 @@
+:root {
+	--main-bg0: hsla( 0, 0%, 85%, 1 );
+	--main-bg1: hsla( 0, 0%, 88%, 1 );
+	--main-bg2: hsla( 0, 0%, 91%, 1 );
+	--main-bg3: hsla( 0, 0%, 94%, 1 );
+	--main-bg4: hsla( 0, 0%, 97%, 1 );
+	--main-bg5: hsla( 0, 0%, 100%, 1 );
+	--main-font: hsla( 0, 0%, 0%, 0.87 );
+	--main-font1: hsla( 0, 0%, 0%, 0.75 );
+	--main-font2: hsla( 0, 0%, 0%, 0.60 );
+	--main-font3: hsla( 0, 0%, 0%, 0.35 );
+	--main-border: hsla( 0, 0%, 0%, 0.1 );
+	
+	--primary-bg: hsla( 207, 90%, 54%, 1 );
+	--primary-font: hsla( 0, 0%, 100%, 1 );
+	--secondary-bg: hsla( 340, 82%, 52%, 1 );
+	--secondary-font: hsla( 0, 0%, 100%, 1 );
+	--info-bg: hsla( 200, 18%, 46%, 1 );
+	--info-font: hsla( 0, 0%, 100%, 1 );
+	--success-bg: hsla( 88, 50%, 53%, 1 );
+	--success-font: hsla( 0, 0%, 0%, 0.87 );
+	--warning-bg: hsla( 45, 100%, 51%, 1 );
+	--warning-font: hsla( 0, 0%, 0%, 0.87 );
+	--error-bg: hsla( 4, 90%, 58%, 1 );
+	--error-font: hsla( 0, 0%, 100%, 1 );
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--main-bg0: hsla( 0, 0%, 0%, 1 );
+		--main-bg1: hsla( 0, 0%, 5%, 1 );
+		--main-bg2: hsla( 0, 0%, 10%, 1 );
+		--main-bg3: hsla( 0, 0%, 15%, 1 );
+		--main-bg4: hsla( 0, 0%, 20%, 1 );
+		--main-bg5: hsla( 0, 0%, 25%, 1 );
+		--main-font: hsla( 0, 0%, 100%, 1 );
+		--main-font1: hsla( 0, 0%, 100%, 0.85 );
+		--main-font2: hsla( 0, 0%, 100%, 0.70 );
+		--main-font3: hsla( 0, 0%, 100%, 0.45 );
+		--main-border: hsla( 0, 100%, 100%, 0.1 );
+	}
+	
+	.light-mode {
+		display: none !important;
+	}
+}
+@media (prefers-color-scheme: light) {
+	.dark-mode {
+		display: none !important;
+	}
+}

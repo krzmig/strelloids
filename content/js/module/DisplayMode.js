@@ -8,8 +8,8 @@
  */
 function ModuleDisplayMode( strelloids )
 {
-	var self = this;
-	var settingName = 'displayMode';
+	const self = this;
+	const settingName = 'displayMode';
 
 	function init()
 	{
@@ -20,6 +20,18 @@ function ModuleDisplayMode( strelloids )
 
 	function update()
 	{
+		const board = $_( 'board' );
+		if( board && board.classList.contains( 'board-table-view' ))
+		{
+			$$('button[data-testid="card-front-member"]').forEach(( label ) => {
+				if( !label.parentNode.parentNode.classList.contains( 'list-card-members' ))
+					label.parentNode.parentNode.classList.add( 'list-card-members' );
+			});
+			$$('button[data-testid="compact-card-label"]').forEach(( label ) => {
+				if( !label.parentNode.parentNode.classList.contains( 'list-card-labels' ))
+					label.parentNode.parentNode.classList.add( 'list-card-labels' );
+			});
+		}
 	}
 
 	/**
@@ -42,7 +54,7 @@ function ModuleDisplayMode( strelloids )
 			else if( old_board_settings[settingName] === 'multi-rows' )
 				disableMultiRows();
 		}
-		var mode = self.getMode();
+		const mode = self.getMode();
 		if( mode === 'multi-rows' )
 			enableMultiRows();
 		else if( mode === 'table' )
@@ -51,7 +63,7 @@ function ModuleDisplayMode( strelloids )
 
 	function enableMultiRows()
 	{
-		var board = $_( 'board' );
+		const board = $_( 'board' );
 		if( !board || board.classList.contains( 'board-multiple-rows' ) )
 			return;
 
@@ -67,26 +79,26 @@ function ModuleDisplayMode( strelloids )
 
 	function disableMultiRows()
 	{
-		var board = $_( 'board' );
+		const board = $_( 'board' );
 		if( !board || !board.classList.contains( 'board-multiple-rows' ))
 			return;
 
 		board.classList.remove( 'board-multiple-rows' );
-		for( var i = board.children.length - 1; i >= 0; --i )
+		for( let i = board.children.length - 1; i >= 0; --i )
 			if( board.children[i].classList.contains( 'flex-placeholder' ))
 				board.removeChild( board.children[i] );
 	}
 
 	function enableTable()
 	{
-		var board = $_( 'board' );
+		const board = $_( 'board' );
 		if( board && !board.classList.contains( 'board-table-view' ))
 			board.classList.add( 'board-table-view' );
 	}
 
 	function disableTable()
 	{
-		var board = $_( 'board' );
+		const board = $_( 'board' );
 		if( !board || !board.classList.contains( 'board-table-view' ))
 			return;
 

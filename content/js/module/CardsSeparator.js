@@ -5,10 +5,10 @@
  */
 function ModuleCardsSeparator( strelloids )
 {
-	var self = this;
-	var settingName = 'cardsSeparator';
-	var separator_regex = /^[=-]{3,}/;
-	var separator_regex_end = /[=-]{3,}$/;
+	let self = this;
+	let settingName = 'cardsSeparator';
+	let separator_regex = /^[=-]{3,}/;
+	let separator_regex_end = /[=-]{3,}$/;
 
 	function init(  )
 	{
@@ -22,27 +22,25 @@ function ModuleCardsSeparator( strelloids )
 		if(	!self.isEnabled() )
 			return;
 
-		var cards_titles = $$('.list-card-title');
-		var text_node = null;
-
-		for( var i = cards_titles.length - 1; i >= 0; --i )
-		{
-			text_node = findTextNode( cards_titles[i] );
-
+		$$('[data-testid="card-name"]').forEach(( card_title ) => {
+			let card = card_title.closest( '[data-testid="trello-card"]' );
+			if( !card )
+				return;
+			
+			let text_node = findTextNode( card_title );
 			if( !text_node )
-				continue;
+				return;
 
-			if( !cards_titles[i].getAttribute( 'data-original-title' ))
-				cards_titles[i].setAttribute( 'data-original-title', text_node.nodeValue );
+			if( !card_title.dataset.originalTitle )
+				card_title.dataset.originalTitle = text_node.nodeValue;
 
 			if( !separator_regex.test( text_node.nodeValue ))
-				continue;
+				return;
 
-			var card = closest( cards_titles[i], '.list-card' );
 			card.classList.add( 'card-separator' );
 
 			text_node.nodeValue = text_node.nodeValue.replace( separator_regex, '' ).replace( separator_regex_end, '' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
-		}
+		});
 	}
 
 	/**
@@ -76,19 +74,15 @@ function ModuleCardsSeparator( strelloids )
 		if( DEBUG )
 			$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-		var cards = $$('.card-separator');
-		var text_node = null;
+		$$('.card-separator').forEach(( card ) => {
+			let card_title = card.querySelector('[data-testid="card-name"]');
+			let text_node = findTextNode( card_title );
 
-		for( var i = cards.length - 1; i >= 0; --i )
-		{
-			var card_title = cards[i].querySelector('.list-card-title');
-			text_node = findTextNode( card_title );
+			card.classList.remove( 'card-separator' );
 
-			cards[i].classList.remove( 'card-separator' );
-
-			if( text_node && card_title.getAttribute( 'data-original-title' ))
-				text_node.nodeValue = card_title.getAttribute( 'data-original-title' );
-		}
+			if( text_node && card_title.dataset.originalTitle )
+				text_node.nodeValue = card_title.dataset.originalTitle;
+		});
 	}
 
 	init();

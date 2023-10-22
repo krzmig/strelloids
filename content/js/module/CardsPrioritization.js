@@ -6,9 +6,9 @@
  */
 function ModuleCardsPrioritization( strelloids )
 {
-	var self = this;
-	var settingName = 'cardsPrioritization';
-	var tag_regex = /(^|\s)!([1-5])($|\s)/i;
+	let self = this;
+	let settingName = 'cardsPrioritization';
+	let tag_regex = /(^|\s)!([1-5])($|\s)/i;
 
 	function init(  )
 	{
@@ -26,27 +26,23 @@ function ModuleCardsPrioritization( strelloids )
 		if(	!self.isEnabled() )
 			return;
 
-		var cards_titles = $$('.list-card-title');
-		var text_node = null;
-
-		for( var i = cards_titles.length - 1; i >= 0; --i )
-		{
-			text_node = findTextNode( cards_titles[i] );
+		$$('[data-testid="trello-card"] [data-testid="card-name"]').forEach(( card_title ) => {
+			let text_node = findTextNode( card_title );
 
 			if( !text_node )
-				continue;
+				return;
 
-			if( !cards_titles[i].getAttribute( 'data-original-title' ))
-				cards_titles[i].setAttribute( 'data-original-title', text_node.nodeValue );
+			if( !card_title.dataset.originalTitle )
+				card_title.dataset.originalTitle = text_node.nodeValue;
 
-			var matches;
+			let matches;
 			if(( matches = tag_regex.exec( text_node.nodeValue )) === null )
-				continue;
+				return;
 
-			setPriority( cards_titles[i], parseInt( matches[2] ));
+			setPriority( card_title.closest( '[data-testid="trello-card"]' ), parseInt( matches[2] ));
 
 			text_node.nodeValue = text_node.nodeValue.replace( tag_regex, ' ' ).replace( /^\s+/, '' ).replace( /\s+$/, '' );
-		}
+		});
 	}
 
 	/**
@@ -80,23 +76,18 @@ function ModuleCardsPrioritization( strelloids )
 		if( DEBUG )
 			$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-		var cards = $$('.list-card.priority-set');
-		var text_node = null;
-
-		for( var i = cards.length - 1; i >= 0; --i )
-		{
-			var card_title = cards[i].querySelector( '.list-card-title' );
-			text_node = findTextNode( card_title );
+		$$('.priority-set[data-testid="trello-card"]').forEach(( card ) => {
+			let card_title = card.querySelector( '[data-testid="card-name"]' );
+			let text_node = findTextNode( card_title );
 
 			if( !text_node )
-				continue;
+				return;
 
-			clearPriority( cards[i] );
+			clearPriority( card );
 
-			if( card_title.getAttribute( 'data-original-title' ))
-				text_node.nodeValue = card_title.getAttribute( 'data-original-title' );
-
-		}
+			if( card_title.dataset.originalTitle )
+				text_node.nodeValue = card_title.dataset.originalTitle;
+		});
 	}
 
 	function globalSettingsChanged( key )
@@ -142,20 +133,23 @@ function ModuleCardsPrioritization( strelloids )
 	 */
 	function setPriority( card_title, priority )
 	{
-		var card = closest( card_title, '.list-card' );
-		clearPriority( card );
-		card.classList.add( 'priority-set' );
-
-		if( priority === 1 )
-			card.classList.add( 'priority-critical' );
-		else if( priority === 2 )
-			card.classList.add( 'priority-high' );
-		else if( priority === 3 )
-			card.classList.add( 'priority-medium' );
-		else if( priority === 4 )
-			card.classList.add( 'priority-low' );
-		else if( priority === 5 )
-			card.classList.add( 'priority-lowest' );
+		let card = card_title.closest( '[data-testid="trello-card"]' );
+		if( card )
+		{
+			clearPriority( card );
+			card.classList.add( 'priority-set' );
+	
+			if( priority === 1 )
+				card.classList.add( 'priority-critical' );
+			else if( priority === 2 )
+				card.classList.add( 'priority-high' );
+			else if( priority === 3 )
+				card.classList.add( 'priority-medium' );
+			else if( priority === 4 )
+				card.classList.add( 'priority-low' );
+			else if( priority === 5 )
+				card.classList.add( 'priority-lowest' );
+		}
 	}
 
 	function cardEditOpened()
@@ -163,11 +157,11 @@ function ModuleCardsPrioritization( strelloids )
 		if(	!self.isEnabled() )
 			return;
 
-		var ui_container = $('.card-detail-data');
+		let ui_container = $('.card-detail-data');
 
 		if( !$_( 'cards-prioritization-select' ) && ui_container)
 		{
-			var select = createNode( 'select', { id: 'cards-prioritization-select' } );
+			let select = createNode( 'select', { id: 'cards-prioritization-select' } );
 			select.appendChild(
 				createNode(
 					'option',
@@ -211,7 +205,7 @@ function ModuleCardsPrioritization( strelloids )
 				)
 			);
 			select.addEventListener( 'change', priorityChangedFromUI );
-			var container = createNode( 'div', { 'class': 'card-detail-item' } );
+			let container = createNode( 'div', { 'class': 'card-detail-item' } );
 			container.appendChild( createNode( 'h3', { 'class': 'card-detail-item-header' }, _('card_edit_priority') ));
 			container.appendChild( select );
 			ui_container.prepend( container );
@@ -221,11 +215,11 @@ function ModuleCardsPrioritization( strelloids )
 
 	function priorityChangedFromUI()
 	{
-		var title = $('.mod-card-back-title');
+		let title = $('.mod-card-back-title');
 		title.focus();
 		if( this.value )
 		{
-			var matches = title.value.match( tag_regex );
+			let matches = title.value.match( tag_regex );
 			if( matches )
 				title.value = title.value.replace( matches[0], matches[1]+'!' + this.value + matches[3] );
 			else
@@ -233,10 +227,10 @@ function ModuleCardsPrioritization( strelloids )
 		}
 		else
 		{
-			var url_matches = window.location.toString().match( /(\/c\/[^\/]+\/)/ );
+			let url_matches = window.location.toString().match( /(\/c\/[^\/]+\/)/ );
 			if( url_matches )
 			{
-				var card_in_list = $( '.list-card[href*="' + url_matches[1] + '"]' );
+				let card_in_list = $( '[data-testid="card-name"][href*="' + url_matches[1] + '"]' );
 				if( card_in_list )
 					clearPriority( card_in_list );
 			}
@@ -247,11 +241,11 @@ function ModuleCardsPrioritization( strelloids )
 
 	function updatePriorityUI()
 	{
-		var title = $('.mod-card-back-title');
+		let title = $('.mod-card-back-title');
 		if( !title )
 			return;
 
-		var matches = tag_regex.exec( title.value );
+		let matches = tag_regex.exec( title.value );
 		if( matches === null )
 			$_('cards-prioritization-select').value = '';
 		else

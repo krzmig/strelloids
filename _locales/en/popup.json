@@ -41,9 +41,6 @@
 	"popup|section|Cards settings": {
 		"message": "Cards settings"
 	},
-		"popup|cards|Show cards short ID": {
-			"message": "Show cards short ID"
-		},
 		"popup|cards|Enable custom tags for cards": {
 			"message": "Enable custom tags for cards"
 		},
@@ -86,5 +83,15 @@
 			},
 			"popup|scrum|Show team2": {
 				"message": "Show team 2"
-			}
+			},
+	
+	"popup|Theme": {
+		"message": "Theme"
+	},
+		"popup|theme|Dark": {
+			"message": "Dark"
+		},
+		"popup|theme|Light": {
+			"message": "Light"
+		}
 }

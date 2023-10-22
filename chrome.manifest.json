@@ -5,10 +5,6 @@
 	"author": "krzmig",
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/krzmig/strelloids",
-	"developer": {
-		"name": "krzmig",
-		"url": "https://gitlab.com/krzmig"
-	},
 	"version": "2023.10.11",
 	"default_locale": "en",
 	"icons": {
@@ -58,10 +54,7 @@
 		}
 	],
 	"background": {
-		"scripts": [
-			"background/background.js"
-		],
-		"type": "module"
+		"service_worker": "background/background.js"
 	},
 	"options_ui": {
 		"page": "options/options.html",
@@ -120,10 +113,5 @@
 			]
 		}
 	],
-	"browser_specific_settings": {
-		"gecko": {
-			"id": "strelloids@krzmig.github.com",
-			"strict_min_version": "112.0"
-		}
-	}
+	"minimum_chrome_version": "88.0"
 }

@@ -1,0 +1,82 @@
+@import "../../utils/scss/reset";
+@import "../../content/scss/font";
+@import "../../utils/scss/colors";
+@import "../../utils/scss/input";
+
+html {
+	background-color: var(--main-bg3);
+}
+body {
+	width: 280px;
+}
+.mt0 {
+	margin-top: 0;
+}
+.tab {
+	&.hidden {
+		display: none;
+	}
+}
+label,
+.flex {
+	display: flex;
+	align-items: center;
+	margin: 0;
+	padding: 6px;
+	border-radius: 3px;
+	transition: background-color 0.14s ease-in;
+	width: content-box;
+	&:hover {
+		background-color: var(--main-bg2);
+	}
+}
+
+div.title {
+	display: flex;
+	align-items: center;
+	height: 48px;
+}
+.strelloids-icon-back {
+	padding: 8px 10px;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+
+.subsection {
+	padding-left: 20px;
+}
+
+label {
+	cursor: pointer;
+
+	&.link {
+		position: relative;
+		font-weight: 600;
+		line-height: 20px;
+		padding: 6px 6px 6px 40px;
+		color: var(--main-font);
+		opacity: 0.85;
+		transition: color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+		i {
+			font-size: 20px;
+			position: absolute;
+			top: 6px;
+			left: 12px;
+			opacity: 0.7;
+		}
+		&:hover {
+			color: var(--main-font);
+			opacity: 1;
+			i {
+				color: var(--primary-bg);
+				opacity: 0.85;
+			}
+		}
+	}
+
+	span {
+		display: inline-block;
+		width: content-box;
+	}
+}

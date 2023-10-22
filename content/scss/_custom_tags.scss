@@ -1,0 +1,48 @@
+[data-testid="trello-card"] {
+	[data-testid="card-name"] {
+		.card-tag {
+			padding: 0 3px;
+			font-family: monospace;
+			display: inline-block;
+			float: none;
+			vertical-align: middle;
+			min-width: initial;
+			opacity: 0.8;
+			color: var(--ds-text);
+			border-left: 3px solid var(--ds-text);
+			border-radius: 0 4px 4px 0;
+			line-height: 18px;
+			margin: 0 2px;
+			font-size: 0.85em;
+		}
+	}
+	&:hover {
+		[data-testid="card-name"] .card-tag {
+			opacity: 1;
+		}
+	}
+}
+
+.custom-tags-ui {
+	.card-detail-item-add-button {
+		float: none;
+		display: inline-block;
+		vertical-align: middle;
+		margin-bottom: 2px;
+	}
+	input[name="custom-tag-input"] {
+		display: inline-block;
+		width: auto;
+		max-width: 120px;
+		min-width: 1em;
+		height: 30px;
+		margin: 0 4px 4px 0;
+		padding: 0 5px;
+		font-family: monospace;
+		color: var(--ds-text);
+		border-left: 3px solid var(--ds-text);
+		border-radius: 0 4px 4px 0;
+		box-sizing: content-box;
+		box-shadow: none;
+	}
+}

@@ -5,9 +5,9 @@
  */
 function ModuleColoredLists( strelloids )
 {
-	var self = this;
-	var settingName = 'coloredLists';
-	var schemeSettingName = 'module.coloredLists.scheme';
+	let self = this;
+	let settingName = 'coloredLists';
+	let schemeSettingName = 'module.coloredLists.scheme';
 
 	function init()
 	{
@@ -23,13 +23,13 @@ function ModuleColoredLists( strelloids )
 		if( !self.isEnabled() )
 			return;
 
-		var lists_titles = $$( 'textarea.list-header-name' );
-		for( var i = lists_titles.length - 1; i >= 0; --i )
-			if( lists_titles[i].value !== lists_titles[i].getAttribute( 'data-cache-title' ))
+		$$( 'textarea[data-testid="list-name-textarea"]' ).forEach(( node ) => {
+			if( node.value !== node.dataset.cacheTitle )
 				setListColor(
-					closest( lists_titles[i], '.list' ),
-					lists_titles[i]
+					node.closest('[data-testid="list"]' ),
+					node
 				);
+		});
 	}
 
 	/**
@@ -72,9 +72,9 @@ function ModuleColoredLists( strelloids )
 		if( DEBUG )
 			$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-		var lists = $$( '.list' );
-		for( var i = lists.length - 1; i >= 0; --i )
-			lists[i].style.backgroundColor = '';
+		$$( '[data-testid="list"]' ).forEach(( node ) => {
+			node.style.backgroundColor = '';
+		});
 
 		removeCachedTitles();
 	}
@@ -85,32 +85,36 @@ function ModuleColoredLists( strelloids )
 	 */
 	function setListColor( list, title )
 	{
-		var scheme = strelloids.modules.settings.getGlobal( schemeSettingName );
-		var regex;
+		let scheme = strelloids.modules.settings.getGlobal( schemeSettingName );
+		let regex;
 
 		list.style.backgroundColor = '';
 
-		for( var i = 0, l = scheme.length; i < l; ++i )
+		for( let i = 0, l = scheme.length; i < l; ++i )
 		{
 			regex = new RegExp( scheme[i].pattern, 'i' );
-			if( regex.test( title.value ))
-				list.style.backgroundColor = scheme[i].color;
+			if( regex.test( title['value'] ))
+			{
+				if( document.documentElement.dataset.colorMode === 'dark' )
+					list.style.backgroundColor = scheme[i].color_dark ?? scheme[i].color;
+				else
+					list.style.backgroundColor = scheme[i].color;
+			}
 		}
 
-		title.setAttribute( 'data-cache-title', title.value );
+		title.dataset.cacheTitle = title['value'];
 	}
 
 	function listTitleChanged( e )
 	{
-		var list = closest( e.target, '.list' );
-		setListColor( list, e.target );
+		setListColor( e.target.closest( '[data-testid="list"]' ), e.target );
 	}
 
 	function removeCachedTitles()
 	{
-		var lists_titles = $$( 'textarea.list-header-name' );
-		for( var i = lists_titles.length - 1; i >= 0; --i )
-			lists_titles[i].removeAttribute( 'data-cache-title' );
+		$$( 'textarea[data-testid="list-name-textarea"]' ).forEach(( node ) => {
+			node.removeAttribute( 'data-cache-title' );
+		});
 	}
 
 	init();

@@ -15,7 +15,8 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background-color: rgba(0,0,0,0.25);
+		background-color: rgba(0,0,0,0.5);
+		backdrop-filter: blur(2px);
 	}
 
 	.modal {
@@ -25,30 +26,30 @@
 
 	.content {
 		padding: 8px;
-		border: 1px solid rgba(0,0,0,0.2);
+		border: 1px solid var(--main-bg4);
 		border-radius: 0 5px 5px 5px;
-		background-color: #fff;
+		background-color: var(--main-bg3);
 	}
 
 	.modes {
 		display: flex;
 		margin-bottom: -1px;
 		.mode-tab {
-			background-color: #fff;
-			border-width: 1px;
-			border-style: solid;
-			border-color: rgba(0,0,0,0.2) rgba(0,0,0,0.125);
-			margin-left: -1px;
+			background-color: var(--main-bg2);
+			border: 1px solid var(--main-bg4);
+			border-radius: 0;
+			margin: 0 0 0 -1px;
 			padding: 2px 5px;
 			cursor: pointer;
 		}
 		label {
+			margin: 0;
 			input {
 				display: none;
 
 				&:checked + .mode-tab {
-					border-bottom-color: #fff;
-					background-color: #fff;
+					border-bottom-color: var(--main-bg3);
+					background-color: var(--main-bg3);
 					font-weight: bold;
 				}
 			}
@@ -63,7 +64,7 @@
 			}
 		}
 		.mode-tab:hover {
-			background-color: lightskyblue;
+			background-color: var(--main-bg4);
 		}
 	}
 
@@ -90,7 +91,6 @@
 		-webkit-appearance: none;
 		width: 144px;
 		cursor: pointer;
-		border-color: #cccccc;
 	}
 
 	.bg-transparent {
@@ -131,7 +131,7 @@
 		grid-column: 1 / span 1;
 		width: 54px;
 		height: 54px;
-		border: 1px solid rgba(0, 0, 0, 0.2);
+		border: 1px solid var(--main-border);
 		margin-top: 2px;
 	}
 
@@ -143,15 +143,6 @@
 		margin-right: 2px;
 		grid-column: 2;
 		grid-row: 2;
-	}
-
-	button {
-		border: 1px solid rgba(0, 0, 0, 0.2);
-		background: #fdfbf9;
-		min-width: auto;
-		min-height: auto;
-		cursor: pointer;
-		padding: 2px 8px;
 	}
 
 	footer {
@@ -169,7 +160,6 @@
 .bg-transparent {
 	font-size: 0;
 	border-radius: 4px;
-	display: inline-block;
 	background-image: url("data:image/svg+xml,%3Csvg width='8' height='8' version='1.1' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h8v8h-8z' fill='%23b3b3b3'/%3E%3Cpath d='m0 0h4v4h-4z' fill='%23666'/%3E%3Cpath d='m4 4h4v4h-4z' fill='%23666'/%3E%3C/svg%3E");
 	margin: 2px;
 	input {

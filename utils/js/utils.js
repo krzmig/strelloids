@@ -1,51 +1,45 @@
 /**
  * Create HTML node
- * @param {string} type
- * @param {object} [params]
- * @param {string} [text_node]
+ * @param {string} node_type
+ * @param {object} [node_params]
+ * @param {string|HTMLElement|HTMLElement[]} [children]
+ * @param {{}} [data]
  * @returns {HTMLElement}
  */
-function createNode( type, params, text_node )
+function createNode( node_type, node_params = {}, children = [], data = {} )
 {
-	var node = $d.createElement( type );
-	for( var i in params )
-	{
-		if( !params.hasOwnProperty( i ))
-			continue;
-
-		if( ['id','name','type','value','min','max','src'].indexOf( i ) >= 0 )
-			node[i] = params[i];
-		else if( i === 'class' && isstr( params[i] ))
-			node.className = params[i];
-		else if( i === 'class' && isobj( params[i] ))
+	let node = $d.createElement( node_type );
+	for( let i in node_params )
+		if( node_params.hasOwnProperty( i ))
 		{
-			for( var j in params[i] )
-				if( params[i].hasOwnProperty( j ))
-					node.classList.add( params[i][j] );
+			if([ 'id','name','type','value','min','max','src' ].indexOf( i ) >= 0 )
+				node[i] = node_params[i];
+			else if( i === 'class' && typeof node_params[i] === 'string' )
+				node.className = node_params[i];
+			else if( i === 'class' && typeof node_params[i] === 'object' )
+			{
+				for( let j in node_params[i] )
+					if( node_params[i].hasOwnProperty( j ))
+						node.classList.add( node_params[i][j] );
+			}
+			else
+				node.setAttribute( i, node_params[i] );
 		}
-		else
-			node.setAttribute( i, params[i] );
+	if( children instanceof HTMLElement )
+		node.appendChild( children );
+	else if( Array.isArray( children ))
+	{
+		for( let i = 0; i < children.length; ++i )
+			node.appendChild( children[i] );
 	}
-	if( typeof text_node !== 'undefined' )
-		node.appendChild( $d.createTextNode( text_node ));
+	else if( typeof children === 'string' || !isNaN( children ))
+		node.insertAdjacentHTML( 'beforeend', children );
+
+	for( let i in data )
+		if( data.hasOwnProperty( i ))
+			node.dataset[i] = data[i];
 
 	return node;
-}
-
-/**
- * Finding closest parent, matching to given selector
- * @param {HTMLElement} node
- * @param {string} selector
- * @return {null|HTMLElement}
- */
-function closest( node, selector )
-{
-	var parent = node;
-
-	while( parent && !parent.matches( selector ))
-		parent = parent.parentNode;
-
-	return parent;
 }
 
 /**
@@ -81,7 +75,7 @@ function isfunc( variable )
  */
 function findTextNode( element )
 {
-	for( var i = 0; i < element.childNodes.length; ++i )
+	for( let i = 0; i < element.childNodes.length; ++i )
 		if( element.childNodes[i].nodeType === Node.TEXT_NODE )
 			return element.childNodes[i];
 
@@ -104,7 +98,8 @@ function findTextNode( element )
  */
 function Ajax( obj_params )
 {
-	var default_params = {
+	let i;
+	const default_params = {
 		method: 'GET',
 		async: true,
 		disableCache: false,
@@ -112,20 +107,20 @@ function Ajax( obj_params )
 		data: {}
 	};
 
-	for( var i in default_params )
+	for( i in default_params )
 		if( typeof obj_params[i] === 'undefined' )
 			obj_params[i] = default_params[i];
 
 	if( typeof obj_params.url === 'undefined' )
 		return $err('No url given');
 
-	var http_request = new XMLHttpRequest();
+	const http_request = new XMLHttpRequest();
 	if( !http_request )
 		return alert( 'Your browser don\'t support ajax request, please upgrade your browser or choose another.' );
 
 	http_request.overrideMimeType('text/plain');
 
-	var ret = [];
+	let ret = [];
 	for( i in obj_params.data )
 	{
 		if( !obj_params.data.hasOwnProperty( i ))

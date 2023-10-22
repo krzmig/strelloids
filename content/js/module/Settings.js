@@ -8,22 +8,22 @@ function ModuleSettings( strelloids )
 	/**
 	 * @type {Settings}
 	 */
-	var settings;
+	let settings;
 
 	/**
 	 * @type {string|null}
 	 */
-	var board_id = null;
+	let board_id = null;
 
 	/**
 	 * @type {string}
 	 */
-	var last_board_name;
+	let last_board_name;
 
 	/**
 	 * @type {{}}
 	 */
-	var boards_map = {};
+	let boards_map = {};
 
 	function init()
 	{
@@ -38,9 +38,7 @@ function ModuleSettings( strelloids )
 
 	function update()
 	{
-		loadListsIds();
-
-		var board_name = $( 'input.board-name-input' );
+		let board_name = $( 'input[data-testid="board-name-input"]' );
 		if( board_name && last_board_name !== board_name.value )
 		{
 			strelloids.modules.events.trigger( 'onBoardSwitch' );
@@ -148,8 +146,8 @@ function ModuleSettings( strelloids )
 	 */
 	function findBoardId()
 	{
-		var matches = /trello.com\/b\/([a-z0-9]+)\//i.exec( $w.location.toString() );
-		var node_board_name = $( 'input.board-name-input' );
+		let matches = /trello.com\/b\/([a-z0-9]+)\//i.exec( $w.location.toString() );
+		let node_board_name = $( 'input[data-testid="board-name-input"]' );
 
 		if( matches && matches.length )
 		{
@@ -164,66 +162,27 @@ function ModuleSettings( strelloids )
 			return board_id;
 
 		if( node_board_name )
-			for( var i in boards_map )
+			for( let i in boards_map )
 				if( boards_map.hasOwnProperty( i ) && boards_map[i] === node_board_name.value )
 					return i;
 
 		return null;
 	}
 
-	function loadBoardsIds()
+	async function loadBoardsIds()
 	{
-		new Ajax({
-			url: 'https://trello.com/1/members/me?fields=id&boards=all&board_fields=name%2CshortLink',
-			onDone: function( raw_response )
-			{
-				if( DEBUG )
-					$log( 'Strelloids: loaded boards ids from api' );
-
-				var response = JSON.parse( raw_response );
-
-				if( typeof response.boards === 'undefined' )
-					return $err( 'Can\'t receive lists from API' );
-
-				for( var i = response.boards.length - 1; i >= 0; --i )
-					boards_map[response.boards[i].shortLink] = response.boards[i].name;
-
-				strelloids.run();
-			}
-		});
-	}
-	/**
-	 * Loading list ids and signed them to html nodes, because by default trello don't give any possibility
-	 * to recognize single list, other than by the title.
-	 */
-	function loadListsIds()
-	{
-		var board_id = findBoardId();
-		if( !$( '#board > .js-list:not([id])' ) || !board_id )
-			return;
-
+		let json = await fetch( 'https://trello.com/1/members/me?fields=id&boards=all&board_fields=name%2CshortLink' );
 		if( DEBUG )
-			$log( 'Strelloids: trying to load lists ids from api' );
+			$log( 'Strelloids: loaded boards ids from api' );
+		let response = await json.json();
+		
+		if( typeof response.boards === 'undefined' )
+			return $err( 'Can\'t receive lists from API' );
 
-		new Ajax({
-			url: 'https://trello.com/1/Boards/' + board_id + '?fields=id&lists=open&list_fields=id,name',
-			onDone: function( raw_response )
-			{
-				if( DEBUG )
-					$log( 'Strelloids: loaded lists ids from api' );
+		for( let i = response.boards.length - 1; i >= 0; --i )
+			boards_map[response.boards[i]['shortLink']] = response.boards[i].name;
 
-				var response = JSON.parse( raw_response );
-				if( typeof response.lists === 'undefined' )
-					return $err( 'Can\'t receive lists from API' );
-
-				var lists_containers = $$( '#board > .js-list' );
-
-				for( var i = 0; i < response.lists.length; ++i )
-					lists_containers[i].setAttribute( 'id', 'list-' + response.lists[i].id );
-
-				strelloids.run();
-			}
-		});
+		strelloids.run();
 	}
 
 	init();

@@ -1,0 +1,158 @@
+:root {
+	--strelloids-scrum-times-bg-team1-estimation: #9fd1df; // hsl(193.3,49.6%,51.8%)
+	--strelloids-scrum-times-font-team1-estimation: #17394d;
+	--strelloids-scrum-times-bg-team1-consumption: #abdf9f; // hsl(108.8,50%,74.9%)
+	--strelloids-scrum-times-font-team1-consumption: #17394d;
+	--strelloids-scrum-times-bg-team2-estimation: #baccdc;
+	--strelloids-scrum-times-font-team2-estimation: #17394d;
+	--strelloids-scrum-times-bg-team2-consumption: #CED79E;
+	--strelloids-scrum-times-font-team2-consumption: #17394d;
+}
+
+.scrum-label {
+	display: inline-block;
+	margin: 0 2px;
+	padding: 0 3px;
+	border-radius: 4px;
+	line-height: 16px;
+	font-size: 12px;
+	opacity: 0.8;
+	&::before {
+		position: relative;
+		display: inline-block;
+		margin-right: 2px;
+		font-family: 'Strelloids' !important;
+	}
+	&.estimation::before {
+		content: $strelloids-icon-light-bulb;
+	}
+
+	&.consumption::before {
+		content: $strelloids-icon-fire;
+	}
+}
+.scrum-label,
+.scrum-button {
+	&.team1.estimation {
+		background-color: var(--strelloids-scrum-times-bg-team1-estimation);
+		color: var(--strelloids-scrum-times-font-team1-estimation);
+	}
+	&.team1.consumption {
+		background-color: var(--strelloids-scrum-times-bg-team1-consumption);
+		color: var(--strelloids-scrum-times-font-team1-consumption);
+	}
+	&.team2.estimation {
+		background-color: var(--strelloids-scrum-times-bg-team2-estimation);
+		color: var(--strelloids-scrum-times-font-team2-estimation);
+	}
+	&.team2.consumption {
+		background-color: var(--strelloids-scrum-times-bg-team2-consumption);
+		color: var(--strelloids-scrum-times-font-team2-consumption);
+	}
+}
+
+[data-testid="trello-card"] {
+	.scrum-points-container {
+		flex-grow: 1;
+		text-align: right;
+	}
+	&:hover {
+		.scrum-label {
+			opacity: 1;
+		}
+	}
+}
+
+[data-testid="list-header"] {
+	.scrum-sum-container {
+		display: inline-block;
+		margin: 0;
+		flex-grow: 1;
+		text-align: right;
+		.scrum-label {
+			font-size: 14px;
+			line-height: 18px;
+			opacity: 0.75;
+		}
+	}
+}
+
+.list-hidden {
+	.scrum-sum-container {
+		flex-grow: initial;
+	}
+}
+
+#board:not(.board-table-view) {
+	.list-hidden {
+		[data-testid="list-header"] {
+			.scrum-label {
+				margin: 2px 0;
+				padding: 3px 0;
+				&::before {
+					margin-bottom: 2px;
+					margin-right: 0;
+				}
+			}
+		}
+	}
+}
+
+#board.board-table-view {
+	[data-testid="list-header"] {
+		.scrum-sum-container {
+			grid-column: 4 / span 1;
+			grid-row: 1 / span 1;
+			text-align: left;
+		}
+	}
+	[data-testid="list-card"] {
+		.scrum-points-container {
+			grid-column: 3 / span 1;
+			grid-row: 1 / span 1;
+			text-align: left;
+		}
+	}
+}
+
+.scrum-button {
+	position: relative;
+	background-color: rgba(9,45,66,.08);
+	border-radius: 2px;
+	color: #6b808c;
+	cursor: pointer;
+	display: inline-block;
+	float: left;
+	margin: 4px 2px 4px 0;
+	transition-property: background-color,border-color,box-shadow;
+	transition-duration: 85ms;
+	transition-timing-function: ease;
+	font-weight: 500;
+	padding: 2px 6px;
+	overflow: hidden;
+	&::after {
+		content: "";
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(9,45,66,0);
+		transition: background-color 85ms ease;
+	}
+	&:hover {
+		&::after {
+			background-color: rgba(9,45,66,.13);
+		}
+	}
+}
+.scrum-buttons {
+	order: -1;
+	&.show-team1.show-team2 {
+		.scrum-button {
+			margin: 0 2px 4px 0;
+			padding: 0 6px;
+		}
+	}
+}

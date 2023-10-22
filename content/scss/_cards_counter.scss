@@ -1,0 +1,30 @@
+.list-header-num-cards {
+	color: var(--ds-text-subtlest);
+	margin: 0;
+	padding: 0 12px;
+	flex-grow: 1;
+}
+
+.list-hidden {
+	.list-header-num-cards {
+		flex-grow: initial;
+	}
+}
+
+#board:not(.board-table-view) {
+	.list-hidden {
+		.list-header-num-cards {
+			margin: 8px 0;
+			padding: 0;
+			white-space: nowrap;
+		}
+	}
+}
+
+#board.board-table-view {
+	.list-header-num-cards {
+		grid-column: 5 / span 1;
+		grid-row: 1 / span 1;
+		text-align: center;
+	}
+}

@@ -8,33 +8,33 @@ ColorPicker = function( input )
 		return;
 
 	/**
-	 * @var {int}
+	 * @type {int}
 	 */
-	var R, G, B, A, H, S, L;
+	let R, G, B, A, H, S, L;
 	/**
-	 * @var {boolean}
+	 * @type {boolean}
 	 */
-	var alpha_enabled = input.hasAttribute( 'data-alpha' );
+	let alpha_enabled = input.hasAttribute( 'data-alpha' );
 	/**
-	 * $var {string}
+	 * @type {string}
 	 */
-	var color_mode = 'rgb';
+	let color_mode = 'rgb';
 	/**
-	 * @var {HTMLFormElement}
+	 * @type {HTMLFormElement}
 	 */
-	var picker_node;
+	let picker_node;
 	/**
-	 * @var {HTMLDivElement}
+	 * @type {HTMLDivElement}
 	 */
-	var backdrop, preview_node;
+	let backdrop, preview_node;
 	/**
-	 * @var {HTMLInputElement}
+	 * @type {HTMLInputElement}
 	 */
-	var input_hex_node;
+	let input_hex_node;
 	/**
-	 * @var {{HTMLInputElement}}
+	 * @type {{HTMLInputElement}}
 	 */
-	var inputs = {};
+	let inputs = {};
 
 
 	function init()
@@ -52,10 +52,10 @@ ColorPicker = function( input )
 		preview_node = picker_node.querySelector( '.preview' );
 		backdrop = picker_node.querySelector( '.backdrop' );
 
-		var elems = picker_node.querySelectorAll( 'input[type=range], input[type=number]' );
-		for( var i = elems.length - 1; i >= 0; --i )
+		let elems = picker_node.querySelectorAll( 'input[type=range], input[type=number]' );
+		for( let i = elems.length - 1; i >= 0; --i )
 		{
-			var name = elems[i].type + '_' + elems[i].name;
+			let name = elems[i].type + '_' + elems[i].name;
 			inputs[name] = elems[i];
 		}
 	}
@@ -67,9 +67,10 @@ ColorPicker = function( input )
 		input.addEventListener( 'reset', events.input.reset )
 	}
 
-	var picker = {
+	let picker = {
 		open: function()
 		{
+			picker_node.elements['mode'].value = color_mode;
 			picker.addEvents();
 
 			updateCurrentColor.fromInput();
@@ -90,9 +91,7 @@ ColorPicker = function( input )
 			input.value = input_hex_node.value;
 			UI.updateInput();
 
-			var onChangeEvent = document.createEvent( 'HTMLEvents' );
-			onChangeEvent.initEvent('change', true, true );
-			input.dispatchEvent( onChangeEvent );
+			input.dispatchEvent( new Event( 'change', { bubbles: true, cancelable: true }));
 
 			picker.close();
 		},
@@ -105,15 +104,15 @@ ColorPicker = function( input )
 
 		addEvents: function()
 		{
-			for( var name in inputs )
+			for( let name in inputs )
 				if( inputs.hasOwnProperty( name ))
 				{
 					inputs[name].addEventListener( 'input', events.slider.changed );
 					inputs[name].addEventListener( 'keydown', events.document.keyPress );
 				}
 
-			var modes = picker_node.querySelectorAll( 'input[name=mode]' );
-			for( var i = modes.length - 1; i >= 0; --i )
+			let modes = picker_node.querySelectorAll( 'input[name=mode]' );
+			for( let i = modes.length - 1; i >= 0; --i )
 				modes[i].addEventListener( 'change', events.mode.changed );
 
 			input_hex_node.addEventListener( 'input', events.hex.changed );
@@ -125,15 +124,15 @@ ColorPicker = function( input )
 
 		removeEvents: function()
 		{
-			for( var name in inputs )
+			for( let name in inputs )
 				if( inputs.hasOwnProperty( name ))
 				{
 					inputs[name].removeEventListener( 'input', events.slider.changed );
 					inputs[name].removeEventListener( 'keydown', events.document.keyPress );
 				}
 
-			var modes = picker_node.querySelectorAll( 'input[name=mode]' );
-			for( var i = modes.length - 1; i >= 0; --i )
+			let modes = picker_node.querySelectorAll( 'input[name=mode]' );
+			for( let i = modes.length - 1; i >= 0; --i )
 				modes[i].removeEventListener( 'change', events.mode.changed );
 
 			$b.removeEventListener( 'keydown', events.keyPress );
@@ -145,10 +144,10 @@ ColorPicker = function( input )
 		}
 	};
 
-	var updateCurrentColor = {
+	let updateCurrentColor = {
 		fromInput: function()
 		{
-			var rgba = convert.hexToRgba( input.value || '#ffffffff' );
+			let rgba = convert.hexToRgba( input.value || '#ffffffff' );
 			R = rgba[0];
 			G = rgba[1];
 			B = rgba[2];
@@ -160,7 +159,7 @@ ColorPicker = function( input )
 			if( !input_hex_node.checkValidity() )
 				return;
 
-			var rgba = convert.hexToRgba( input_hex_node.value || '#ffffffff' );
+			let rgba = convert.hexToRgba( input_hex_node.value || '#ffffffff' );
 			R = rgba[0];
 			G = rgba[1];
 			B = rgba[2];
@@ -181,7 +180,7 @@ ColorPicker = function( input )
 				S = parseInt( inputs['range_S'].value );
 				L = parseInt( inputs['range_L'].value );
 
-				var rgb = convert.hslToRgb( H, S, L );
+				let rgb = convert.hslToRgb( H, S, L );
 				R = rgb[0];
 				G = rgb[1];
 				B = rgb[2];
@@ -192,14 +191,21 @@ ColorPicker = function( input )
 
 		toHSL: function()
 		{
-			var hsl = convert.rgbToHsl( R, G, B );
+			let hsl = convert.rgbToHsl( R, G, B );
 			H = hsl[0];
 			S = hsl[1];
 			L = hsl[2];
+		},
+		toRGB: function()
+		{
+			let rgb = convert.hslToRgb( H, S, L );
+			R = rgb[0];
+			G = rgb[1];
+			B = rgb[2];
 		}
 	};
 
-	var UI = {
+	let UI = {
 		updatePreview: function()
 		{
 			preview_node.style.backgroundColor = 'rgba(' + R + ',' + G + ',' + B + ')';
@@ -208,15 +214,15 @@ ColorPicker = function( input )
 		updateHex: function()
 		{
 			input_hex_node.value = '#' +
-				( '0' + R.toString( 16 ) ).substr( -2 ) +
-				( '0' + G.toString( 16 ) ).substr( -2 ) +
-				( '0' + B.toString( 16 ) ).substr( -2 ) +
-				( alpha_enabled ? ( '0' + Math.round( A * 2.55 ).toString( 16 ) ).substr( -2 ) : '' );
+				( '0' + R.toString( 16 ) ).slice( -2 ) +
+				( '0' + G.toString( 16 ) ).slice( -2 ) +
+				( '0' + B.toString( 16 ) ).slice( -2 ) +
+				( alpha_enabled ? ( '0' + Math.round( A * 2.55 ).toString( 16 ) ).slice( -2 ) : '' );
 		},
 
 		updateInput: function()
 		{
-			var l = ( Math.max( R, G, B ) + Math.min( R, G, B ) ) / 510;
+			let l = ( Math.max( R, G, B ) + Math.min( R, G, B ) ) / 510;
 
 			input.style.backgroundColor = alpha_enabled ?
 				'rgba(' + R + ',' + G + ',' + B + ',' + ( A / 100 ) + ')' :
@@ -260,15 +266,15 @@ ColorPicker = function( input )
 
 		updateMode: function()
 		{
-			var elems = picker_node.querySelectorAll( '.slider' );
-			for( var i = elems.length - 1; i >= 0; --i )
-				elems[i].style.display = elems[i].classList.contains( color_mode ) ? null : 'none';
+			picker_node.querySelectorAll( '.slider' ).forEach(( slider ) => {
+				slider.style.display = slider.classList.contains( color_mode ) ? null : 'none';
+			});
 
 			inputs['number_A'].parentNode.style.display = alpha_enabled ? null : 'none';
 		}
 	};
 
-	var events = {
+	let events = {
 		input: {
 			focus: function( e )
 			{
@@ -314,7 +320,7 @@ ColorPicker = function( input )
 		slider: {
 			changed: function()
 			{
-				var name = ( this.type === 'range' ? 'number' : 'range' ) + '_' + this.name;
+				let name = ( this.type === 'range' ? 'number' : 'range' ) + '_' + this.name;
 				inputs[name].value = this.value;
 
 				updateCurrentColor.fromSliders();
@@ -340,6 +346,9 @@ ColorPicker = function( input )
 
 				if( color_mode === 'hsl' )
 					updateCurrentColor.toHSL();
+				else
+					updateCurrentColor.toRGB();
+				UI.updateSliders();
 
 				updateCurrentColor.fromSliders();
 
@@ -349,15 +358,15 @@ ColorPicker = function( input )
 		}
 	};
 
-	var convert = {
+	let convert = {
 		/**
 		 * @param hex #rgb #rgba #rrggbb #rrggbbaa
 		 * @return {int[]} R: 0-255; G: 0-255; B: 0-255; A: 0-100
 		 */
 		hexToRgba: function( hex )
 		{
-			var r = 255, g = 255, b = 255, a = 100;
-			hex = hex.substr( 1 );
+			let r = 255, g = 255, b = 255, a = 100;
+			hex = hex.substring( 1 );
 
 			if( hex.length === 3 || hex.length === 4 )
 			{
@@ -369,11 +378,11 @@ ColorPicker = function( input )
 			}
 			else if( hex.length === 6 || hex.length === 8 )
 			{
-				r = parseInt( hex.substr( 0, 2 ), 16 );
-				g = parseInt( hex.substr( 2, 2 ), 16 );
-				b = parseInt( hex.substr( 4, 2 ), 16 );
+				r = parseInt( hex.substring( 0, 2 ), 16 );
+				g = parseInt( hex.substring( 2, 4 ), 16 );
+				b = parseInt( hex.substring( 4, 6 ), 16 );
 				if( hex.length === 8 )
-					a = Math.round( parseInt( hex.substr( 6, 2 ), 16 ) / 2.55 );
+					a = Math.round( parseInt( hex.substring( 6, 8 ), 16 ) / 2.55 );
 			}
 			else
 				return [ R, G, B, A ];
@@ -393,12 +402,12 @@ ColorPicker = function( input )
 			g = g / 255;
 			b = b / 255;
 
-			var c_min = Math.min( r, g, b );
-			var c_max = Math.max( r, g, b );
-			var delta = c_max - c_min;
+			let c_min = Math.min( r, g, b );
+			let c_max = Math.max( r, g, b );
+			let delta = c_max - c_min;
 
-			var h, l = ( c_max + c_min ) / 2;
-			var s = ( delta === 0 ? 0 : delta / ( 1 - Math.abs( 2 * l - 1 )));
+			let h, l = ( c_max + c_min ) / 2;
+			let s = ( delta === 0 ? 0 : delta / ( 1 - Math.abs( 2 * l - 1 )));
 
 			if( delta === 0 )
 				h = 0;
@@ -425,9 +434,9 @@ ColorPicker = function( input )
 		{
 			s /= 100;
 			l /= 100;
-			var c = ( 1 - Math.abs( 2 * l - 1 )) * s;
-			var x = c * ( 1 - Math.abs((( h / 60 ) % 2 ) - 1 ));
-			var m = l - c / 2;
+			let c = ( 1 - Math.abs( 2 * l - 1 )) * s;
+			let x = c * ( 1 - Math.abs((( h / 60 ) % 2 ) - 1 ));
+			let m = l - c / 2;
 
 			return [
 				Math.round( (( h < 60 || h >= 300 ? c : ( h < 120 || h >= 240 ? x : 0 )) + m ) * 255 ),

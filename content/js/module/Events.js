@@ -5,8 +5,8 @@
  */
 function ModuleEvents( strelloids )
 {
-	var self = this;
-	var events_list = {
+	let self = this;
+	let events_list = {
 		onUpdate: [],
 		onSettingsLoaded: [],
 		onGlobalSettingsChange: [],
@@ -94,7 +94,7 @@ function ModuleEvents( strelloids )
 		if( typeof events_list[event] === 'undefined' )
 			$err( 'Strelloids: Unknown event: ', event );
 
-		for( var i = events_list[event].length - 1; i >= 0; --i )
+		for( let i = events_list[event].length - 1; i >= 0; --i )
 			if( events_list[event][i] === callback )
 				events_list = events_list.splice( i, 1 );
 	};
@@ -107,9 +107,9 @@ function ModuleEvents( strelloids )
 		if( typeof events_list[event] === 'undefined' )
 			$err( 'Strelloids: Unknown event: ', event );
 
-		var args = Array.prototype.slice.call( arguments, 1 );
+		let args = Array.prototype.slice.call( arguments, 1 );
 
-		for( var i = events_list[event].length - 1; i >= 0; --i )
+		for( let i = events_list[event].length - 1; i >= 0; --i )
 			events_list[event][i].apply( null, args );
 	};
 

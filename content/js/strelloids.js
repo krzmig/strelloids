@@ -1,6 +1,6 @@
 'use strict';
 
-var DEBUG = false;
+const DEBUG = false;
 
 /**
  * Main plugin class.
@@ -8,9 +8,9 @@ var DEBUG = false;
  */
 function Strelloids()
 {
-	var self = this;
-	var runTimeout = null;
-	var delayTimeout = null;
+	let self = this;
+	let runTimeout = null;
+	let delayTimeout = null;
 	self.modules = {};
 
 	function init()
@@ -28,7 +28,6 @@ function Strelloids()
 		self.modules.showCardsCounter = new ModuleShowCardsCounter( self );
 		self.modules.displayMode = new ModuleDisplayMode( self );
 		// cards
-		self.modules.showCardShortId = new ModuleShowCardShortId( self );
 		self.modules.customTags = new ModuleCustomTags( self );
 		self.modules.cardsSeparator = new ModuleCardsSeparator( self );
 		self.modules.cardsPrioritization = new ModuleCardsPrioritization( self );
@@ -36,8 +35,6 @@ function Strelloids()
 		self.modules.coloredLists = new ModuleColoredLists( self );
 		self.modules.scrumTimes = new ModuleScrumTimes( self );
 		self.modules.scrumSumTimes = new ModuleScrumSumTimes( self );
-		// card editing
-		self.modules.tabKeyInTextarea = new ModuleTabKeyInTextarea( self );
 		// other
 		self.modules.boardScroll = new ModuleBoardScroll( self );
 		self.modules.markdowChecklist = new ModuleMarkdownChecklist( self );
@@ -59,8 +56,9 @@ function Strelloids()
 
 	function doLoop()
 	{
+		let t0
 		if( DEBUG )
-			var t0 = performance.now();
+			t0 = performance.now();
 
 		self.modules.events.trigger( 'onUpdate' );
 

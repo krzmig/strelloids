@@ -17,12 +17,6 @@
 			"settings|VerticalScroll|description": {
 				"message": "If enabled you will be able to scroll board in horizontal without holding shift key (just in default display mode)."
 			},
-		"settings|Allow Tab key": {
-			"message": "Allow use Tab key in card description and comments"
-		},
-			"settings|AllowTabKey|description": {
-				"message": "If enabled you will be able to insert indent inside card description and comment textarea by tab key. Thanks to this, eg. you can easily create nested list."
-			},
 		"settings|Markdown checklists": {
 			"message": "Allow use Markdown checklist in card description and comments"
 		},
@@ -110,7 +104,13 @@
 		"module|ColoredLists|ResetAll|description": {
 			"message": "Will reset ALL above color schemes to default."
 		},
-
+		"module|ColoredLists|ColorLightMode": {
+			"message": "Color in light mode"
+		},
+		"module|ColoredLists|ColorDarkMode": {
+			"message": "Color in dark mode"
+		},
+	
 	"module|Cards prioritization": {
 		"message": "Cards prioritization"
 	},

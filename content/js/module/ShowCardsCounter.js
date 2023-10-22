@@ -5,8 +5,8 @@
  */
 function ModuleShowCardsCounter( strelloids )
 {
-	var self = this;
-	var settingName = 'showCardsCounter';
+	let self = this;
+	let settingName = 'showCardsCounter';
 
 	function init()
 	{
@@ -20,9 +20,24 @@ function ModuleShowCardsCounter( strelloids )
 		if(	!self.isEnabled() )
 			return;
 
-		var counters = $$('.list-header-num-cards.hide');
-		for( var i = counters.length - 1; i >= 0; --i )
-			counters[i].classList.remove( 'hide' );
+		$$( '[data-testid="list"]' ).forEach(( list ) => {
+			let counter = list.querySelector( '.list-header-num-cards' );
+			if( !counter )
+			{
+				counter = createNode( 'div', { class: 'list-header-num-cards' });
+				let scrum = list.querySelector( '.scrum-sum-container' );
+				if( scrum )
+				{
+					scrum.before( counter )
+				}
+				else
+				{
+					let header = list.querySelector( '[data-testid="list-header"]' );
+					header.lastChild.before( counter );
+				}
+			}
+			counter.innerText = _( 'cards_counter' ).replace( '%i', list.querySelectorAll( '[data-testid="trello-card"]' ).length );
+		});
 	}
 
 	/**
@@ -56,9 +71,9 @@ function ModuleShowCardsCounter( strelloids )
 		if( DEBUG )
 			$log( 'Strelloids: module ' + settingName + ' disabled' );
 
-		var counters = $$('.list-header-num-cards');
-		for( var i = counters.length - 1; i >= 0; --i )
-			counters[i].classList.add( 'hide' );
+		$$('.list-header-num-cards').forEach(( counter ) => {
+			counter.remove();
+		});
 	}
 
 	init();

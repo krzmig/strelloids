@@ -3,25 +3,25 @@
  */
 function Translation()
 {
-	var self = this;
-	var available_locales = [
+	const self = this;
+	const available_locales = [
 		"en",
 		"pl"
 	];
 
-	var extension_locale;
+	let extension_locale;
 
-	var locale_domains = [
+	const locale_domains = [
 		"content",
 		"popup",
 		"options"
 	];
 
-	var default_domain = "messages";
+	let default_domain = "messages";
 
-	var translations = {};
+	const translations = {};
 
-	var files_to_load = 0;
+	let files_to_load = 0;
 
 	function init()
 	{
@@ -31,19 +31,19 @@ function Translation()
 
 	function determinateExtensionsLocale()
 	{
-		var browser_locale = getBrowserObject().i18n.getUILanguage().replace( '-', '_' );
+		const browser_locale = getBrowserObject().i18n.getUILanguage().replace( '-', '_' );
 
 		if( available_locales.indexOf( browser_locale ) >= 0 )
 			extension_locale = browser_locale;
-		else if( available_locales.indexOf( browser_locale.substr( 0, 2 ) ) >= 0 )
-			extension_locale = browser_locale.substr( 0, 2 );
+		else if( available_locales.indexOf( browser_locale.substring( 0, 2 ) ) >= 0 )
+			extension_locale = browser_locale.substring( 0, 2 );
 		else
 			extension_locale = getBrowserObject().runtime.getManifest().default_locale;
 	}
 
 	function loadTranslations()
 	{
-		for( var i = locale_domains.length - 1; i >= 0; --i )
+		for( let i = locale_domains.length - 1; i >= 0; --i )
 		{
 			++files_to_load;
 			loadDomainFile( locale_domains[i] );
@@ -53,7 +53,7 @@ function Translation()
 	function loadDomainFile( domain )
 	{
 		new Ajax({
-			url: getBrowserObject().extension.getURL( '_locales/' + extension_locale + '/' + domain + '.json' ),
+			url: getBrowserObject().runtime.getURL( '_locales/' + extension_locale + '/' + domain + '.json' ),
 			onDone: function( response )
 			{
 				translations[domain] = JSON.parse( response );
@@ -97,22 +97,20 @@ function Translation()
 		if( files_to_load )
 			return setTimeout( self.htmlTranslation, 200 );
 
-		var nodes = document.querySelectorAll('[data-localize]');
+		document.querySelectorAll('[data-localize]').forEach(( node ) => {
+			localizeNodeContent( node );
+		});
 
-		for( var i = nodes.length - 1; i >= 0; --i )
-			localizeNodeContent( nodes[i] );
-
-		nodes = document.querySelectorAll('[title]');
-
-		for( i = nodes.length - 1; i >= 0; --i )
-			localizeNodeTitle( nodes[i] );
+		document.querySelectorAll('[title]').forEach(( node ) => {
+			localizeNodeTitle( node );
+		});
 	}
 
 	function localizeNodeContent( node )
 	{
-		var context = node.getAttribute('data-context');
-		var domain = node.getAttribute('data-domain');
-		var text = node.innerText.toString().replace( /^\s+/g, '' ). replace( /\s+$/g, '' );
+		let context = node.getAttribute( 'data-context' );
+		let domain = node.getAttribute( 'data-domain' );
+		const text = node.innerText.toString().replace( /^\s+/g, '' ).replace( /\s+$/g, '' );
 
 		if( context )
 			context = context.toString();
@@ -124,8 +122,8 @@ function Translation()
 
 	function localizeNodeTitle( node )
 	{
-		var context = node.getAttribute('data-context');
-		var domain = node.getAttribute('data-domain');
+		let context = node.getAttribute( 'data-context' );
+		let domain = node.getAttribute( 'data-domain' );
 
 		if( context )
 			context = context.toString();

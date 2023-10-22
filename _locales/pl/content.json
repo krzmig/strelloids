@@ -10,5 +10,8 @@
 	},
 	"card_edit_customTags": {
 		"message": "Własne tagi"
+	},
+	"cards_counter": {
+		"message": "%i kart"
 	}
 }

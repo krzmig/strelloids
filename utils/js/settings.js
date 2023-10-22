@@ -1,13 +1,13 @@
 function Settings( load_callback )
 {
 	/** @type {Settings} */
-	var self = this;
+	const self = this;
 	/** @type {object} local settings object copy */
-	var settings = {};
+	let settings = {};
 	/** @type {object} default setting, will be loaded by ajax from default_settings.json file */
-	var default_settings = {};
+	let default_settings = {};
 	/** @type {string|null} */
-	var board_id = null;
+	let board_id = null;
 
 	function init()
 	{
@@ -23,7 +23,7 @@ function Settings( load_callback )
 	 */
 	this.getForList = function( list_id, key )
 	{
-		var option_key = 'list.'+list_id;
+		const option_key = 'list.' + list_id;
 		if( typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
 			return settings[option_key][key];
 		else if( typeof default_settings['list.*'][key] !== 'undefined' )
@@ -39,7 +39,7 @@ function Settings( load_callback )
 	 */
 	this.setForList = function( list_id, key, value )
 	{
-		var option_key = 'list.'+list_id;
+		const option_key = 'list.' + list_id;
 		if( typeof settings[option_key] === 'undefined' )
 			settings[option_key] = {};
 
@@ -53,7 +53,7 @@ function Settings( load_callback )
 	 */
 	this.resetForList = function( list_id, key)
 	{
-		var option_key = 'list.'+list_id;
+		const option_key = 'list.' + list_id;
 		if( typeof settings[option_key] === 'undefined' )
 			return;
 
@@ -71,7 +71,7 @@ function Settings( load_callback )
 	 */
 	this.getForBoard = function( board_id, key )
 	{
-		var option_key = 'board.'+board_id;
+		const option_key = 'board.' + board_id;
 
 		if( board_id && typeof settings[option_key] !== 'undefined' && typeof settings[option_key][key] !== 'undefined' )
 			return settings[option_key][key];
@@ -90,7 +90,7 @@ function Settings( load_callback )
 	 */
 	this.setForBoard = function( board_id, key, value )
 	{
-		var option_key = 'board.'+board_id;
+		const option_key = 'board.' + board_id;
 		if( typeof settings[option_key] === 'undefined' )
 			settings[option_key] = {};
 
@@ -123,11 +123,11 @@ function Settings( load_callback )
 	 */
 	this.getGlobal = function( key )
 	{
-		var keys = /(.+)\[([^\]]+)\]$/.exec( key );
+		const keys = /(.+)\[([^\]]+)\]$/.exec( key );
 		if( keys )
 		{
 			key = keys[1];
-			var sub_key = keys[2];
+			const sub_key = keys[2];
 
 			if( typeof settings[key] !== 'undefined' && typeof settings[key][sub_key] !== 'undefined' )
 				return settings[key][sub_key];
@@ -146,11 +146,11 @@ function Settings( load_callback )
 
 	this.setGlobal = function( key, value )
 	{
-		var keys = /(.+)\[([^\]]+)\]$/.exec( key );
+		const keys = /(.+)\[([^\]]+)\]$/.exec( key );
 		if( keys )
 		{
 			key = keys[1];
-			var sub_key = keys[2];
+			const sub_key = keys[2];
 
 			if( typeof settings[key] === 'undefined' )
 				settings[key] = {};
@@ -181,7 +181,7 @@ function Settings( load_callback )
 	this.load = function()
 	{
 		new Ajax({
-			url: getBrowserObject().extension.getURL('default_settings.json'),
+			url: getBrowserObject().runtime.getURL('default_settings.json'),
 			onDone: function( response ) {
 				default_settings = JSON.parse( response );
 
@@ -196,7 +196,7 @@ function Settings( load_callback )
 				function( result )
 				{
 					if( result !== undefined )
-						for( var i in result )
+						for( let i in result )
 							if( result.hasOwnProperty( i ))
 								settings[i] = result[i];
 
@@ -215,7 +215,7 @@ function Settings( load_callback )
 				function( result )
 				{
 					if( result !== undefined )
-						for( var i in result )
+						for( let i in result )
 							if( result.hasOwnProperty( i ))
 								settings[i] = result[i];
 
@@ -231,7 +231,7 @@ function Settings( load_callback )
 	 */
 	this.saveSync = function( key )
 	{
-		var data_to_save = {};
+		const data_to_save = {};
 		data_to_save[key] = settings[key];
 
 		self.getSyncApiObject().set( data_to_save );
@@ -242,7 +242,7 @@ function Settings( load_callback )
 	 */
 	this.saveLocal = function( key )
 	{
-		var data_to_save = {};
+		const data_to_save = {};
 		data_to_save[key] = settings[key];
 
 		self.getLocalApiObject().set( data_to_save );
@@ -254,7 +254,7 @@ function Settings( load_callback )
 	 */
 	this.getSyncApiObject = function()
 	{
-		var browser = getBrowserObject();
+		const browser = getBrowserObject();
 		if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' )
 			if( typeof browser.storage.sync !== 'undefined' )
 				return browser.storage.sync;
@@ -270,7 +270,7 @@ function Settings( load_callback )
 	 */
 	this.getLocalApiObject = function()
 	{
-		var browser = getBrowserObject();
+		const browser = getBrowserObject();
 		if( typeof browser !== 'undefined' && typeof browser.storage !== 'undefined' )
 			if( typeof browser.storage.local !== 'undefined' )
 				return browser.storage.local;
@@ -287,7 +287,7 @@ function Settings( load_callback )
 			{ active: true, currentWindow: true },
 			function( tabs )
 			{
-				var matches = /trello.com\/b\/([a-z0-9]+)\//i.exec( tabs[0].url );
+				const matches = /trello.com\/b\/([a-z0-9]+)\//i.exec( tabs[0].url );
 
 				if( matches && matches.length )
 					board_id = matches[1];

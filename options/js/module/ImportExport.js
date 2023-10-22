@@ -1,11 +1,11 @@
 function Export()
 {
-	var filters = {
+	const filters = {
 		global: null,
 		boards: null,
 		lists: null
 	};
-	var default_settings;
+	let default_settings;
 
 	function init()
 	{
@@ -15,14 +15,14 @@ function Export()
 	function generateExport()
 	{
 		setFilters();
-		var user_data = settings.getAllSettings();
-		var data = {
+		const user_data = settings.getAllSettings();
+		const data = {
 			exportTime: new Date().toUTCString(),
-			exportVersion: user_data.version
+			exportVersion: user_data['version']
 		};
-		var keys = Object.keys( user_data );
+		const keys = Object.keys( user_data );
 		keys.sort();
-		for( var i in keys )
+		for( let i in keys )
 			data[keys[i]] = filterOutput( keys[i], user_data[keys[i]] );
 
 		$_('export-content').value = JSON.stringify( data, null, "\t" );
@@ -63,7 +63,7 @@ new Export();
 
 function Import()
 {
-	var default_settings;
+	let default_settings;
 
 	function init()
 	{
@@ -74,15 +74,15 @@ function Import()
 	{
 		setFlags();
 		default_settings = settings.getAllDefaultSettings();
-		var current_settings = settings.getAllSettings();
-		var data = getImportData();
+		const current_settings = settings.getAllSettings();
+		const data = getImportData();
 		if( !data )
 			return;
 
-		var local_data = {},
+		const local_data = {},
 			sync_data = {};
 
-		for( var key in data )
+		for( const key in data )
 			if( data.hasOwnProperty( key ))
 			{
 				if( key === 'exportTime' )
@@ -124,11 +124,12 @@ function Import()
 
 	function getImportData()
 	{
-		var json = $_('import-content').value;
-		var imported = true;
+		let data;
+		const json = $_( 'import-content' ).value;
+		let imported = true;
 		try
 		{
-			var data = JSON.parse( json );
+			data = JSON.parse( json );
 		}
 		catch( e )
 		{

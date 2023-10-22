@@ -5,14 +5,18 @@
  */
 function ModuleMarkdownTable( strelloids )
 {
-	var self = this;
-	var settingName = 'global.enableMarkdownTables';
+	let self = this;
+	const settingName = 'global.enableMarkdownTables';
 
 	function init()
 	{
 		strelloids.modules.events.add( 'onCardEditOpened', cardEditOpened );
 		strelloids.modules.events.add( 'onCardCommentChanged', cardEditOpened );
-		strelloids.modules.events.add( 'onCardDescriptionChanged', cardEditOpened );
+		strelloids.modules.events.add( 'onCardDescriptionChanged', cardEditOpened )
+		$w.addEventListener( 'click', () => {
+			if( self.isEnabled() )
+				cardEditOpened();
+		}, true );
 	}
 
 	/**
@@ -36,39 +40,39 @@ function ModuleMarkdownTable( strelloids )
 
 	function parseMarkdown()
 	{
-		var table_regex = /^.*?\|.*?\n[\s:\|]*?---+[\s:]*?\|[\s:\|-]*?\n.*?\|/;
+		let table_regex = /^.*?\|.*?\n[\s:\|]*?---+[\s:]*?\|[\s:\|-]*?\n.*?\|/;
 
-		var marked_down = $$( '.card-detail-window .markeddown p' );
+		$$( '.card-detail-window .markeddown p' ).forEach(( marked_down ) => {
+			if( marked_down.childNodes.length < 5 )
+				return;
 
-		for( var i = marked_down.length - 1; i >= 0; --i )
-		{
-			if( marked_down[i].childNodes.length < 5 )
-				continue;
+			if( !marked_down.innerText.match( table_regex ))
+				return;
 
-			if( !marked_down[i].innerText.match( table_regex ))
-				continue;
-
-			var table = generateTableNode( marked_down[i].innerHTML );
-			marked_down[i].parentNode.replaceChild( table, marked_down[i] );
-		}
+			marked_down.parentNode.replaceChild(
+				generateTableNode( marked_down.innerHTML ),
+				marked_down
+			);
+		});
 	}
 
 	function generateTableNode( markdown )
 	{
-		var table = createNode( 'table' );
-		var thead = createNode( 'thead' );
+		let i;
+		let table = createNode( 'table' );
+		let thead = createNode( 'thead' );
 		table.appendChild( thead );
-		var tbody = createNode( 'tbody' );
+		let tbody = createNode( 'tbody' );
 		table.appendChild( tbody );
-		var tr, th, td;
+		let tr, th, td;
 
 		markdown = markdown.replace( /\s+/, ' ' );
-		var rows = markdown.split( '<br>' );
-		var cells;
-		var cols = [], align;
+		let rows = markdown.split( '<br>' );
+		let cells;
+		let cols = [], align;
 
 		cells = getCellsFromRowMarkdown( rows[1] );
-		for( var i = 0; i < cells.length; ++i )
+		for( i = 0; i < cells.length; ++i )
 		{
 			align = 'left';
 			if( cells[i].slice(-1) === ':' )
@@ -97,7 +101,7 @@ function ModuleMarkdownTable( strelloids )
 			tbody.appendChild( tr );
 
 			cells = getCellsFromRowMarkdown( rows[i] );
-			for( var j = 0; j < cols.length; ++j )
+			for( let j = 0; j < cols.length; ++j )
 			{
 				td = createNode( 'td' );
 				td.style.textAlign = cols[j];
@@ -114,8 +118,8 @@ function ModuleMarkdownTable( strelloids )
 	{
 		row = row.replace( /^\s?\|?\s?/, '' );
 		row = row.replace( /\s?\|?\s?$/, '' );
-		var cells = row.split( '|' );
-		for( var i = cells.length - 1; i >= 0; --i )
+		let cells = row.split( '|' );
+		for( let i = cells.length - 1; i >= 0; --i )
 		{
 			cells[i] = cells[i].replace( /^\s+/, '' );
 			cells[i] = cells[i].replace( /\s+$/, '' );

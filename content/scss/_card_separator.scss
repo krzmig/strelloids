@@ -1,0 +1,34 @@
+[data-testid="trello-card"] {
+	&.card-separator {
+		background-color: transparent;
+		box-shadow: none;
+		[data-testid="card-name"] {
+			display: flex;
+			align-items: center;
+			color: #6b808c;
+			width: 100%;
+			&::before,
+			&::after {
+				content: "";
+				flex-grow: 1;
+				display: block;
+				height: 0;
+				border-bottom: 1px dashed #6b808c;
+				margin-left: 5px;
+				margin-right: 5px;
+			}
+		}
+	}
+}
+
+#board.board-table-view {
+	[data-testid="list-card"] {
+		&.card-separator {
+			.list-card-details {
+				[data-testid="card-name"] {
+					grid-column: 1 / span 5;
+				}
+			}
+		}
+	}
+}

@@ -12,7 +12,8 @@
 <body>
 	<div class="tab-container">
 		<div class="tab-nav text-center">
-			<img src="../img/icon-128.png" width="128" height="128" class="logo">
+			<img src="../img/icon-128-dark.png" width="128" height="128" class="logo light-mode" alt="logo">
+			<img src="../img/icon-128-light.png" width="128" height="128" class="logo dark-mode" alt="logo">
 			<h1>Strelloids</h1>
 		</div>
 
@@ -67,7 +68,7 @@
 					<input type="number" min="0.3" step="0.1" data-toggle="set" data-target="global.loopInterval" id="global.loopInterval">
 					<span class="description">s</span>
 				</div>
-				<button type="button" class="reset ml" data-toggle="reset" data-target="global.loopInterval" title="Reset to default">&#8634;</button>
+				<button type="button" class="reset warning ml" data-toggle="reset" data-target="global.loopInterval" title="Reset to default">&#8634;</button>
 			</div>
 			<div class="option-description" data-localize data-context="settings">
 				loopInterval|description
@@ -78,6 +79,7 @@
 					Vertical scroll
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="global.enableBoardScroll">
+				<span></span>
 			</label>
 			<div class="option-description" data-localize data-context="settings">
 				VerticalScroll|description
@@ -85,25 +87,16 @@
 
 			<label class="flex mt">
 				<span data-localize data-context="settings" class="fg">
-					Allow Tab key
-				</span>
-				<input type="checkbox" data-toggle="toggle" data-target="global.enableTabKeyInTextarea">
-			</label>
-			<div class="option-description" data-localize data-context="settings">
-				AllowTabKey|description
-			</div>
-
-			<label class="flex mt">
-				<span data-localize data-context="settings" class="fg">
 					Markdown checklists
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="global.enableMarkdownChecklist">
+				<span></span>
 			</label>
 			<div class="option-description" data-localize data-context="settings">
 				MarkdownChecklists|description
 			</div>
 			<div class="option-description">
-				<a class="button" href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Markdown-%7C-Checklist" data-localize target="_blank">
+				<a class="button info" href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Markdown-%7C-Checklist" data-localize target="_blank">
 					Help
 				</a>
 			</div>
@@ -113,12 +106,13 @@
 					Markdown tables
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="global.enableMarkdownTables">
+				<span></span>
 			</label>
 			<div class="option-description" data-localize data-context="settings">
 				MarkdownTables|description
 			</div>
 			<div class="option-description">
-				<a class="button" href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Markdown-%7C-Table" data-localize target="_blank">
+				<a class="button info" href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Markdown-%7C-Table" data-localize target="_blank">
 					Help
 				</a>
 			</div>
@@ -156,24 +150,20 @@
 					Enable colored lists
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[coloredLists]">
+				<span></span>
 			</label>
 			<label>
 				<span data-localize data-context="popup|lists" class="fg" data-domain="popup">
 					Show list cards counter
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[showCardsCounter]">
+				<span></span>
 			</label>
 
 			<hr>
 			<h4 data-localize data-context="popup|section" data-domain="popup">
 				Cards settings
 			</h4>
-			<label>
-				<span data-localize data-context="popup|cards" class="fg" data-domain="popup">
-					Show cards short ID
-				</span>
-				<input type="checkbox" data-toggle="toggle" data-target="board.*[showCardShortId]">
-			</label>
 			<label title="popup|cards|Enable custom tags for cards|tooltip" data-domain="popup">
 				<span class="fg">
 					<span data-localize data-context="popup|cards" data-domain="popup">
@@ -182,6 +172,7 @@
 					[?]
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[customTags]">
+				<span></span>
 			</label>
 			<label title="popup|cards|Enable cards separator|tooltip" data-domain="popup">
 				<span class="fg">
@@ -191,6 +182,7 @@
 					[?]
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[cardsSeparator]">
+				<span></span>
 			</label>
 			<label title="popup|cards|Enable cards prioritization|tooltip" data-domain="popup">
 				<span class="fg">
@@ -200,6 +192,7 @@
 					[?]
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[cardsPrioritization]">
+				<span></span>
 			</label>
 
 			<hr>
@@ -214,6 +207,7 @@
 					[?]
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes]">
+				<span></span>
 			</label>
 			<div class="subsection">
 				<label>
@@ -221,30 +215,35 @@
 						Show sum times for lists
 					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumSumTimes]" data-required="scrumTimes">
+					<span></span>
 				</label>
 				<label>
 					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
 						Show estimations
 					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.estimation]" data-required="scrumTimes">
+					<span></span>
 				</label>
 				<label>
 					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
 						Show consumptions
 					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.consumption]" data-required="scrumTimes">
+					<span></span>
 				</label>
 				<label>
 					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
 						Show team1
 					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.team1]" data-required="scrumTimes">
+					<span></span>
 				</label>
 				<label>
 					<span data-localize data-context="popup|scrum" class="fg" data-domain="popup">
 						Show team2
 					</span>
 					<input type="checkbox" data-toggle="toggle" data-target="board.*[scrumTimes.show.team2]" data-required="scrumTimes">
+					<span></span>
 				</label>
 			</div>
 		</div>
@@ -264,6 +263,7 @@
 					Global settings
 				</span>
 				<input type="checkbox" checked id="export-global-settings">
+				<span></span>
 			</label>
 			<div class="option-description" data-localize data-context="export">
 				Global settings|description
@@ -274,6 +274,7 @@
 					Boards settings
 				</span>
 				<input type="checkbox" id="export-boards-settings">
+				<span></span>
 			</label>
 			<div class="option-description" data-localize data-context="export">
 				Boards settings|description
@@ -284,12 +285,13 @@
 					Lists settings
 				</span>
 				<input type="checkbox" id="export-lists-settings">
+				<span></span>
 			</label>
 			<div class="option-description" data-localize data-context="export">
 				Lists settings|description
 			</div>
 
-			<button data-localize class="mt" id="export-btn">
+			<button data-localize class="mt primary" id="export-btn">
 				Export
 			</button>
 
@@ -327,7 +329,7 @@
 				<textarea id="import-content"></textarea>
 			</label>
 
-			<button data-localize class="mt" id="import-btn">
+			<button data-localize class="mt secondary" id="import-btn">
 				Import
 			</button>
 		</div>
@@ -350,6 +352,7 @@
 					Auto collapse empty lists
 				</span>
 				<input type="checkbox" data-toggle="toggle" data-target="module.listsCollapsing.collapseEmptyLists">
+				<span></span>
 			</label>
 		</div>
 
@@ -373,11 +376,11 @@
 				<div id="colored-lists-scheme"></div>
 				<br>
 				<div class="flex">
-					<a class="button" data-localize href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Colored-lists" target="_blank">
+					<a class="button info" data-localize href="https://github.com/krzmig/strelloids/wiki/Modules-%7C-Colored-lists" target="_blank">
 						Help
 					</a>
 					<span class="fg"></span>
-					<button type="button" class="reset" data-toggle="reset" data-localize data-context="module|ColoredLists" data-target="module.coloredLists.scheme" title="module|ColoredLists|ResetAll|description" tabindex="-1">
+					<button type="button" class="reset warning" data-toggle="reset" data-localize data-context="module|ColoredLists" data-target="module.coloredLists.scheme" title="module|ColoredLists|ResetAll|description" tabindex="-1">
 						Reset all
 					</button>
 				</div>
@@ -406,35 +409,35 @@
 						Critical
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.critical">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.critical" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.cardsPrioritization.color.critical" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
 					<span data-localize data-context="module|CardsPrioritization" class="fg">
 						High
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.high">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.high" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.cardsPrioritization.color.high" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
 					<span data-localize data-context="module|CardsPrioritization" class="fg">
 						Medium
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.medium">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.medium" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.cardsPrioritization.color.medium" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
 					<span data-localize data-context="module|CardsPrioritization" class="fg">
 						Low
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.low">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.low" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.cardsPrioritization.color.low" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
 					<span data-localize data-context="module|CardsPrioritization" class="fg">
 						Lowest
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.cardsPrioritization.color.lowest">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.cardsPrioritization.color.lowest" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.cardsPrioritization.color.lowest" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
 		</div>
@@ -458,7 +461,7 @@
 			<div class="subsection">
 				<div class="flex">
 					<div id="scrum-sequence-buttons"></div>
-					<button type="button" class="reset ml" id="resetScrumSequence" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" id="resetScrumSequence" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
 			<h5 data-localize data-context="module|Scrum">
@@ -470,14 +473,14 @@
 						Background color
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam1Estimation">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Estimation" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Estimation" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
 					<span data-localize class="fg">
 						Font color
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam1Estimation">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Estimation" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Estimation" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
 			<h5 data-localize data-context="module|Scrum">
@@ -489,14 +492,14 @@
 						Background color
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam1Consumption">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Consumption" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam1Consumption" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
 					<span data-localize class="fg">
 						Font color
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam1Consumption">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Consumption" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam1Consumption" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
 			<h5 data-localize data-context="module|Scrum">
@@ -508,14 +511,14 @@
 						Background color
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam2Estimation">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Estimation" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Estimation" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
 					<span data-localize class="fg">
 						Font color
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam2Estimation">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Estimation" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Estimation" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
 			<h5 data-localize data-context="module|Scrum">
@@ -527,14 +530,14 @@
 						Background color
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.bgTeam2Consumption">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Consumption" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.scrumTimes.color.bgTeam2Consumption" title="Reset to default">&#8634;</button>
 				</div>
 				<div class="flex">
 					<span data-localize class="fg">
 						Font color
 					</span>
 					<input type="text" class="color" data-toggle="set" data-target="module.scrumTimes.color.fontTeam2Consumption">
-					<button type="button" class="reset ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Consumption" title="Reset to default">&#8634;</button>
+					<button type="button" class="reset warning ml" data-toggle="reset" data-target="module.scrumTimes.color.fontTeam2Consumption" title="Reset to default">&#8634;</button>
 				</div>
 			</div>
 		</div>
@@ -672,10 +675,10 @@
 					</div>
 
 					<div class="buttons">
-						<button type="reset" class="cancel" tabindex="4" data-localize>
+						<button type="reset" class="cancel warning" tabindex="4" data-localize>
 							Cancel
 						</button>
-						<button type="submit" class="save" tabindex="4" data-localize>
+						<button type="submit" class="save success" tabindex="4" data-localize>
 							Save
 						</button>
 					</div>

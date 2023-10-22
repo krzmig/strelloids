@@ -1,11 +1,3 @@
-**‼️ Trello changed the entire html structure on which most of the extension was running (which in my case only appeared as of today 2023-10-19).**
-
-**‼️ This requires practically rewriting most of the code.**
-
-**‼️ This will take some time.**
-
----
-
 # Strelloids
 Browser extension for Trello that adds new features.
 
@@ -29,7 +21,7 @@ Second is table like view. Lists and cards will take whole page width.
 Showing short card ID, normally you can see it in expanded card view, after clicking share action.
 
 ### Custom cards tags
-If you enable this setting, you can use tags in cards titles eg. `[tag]`. Strelloids will replace this tag with colored label. Their color is depending on content inside, so if you use the same tag for different cards, their color will be the same. Tags are case-sensitive. Tag to be parsed must contain at least one letter, space, dash or underscore.
+If you enable this setting, you can use tags in cards titles e.g. `[tag]`. Strelloids will replace this tag with colored label. Their color is depending on content inside, so if you use the same tag for different cards, their color will be the same. Tags are case-sensitive. Tag to be parsed must contain at least one letter, space, dash or underscore.
 
 ### Cards separator
 To split list into a section, you can use separators. To makes them, you can start card title with three or more characters: - or = eg. `--- My separator` `===== Separator` `--== This works too ==--`. As in last example, you can add the same characters at the end of title, they will not display in list view.
@@ -43,7 +35,7 @@ Strelloids can set background color for lists depending on their titles. You can
 [More info (wiki)](https://github.com/krzmig/strelloids/wiki/Modules-%7C-Colored-lists)
 
 ### Scrum times
-With extension, you can also rate cards in story points. For each card you can set estimation and consumption. Additionally, you are able to set this each value for two teams separately eg. development and testing.
+With extension, you can also rate cards in story points. For each card you can set estimation and consumption. Additionally, you are able to set this each value for two teams separately e.g. development and testing.
 
 Estimations are inside round brackets and consumption in squares ones. Times you simply put inside card title.
 
@@ -84,7 +76,7 @@ To try it, you can run it in extension local mode, but it is a temporary solutio
 5. Select folder with extension.
 
 #### Edge / Safari
-- Sorry, I don't have possibility right now to check if is working, only Linux here.
+- Sorry, I don't have possibility right now to check if it is working, only Linux here.
 
 ## ToDo
 - Possibility to manually set the color for each list.

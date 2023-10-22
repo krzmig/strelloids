@@ -1,0 +1,54 @@
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 14px;
+	background-color: var(--main-bg1);
+	color: var(--main-font);
+	border-radius: 2px;
+	overflow-x: hidden;
+	padding: 0;
+}
+
+body {
+	padding: 0;
+	box-sizing: border-box;
+	font-size: 14px;
+	font-family: "DejaVu Sans", "Open Sans", "Roboto", "Verdana", sans-serif;
+	line-height: 20px;
+	font-weight: 400;
+}
+
+a {
+	color: var(--primary-bg);
+	&:hover {
+		color: var(--secondary-bg)
+	}
+}
+
+hr {
+	border-width: 1px 0 0 0;
+	border-style: solid;
+	border-color: var(--main-border);
+	margin: 8px 0;
+}
+
+h1 {
+	margin: 8px 0 0 0;
+}
+h3 {
+	font-size: 16px;
+	line-height: 20px;
+	flex-grow: 1;
+	text-align: center;
+	margin: 0;
+}
+h4 {
+	margin-top: 1rem;
+	margin-bottom: 4px;
+}
+h5 {
+	margin-top: 1rem;
+	margin-bottom: 4px;
+}
